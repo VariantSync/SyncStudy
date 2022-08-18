@@ -138,7 +138,7 @@ public abstract class Experiment {
             for (int childID = 1; childID < relatedCommits.size(); childID++) {
                 // Skip pairs until the start ID has been reached.
                 if (pairCount < startID) {
-                    Logger.warning("Skipped pair " + pairCount);
+                    Logger.info("Skipped pair " + pairCount);
                     pairCount++;
                     continue;
                 }
@@ -151,7 +151,7 @@ public abstract class Experiment {
 
                 // While more random configurations to consider
                 for (int i = 0; i < randomRepeats; i++) {
-                    Logger.warning("Starting repetition " + (i + 1) + " of " + randomRepeats + " with " + numVariants + " variants.");
+                    Logger.status("Starting repetition " + (i + 1) + " of " + randomRepeats + " with " + numVariants + " variants.");
                     // Sample set of random variants
                     Logger.status("Sampling next set of variants...");
                     final Sample sample = sample(parentCommit, childCommit);
@@ -161,7 +161,7 @@ public abstract class Experiment {
                         shell.execute(new RmCommand(debugDir).recursive());
                     }
                     if (inDebug && debugDir.toFile().mkdirs()) {
-                        Logger.warning("Created Debug directory.");
+                        Logger.debug("Created Debug directory.");
                     }
                     if (Files.exists(variantsDirV0.path())) {
                         Logger.status("Cleaning variants dir V0.");
@@ -210,7 +210,7 @@ public abstract class Experiment {
                         final OriginalDiff originalDiff = getOriginalDiff(variantsDirV0.path().resolve(source.getName()), variantsDirV1.path().resolve(source.getName()));
                         if (originalDiff.isEmpty()) {
                             // There was no change to this variant, so we can skip it as source
-                            Logger.warning("Skipping " + source.getName() + " as diff source. Diff is empty.");
+                            Logger.status("Skipping " + source.getName() + " as diff source. Diff is empty.");
                             continue;
                         } else if (inDebug) {
                             try {
@@ -232,7 +232,7 @@ public abstract class Experiment {
                                 continue;
                             }
                             runID++;
-                            Logger.warning(source.getName() + " --patch--> " + target.getName());
+                            Logger.status(source.getName() + " --patch--> " + target.getName());
                             final Path pathToTarget = variantsDirV0.path().resolve(target.getName());
                             final Path pathToExpectedResult = variantsDirV1.path().resolve(target.getName());
                             final FineDiff evolutionDiff = getFineDiff(getOriginalDiff(pathToTarget, pathToExpectedResult));
@@ -285,7 +285,7 @@ public abstract class Experiment {
                     }
                 }
                 pairCount++;
-                Logger.warning(String.format("Finished commit pair %d of %d.%n", pairCount, historySize));
+                Logger.status(String.format("Finished commit pair %d of %d.%n", pairCount, historySize));
 
                 // Free memory of parentCommit
                 parentCommit.forget();
