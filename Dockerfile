@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 FROM openjdk:18-alpine
 
 # Prepare the environment
@@ -31,8 +30,6 @@ COPY --from=0 /home/user/target ./target
 COPY --from=0 /home/user/busybox ./busybox
 
 # Adjust permissions
-RUN mkdir "/home/user/simulation-files"
-RUN ls -l
 RUN chown user:user /home/user -R
 RUN chmod +x run-simulation.sh
 RUN chmod +x entrypoint.sh
