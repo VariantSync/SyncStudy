@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM openjdk:16-alpine
+FROM openjdk:18-alpine
 
 # Prepare the environment
 RUN apk add maven
@@ -15,14 +15,12 @@ RUN mvn package || exit
 # Clone BusyBox
 RUN git clone git://busybox.net/busybox.git
 
-FROM ubuntu:21.10
+FROM openjdk:18-alpine
+
+RUN apk add bash patch
 
 # Create a user
 RUN adduser --disabled-password  --home /home/user --gecos '' user
-RUN apt-get upgrade
-RUN apt-get update
-RUN apt-get install -y openjdk-17-jdk openjdk-17-demo openjdk-17-doc openjdk-17-jre-headless openjdk-17-source
-RUN apt-get install -y build-essential
 WORKDIR /home/user
 # Copy dataset
 COPY variability-busybox ./variability-busybox
@@ -32,7 +30,6 @@ COPY docker/* ./
 # Copy all relevant files from the previous stage
 COPY --from=0 /home/user/target ./target
 COPY --from=0 /home/user/busybox ./busybox
-
 
 # Adjust permissions
 RUN mkdir "/home/user/simulation-files"
