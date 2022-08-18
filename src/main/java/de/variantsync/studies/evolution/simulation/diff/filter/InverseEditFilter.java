@@ -1,8 +1,8 @@
 package de.variantsync.studies.evolution.simulation.diff.filter;
 
-import de.variantsync.studies.evolution.feature.Variant;
-import de.variantsync.studies.evolution.variability.pc.Artefact;
 import de.variantsync.studies.evolution.simulation.diff.components.FileDiff;
+import org.variantsync.vevos.simulation.feature.Variant;
+import org.variantsync.vevos.simulation.variability.pc.Artefact;
 
 import java.nio.file.Path;
 
