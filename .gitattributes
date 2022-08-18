@@ -11,3 +11,4 @@ reported-results-part2.zip filter=lfs diff=lfs merge=lfs -text
 reported-results-part1.zip filter=lfs diff=lfs merge=lfs -text
 .pdf filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text

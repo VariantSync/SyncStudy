@@ -22,8 +22,7 @@ RUN apk add bash patch
 # Create a user
 RUN adduser --disabled-password  --home /home/user --gecos '' user
 WORKDIR /home/user
-# Copy dataset
-COPY variability-busybox ./variability-busybox
+
 # Copy the docker resources
 COPY docker/* ./
 
