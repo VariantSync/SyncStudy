@@ -60,3 +60,6 @@ else
     echo "Run simulation: './execute.sh replication'"
     echo "Validate the setup: './execute.sh validation'"
 fi
+
+echo "Cleaning temporary directories"
+rm -rf /home/user/simulation-files/workdir*
