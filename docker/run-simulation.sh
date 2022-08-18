@@ -16,6 +16,17 @@ ls -l
 echo "Files in simulation-files"
 ls -l simulation-files
 
+BB=/home/user/simulation-files/busybox
+if test -d "$BB"; then
+    echo "Found BusyBox sources."
+else
+    echo "BusyBox sources not cloned yet. Cloning repository"
+    cd simulation-files || exit
+    git clone git://busybox.net/busybox.git
+    cd ..
+fi
+
+
 echo "Copying jars"
   cp target/*Runner*-jar-with* .
   cp target/ResultEval-jar-with-dependencies* .

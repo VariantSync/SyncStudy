@@ -2,7 +2,6 @@ FROM openjdk:18-alpine
 
 # Prepare the environment
 RUN apk add maven
-RUN apk add git
 
 # Build the jar files
 WORKDIR /home/user
@@ -11,12 +10,9 @@ COPY local-maven-repo local-maven-repo
 COPY pom.xml .
 RUN mvn package || exit
 
-# Clone BusyBox
-RUN git clone git://busybox.net/busybox.git
-
 FROM openjdk:18-alpine
 
-RUN apk add bash patch
+RUN apk add bash patch git
 
 # Create a user
 RUN adduser --disabled-password  --home /home/user --gecos '' user
@@ -27,7 +23,6 @@ COPY docker/* ./
 
 # Copy all relevant files from the previous stage
 COPY --from=0 /home/user/target ./target
-COPY --from=0 /home/user/busybox ./busybox
 
 # Adjust permissions
 RUN chown user:user /home/user -R
