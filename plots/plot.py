@@ -24,38 +24,6 @@ def labelPrecentage():
     return lambda percentage: '{:.1f}%'.format(percentage)
 
 
-def piechart(labels, colors, sizes, labelfunction, outputPath, innerlabelfix=lambda autotexts:{}, outerlabelfix=lambda texts:{}):
-    plt.rc('font', size=14)
-    # explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-
-    fig1, ax1 = plt.subplots()
-    patches, texts, autotexts = ax1.pie(
-        sizes,
-        # explode=numpy.full(shape=len(sizes), fill_value=0.02, dtype=numpy.float),
-        labels=labels,
-        colors=colors,
-        # how to produce inner labels of the pie pieces. We take the percentage of the pie we get, display it and the total value.
-        autopct=labelfunction,
-        shadow=False,
-        counterclock=True,
-        startangle=90,
-        wedgeprops = {"edgecolor" : "white",
-                      'linewidth': 1,
-                      'antialiased': True})
-    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    innerlabelfix(autotexts)
-    outerlabelfix(texts)
-
-    plt.savefig(outputPath, dpi=DPI, bbox_inches='tight')
-
-
-def rq1_piechart(failure, success, outputPath):
-    labels = 'Failure', 'Success'
-    colors = 'darkorange' , 'forestgreen'
-    sizes = [failure, success]
-    piechart(labels, colors, sizes, labelPrecentageAndAmount(numpy.sum(sizes)), outputPath)
-
-
 def rq1_barchart(experiment, outputPath):
     # colourscheme = 'teal', 'orange'
     commit_success = experiment.commitSuccess
@@ -184,20 +152,6 @@ def correctness_barchart(experiment, outputPath, colourscheme):
     plt.savefig(outputPath, dpi=DPI, bbox_inches='tight')
 
 
-def accuracy_piecharts(patchstrategy, colourscheme, rq, outDir,
-innerlabelfix1=lambda texts:{}, outerlabelfix1=lambda texts:{},
-innerlabelfix2=lambda texts:{}, outerlabelfix2=lambda texts:{}
-):
-    labels = 'TP (correct)', 'FP (invalid)', 'FN (wrong location)'
-    colors =  colourscheme.tp, colourscheme.fp, colourscheme.fn_wronglocation
-    sizes = [patchstrategy.tp, patchstrategy.fp, patchstrategy.wrongLocation]
-    piechart(labels, colors, sizes, labelPrecentage(), os.path.join(outDir, patchstrategy.name + "_" + rq + "_applicable" + OUTPUT_FORMAT), innerlabelfix=innerlabelfix1, outerlabelfix=outerlabelfix1)
-
-    labels = 'TN (not required)', 'FN (missing)'
-    colors =  colourscheme.tn, colourscheme.fn_missing
-    sizes = [patchstrategy.tn, patchstrategy.fn - patchstrategy.wrongLocation]
-    piechart(labels, colors, sizes, labelPrecentage(), os.path.join(outDir, patchstrategy.name + "_" + rq + "_failed" + OUTPUT_FORMAT), innerlabelfix=innerlabelfix2, outerlabelfix=outerlabelfix2)
-
 
 def rq2_innerlabelfix1(autotexts):
     autotexts[2]._x = autotexts[2]._x + 0.07
@@ -209,35 +163,18 @@ def rq2_innerlabelfix2(autotexts):
     autotexts[1]._x = autotexts[1]._x + 0.05
     autotexts[1]._y = autotexts[1]._y + 0.2
     autotexts[1].set_color('white')
-def rq2_piechart(patchstrategy, colourscheme, outDir):
-    accuracy_piecharts(patchstrategy, colourscheme, "rq2", outDir, innerlabelfix1=rq2_innerlabelfix1, innerlabelfix2=rq2_innerlabelfix2)
-
 
 def rq3_innerlabelfix1(autotexts):
     autotexts[1]._y = autotexts[1]._y - 0.1
 def rq3_outerlabelfix1(texts):
     texts[0]._y = texts[0]._y + 0.09
     texts[1]._y = texts[1]._y - 0.09
-def rq3_piechart(filtered, colourscheme, outDir):
-    accuracy_piecharts(filtered, colourscheme, "rq3", outDir, innerlabelfix1=rq3_innerlabelfix1, outerlabelfix1=rq3_outerlabelfix1)
 
 def rq3_granularity_innerlabelfix(autotexts):
     autotexts[0]._y = autotexts[0]._y + 0.05
     autotexts[1]._y = autotexts[1]._y - 0.1
 def rq3_granularity_outerlabelfix(texts):
     texts[2]._y = texts[2]._y + 0.08
-def rq3_granularity_piechart(experiment, outDir):
-    labels = 'Failure', 'Failure but filtered', 'Success but filtered', 'Success'
-    colors = 'darkorange', 'navajowhite', 'lightgreen', 'forestgreen'
-
-    success = experiment.filtered.lineSuccess
-    successFiltered = experiment.normal.lineSuccess - success
-    failure = experiment.filtered.getNumLinePatchFailures()
-    failureFiltered = experiment.normal.getNumLinePatchFailures() - failure
-
-    sizes = [failure, failureFiltered, successFiltered, success]
-    piechart(labels, colors, sizes, labelPrecentageAndAmount(numpy.sum(sizes)), os.path.join(outDir, experiment.filtered.name + "_lines" + OUTPUT_FORMAT), innerlabelfix=rq3_granularity_innerlabelfix, outerlabelfix=rq3_granularity_outerlabelfix)
-
 
 def rq3_barchart(experiment, colourscheme, outDir):
     n = experiment.normal
@@ -293,7 +230,7 @@ def rq3_barchart(experiment, colourscheme, outDir):
 
     fig.tight_layout()
 
-    plt.savefig(os.path.join(outDir, "metrics" + OUTPUT_FORMAT), dpi=DPI, bbox_inches='tight')
+    plt.savefig(os.path.join(outDir, "rq3_domain_knowledge" + OUTPUT_FORMAT), dpi=DPI, bbox_inches='tight')
 
 
 def sankey(patchstrategy):
@@ -381,20 +318,14 @@ def sankey(patchstrategy):
 
 def rq1(patchstrategy, outDir):
     print("RQ1")
-    rq1_barchart(patchstrategy, os.path.join(outDir, patchstrategy.name + "_applicability" + OUTPUT_FORMAT))
-    # rq1_barchart(patchstrategy, os.path.join(outDir, patchstrategy.name + "_file" + OUTPUT_FORMAT))
-    # rq1_barchart(patchstrategy, os.path.join(outDir, patchstrategy.name + "_lines" + OUTPUT_FORMAT))
+    rq1_barchart(patchstrategy, os.path.join(outDir, "rq1_applicability" + OUTPUT_FORMAT))
 
 
 def rq2(patchstrategy, colourscheme, outDir):
     print("RQ2")
-    correctness_barchart(patchstrategy, os.path.join(outDir, patchstrategy.name + "_correctness" + OUTPUT_FORMAT), colourscheme)
+    correctness_barchart(patchstrategy, os.path.join(outDir, patchstrategy.name + "r2_correctness" + OUTPUT_FORMAT), colourscheme)
 
 
 def rq3(experiment, colourscheme, outDir):
     print("RQ3")
-    # rq1_barchart(experiment.filtered, os.path.join(outDir, "filtered_applicability" + OUTPUT_FORMAT))
-    rq3_piechart(experiment.filtered, colourscheme, outDir)
-    rq3_granularity_piechart(experiment, outDir)
     rq3_barchart(experiment, colourscheme, outDir)
-    # sankey(patchstrategy)

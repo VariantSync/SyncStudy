@@ -43,8 +43,6 @@ then
     echo ""
     echo ""
     java -jar ExperimentRunner-jar-with-dependencies.jar config-simulation.properties
-    echo "Running result evaluation"
-    java -jar ResultEval-jar-with-dependencies.jar
 elif [ "$1" == 'validation' ]
 then
     echo "Running a (hopefully) short validation."
@@ -52,14 +50,26 @@ then
     echo ""
     echo ""
     java -jar ExperimentRunner-jar-with-dependencies.jar config-validation.properties
-    echo "Running result evaluation"
-    java -jar ResultEval-jar-with-dependencies.jar
 else
     echo "Either fully replicate the simulation as presented in the paper (replication), or a do quick setup validation (validation)."
     echo "-- Bash Examples --"
     echo "Run simulation: './execute.sh replication'"
     echo "Validate the setup: './execute.sh validation'"
 fi
+
+echo "Running result evaluation"
+java -jar ResultEval-jar-with-dependencies.jar
+
+echo "Plotting figures"
+PD=/home/user/simulation-files/plots
+if test -d "$PD"; then
+    echo ""
+else
+    mkdir $PD
+fi
+cd plots || exit
+python3 main.py /home/user/simulation-files/results.txt
+cd ..
 
 echo "Cleaning temporary directories"
 rm -rf /home/user/simulation-files/workdir*
