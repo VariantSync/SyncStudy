@@ -323,7 +323,7 @@ def rq1(patchstrategy, outDir):
 
 def rq2(patchstrategy, colourscheme, outDir):
     print("RQ2")
-    correctness_barchart(patchstrategy, os.path.join(outDir, patchstrategy.name + "r2_correctness" + OUTPUT_FORMAT), colourscheme)
+    correctness_barchart(patchstrategy, os.path.join(outDir, "rq2_correctness" + OUTPUT_FORMAT), colourscheme)
 
 
 def rq3(experiment, colourscheme, outDir):
