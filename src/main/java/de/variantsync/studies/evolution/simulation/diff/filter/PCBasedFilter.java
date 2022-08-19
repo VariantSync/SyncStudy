@@ -1,13 +1,13 @@
 package de.variantsync.studies.evolution.simulation.diff.filter;
 
+import de.variantsync.studies.evolution.feature.Variant;
+import de.variantsync.studies.evolution.util.io.CaseSensitivePath;
+import de.variantsync.studies.evolution.util.Logger;
+import de.variantsync.studies.evolution.util.functional.Result;
+import de.variantsync.studies.evolution.variability.pc.Artefact;
 import de.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import de.variantsync.studies.evolution.simulation.error.Panic;
 import org.prop4j.Node;
-import org.variantsync.functjonal.Result;
-import org.variantsync.vevos.simulation.feature.Variant;
-import org.variantsync.vevos.simulation.util.Logger;
-import org.variantsync.vevos.simulation.util.io.CaseSensitivePath;
-import org.variantsync.vevos.simulation.variability.pc.Artefact;
 
 import java.nio.file.Path;
 

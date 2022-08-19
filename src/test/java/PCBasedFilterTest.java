@@ -1,5 +1,12 @@
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
+import de.variantsync.studies.evolution.Main;
+import de.variantsync.studies.evolution.feature.Variant;
+import de.variantsync.studies.evolution.feature.config.FeatureIDEConfiguration;
+import de.variantsync.studies.evolution.io.ResourceLoader;
+import de.variantsync.studies.evolution.io.kernelhaven.KernelHavenVariantPCIO;
+import de.variantsync.studies.evolution.util.fide.FeatureModelUtils;
+import de.variantsync.studies.evolution.variability.pc.Artefact;
 import de.variantsync.studies.evolution.simulation.diff.DiffParser;
 import de.variantsync.studies.evolution.simulation.diff.components.FineDiff;
 import de.variantsync.studies.evolution.simulation.diff.filter.IFileDiffFilter;
@@ -10,12 +17,6 @@ import de.variantsync.studies.evolution.simulation.diff.splitting.DiffSplitter;
 import de.variantsync.studies.evolution.simulation.diff.splitting.IContextProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.variantsync.vevos.simulation.feature.Variant;
-import org.variantsync.vevos.simulation.feature.config.FeatureIDEConfiguration;
-import org.variantsync.vevos.simulation.io.ResourceLoader;
-import org.variantsync.vevos.simulation.io.kernelhaven.KernelHavenVariantPCIO;
-import org.variantsync.vevos.simulation.util.fide.FeatureModelUtils;
-import org.variantsync.vevos.simulation.variability.pc.Artefact;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,15 +25,13 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.variantsync.vevos.simulation.VEVOS.Initialize;
-
 public class PCBasedFilterTest {
 
     Path resourceDir = Paths.get("src", "test", "resources", "pc-filter");
     Path splitsDir = resourceDir.resolve("splits");
 
     static {
-        Initialize();
+        Main.Initialize();
     }
 
     private void runComparison(Path pathToExpectedResult, IFileDiffFilter fileFilter, ILineFilter lineFilter) throws IOException {

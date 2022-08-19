@@ -1,7 +1,7 @@
 package de.variantsync.studies.evolution.simulation.shell;
 
-import org.variantsync.functjonal.Result;
-import org.variantsync.vevos.simulation.util.Logger;
+import de.variantsync.studies.evolution.util.Logger;
+import de.variantsync.studies.evolution.util.functional.Result;
 import de.variantsync.studies.evolution.simulation.error.SetupError;
 import de.variantsync.studies.evolution.simulation.error.ShellException;
 

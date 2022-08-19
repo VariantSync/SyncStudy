@@ -1,10 +1,10 @@
+import de.variantsync.studies.evolution.util.LogLevel;
+import de.variantsync.studies.evolution.util.Logger;
+import de.variantsync.studies.evolution.util.functional.Result;
 import de.variantsync.studies.evolution.simulation.error.ShellException;
 import de.variantsync.studies.evolution.simulation.shell.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.variantsync.functjonal.Result;
-import org.variantsync.vevos.simulation.util.LogLevel;
-import org.variantsync.vevos.simulation.util.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
