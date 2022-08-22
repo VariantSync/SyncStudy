@@ -5,11 +5,11 @@ import de.variantsync.studies.evolution.simulation.diff.lines.AddedLine;
 import de.variantsync.studies.evolution.simulation.diff.lines.Change;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import de.variantsync.studies.evolution.util.Logger;
-import de.variantsync.studies.evolution.variability.SPLCommit;
 import de.variantsync.studies.evolution.simulation.diff.components.OriginalDiff;
 import de.variantsync.studies.evolution.simulation.diff.lines.RemovedLine;
 import org.jetbrains.annotations.NotNull;
+import org.variantsync.vevos.simulation.util.Logger;
+import org.variantsync.vevos.simulation.variability.SPLCommit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
