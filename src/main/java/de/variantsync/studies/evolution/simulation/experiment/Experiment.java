@@ -132,7 +132,6 @@ public abstract class Experiment {
         final long historySize = history.commitSequences().stream().mapToLong(Collection::size).sum();
         Logger.status("There are " + historySize + " commit pairs to work on.");
         for (final NonEmptyList<SPLCommit> relatedCommits : history.commitSequences()) {
-            // TODO: Switch the SPLRepository instances, so that only the new child commit has to be checked out
             // Increase one extra time for the first parent in the sequence
             pairCount++;
             SPLCommit parentCommit;
@@ -154,17 +153,18 @@ public abstract class Experiment {
                 // While more random configurations to consider
                 for (int i = 0; i < randomRepeats; i++) {
                     Logger.status("Starting repetition " + (i + 1) + " of " + randomRepeats + " with " + numVariants + " variants.");
-                    // Sample set of random variants
-                    Logger.status("Sampling next set of variants...");
-                    final Sample sample = sample(parentCommit, childCommit);
-                    Logger.status("Done. Sampled " + sample.variants().size() + " variants.");
-
                     if (inDebug && Files.exists(debugDir)) {
                         shell.execute(new RmCommand(debugDir).recursive());
                     }
                     if (inDebug && debugDir.toFile().mkdirs()) {
                         Logger.debug("Created Debug directory.");
                     }
+
+                    // Sample set of random variants
+                    Logger.status("Sampling next set of variants...");
+                    final Sample sample = sample(parentCommit, childCommit);
+                    Logger.status("Done. Sampled " + sample.variants().size() + " variants.");
+
                     if (Files.exists(variantsDirV0.path())) {
                         Logger.status("Cleaning variants dir V0.");
                         shell.execute(new RmCommand(variantsDirV0.path()).recursive());
