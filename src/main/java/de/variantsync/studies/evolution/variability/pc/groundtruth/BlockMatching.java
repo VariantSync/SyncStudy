@@ -32,14 +32,6 @@ public class BlockMatching {
         variantToSPL.put(variantAnnotation, splAnnotation);
     }
 
-    public LineBasedAnnotation getVariantAnnotationOf(final LineBasedAnnotation splAnnotation) {
-        return splToVariant.get(splAnnotation);
-    }
-
-    public LineBasedAnnotation getSPLAnnotationOf(final LineBasedAnnotation variantAnnotation) {
-        return variantToSPL.get(variantAnnotation);
-    }
-
     public boolean isPresentInVariant(final LineBasedAnnotation splAnnotation) {
         return splToVariant.containsKey(splAnnotation);
     }

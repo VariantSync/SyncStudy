@@ -70,23 +70,6 @@ public class Result<SuccessType, FailureType> {
     }
 
     /**
-     * Runs the given computation that indicates success by returning a boolean.
-     * Running f will be interpreted as a success iff f returns true.
-     * Running f will be interpreted as a failure iff f returns false.
-     * In case of failure, a failure value will be produced with the given failure supplier.
-     * @param f Computation to run that indicates success with a boolean return value.
-     * @param failure Factory for failure message in case f returned false.
-     * @return Success iff f returned true, Failure otherwise.
-     */
-    public static <F> Result<Unit, F> FromFlag(final Supplier<Boolean> f, final Supplier<F> failure) {
-        if (f.get()) {
-            return Success(Unit.Instance());
-        } else {
-            return Failure(failure.get());
-        }
-    }
-
-    /**
      * Runs the given computation that indicates success by returning a boolean and that may throw an exception.
      * Running f will be interpreted as a success iff f returns true and throws no exception.
      * Running f will be interpreted as a failure iff f returns false or throws an exception.
@@ -180,14 +163,6 @@ public class Result<SuccessType, FailureType> {
         }
     }
 
-    public <F2> Result<SuccessType, F2> bindFail(final Function<FailureType, Result<SuccessType, F2>> failureCase) {
-        if (isFailure()) {
-            return failureCase.apply(failure);
-        } else {
-            return Success(getSuccess());
-        }
-    }
-
     public <S2, F2> Result<S2, F2> bibind(final Function<SuccessType, Result<S2, F2>> successCase, final Function<FailureType, Result<S2, F2>> failureCase) {
         if (isSuccess()) {
             return successCase.apply(result);
@@ -225,13 +200,6 @@ public class Result<SuccessType, FailureType> {
         return failure;
     }
 
-    public void assertSuccess() {
-        if (isFailure()) {
-            Logger.error(getFailure().toString());
-        }
-        assert isSuccess();
-    }
-
     public SuccessType expect(final String message) {
         if (isFailure()) {
             Logger.error(message);
@@ -250,9 +218,4 @@ public class Result<SuccessType, FailureType> {
         }
     }
 
-    public void ifFailure(final Consumer<FailureType> f) {
-        if (isFailure()) {
-            f.accept(getFailure());
-        }
-    }
 }

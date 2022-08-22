@@ -1,5 +1,6 @@
 package de.variantsync.studies.evolution.simulation.experiment;
 
+import de.variantsync.studies.evolution.Initialize;
 import de.variantsync.studies.evolution.feature.Variant;
 import de.variantsync.studies.evolution.feature.config.FeatureIDEConfiguration;
 import de.variantsync.studies.evolution.feature.sampling.Sample;
@@ -68,7 +69,7 @@ public abstract class Experiment {
 
     public Experiment(final ExperimentConfiguration config) {
         // Initialize the library
-        de.variantsync.studies.evolution.Main.Initialize();
+        Initialize.Initialize();
         final Path mainDir = Path.of(config.EXPERIMENT_DIR_MAIN());
         try {
             if (mainDir.toFile().mkdirs()) {
@@ -130,7 +131,6 @@ public abstract class Experiment {
         final long historySize = history.commitSequences().stream().mapToLong(Collection::size).sum();
         Logger.status("There are " + historySize + " commit pairs to work on.");
         for (final NonEmptyList<SPLCommit> relatedCommits : history.commitSequences()) {
-            // TODO: Switch the SPLRepository instances, so that only the new child commit has to be checked out
             // Increase one extra time for the first parent in the sequence
             pairCount++;
             SPLCommit parentCommit;

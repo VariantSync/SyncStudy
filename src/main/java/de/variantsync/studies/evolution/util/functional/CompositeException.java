@@ -41,10 +41,6 @@ public class CompositeException extends Exception {
         this.inner.addAll(Arrays.asList(others));
     }
 
-    public static CompositeException mEmpty() {
-        return new CompositeException();
-    }
-
     @Override
     public String toString() {
         return inner.stream().map(Objects::toString).collect(Collectors.joining(System.lineSeparator()));

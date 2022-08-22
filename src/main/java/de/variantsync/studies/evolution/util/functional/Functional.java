@@ -4,15 +4,11 @@ import de.variantsync.studies.evolution.util.Logger;
 import de.variantsync.studies.evolution.util.functional.interfaces.FragileFunction;
 import de.variantsync.studies.evolution.util.functional.interfaces.FragileProcedure;
 import de.variantsync.studies.evolution.util.functional.interfaces.FragileSupplier;
-import de.variantsync.studies.evolution.util.functional.interfaces.Procedure;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Helper class containing methods for functional programming missing in the standard library
@@ -23,12 +19,6 @@ public class Functional {
     @SuppressWarnings("unchecked")
     public static <A, B> A uncheckedCast(final B b) {
         return (A) b;
-    }
-
-    /// Lists
-
-    public static <T, U> List<U> fmap(final List<? extends T> a, final Function<T, U> f) {
-        return a.stream().map(f).collect(Collectors.toList());
     }
 
     /// Pattern matching
@@ -75,20 +65,6 @@ public class Functional {
     }
 
     /// Java to FP
-
-    public static <A> Function<A, Unit> Lift(final Consumer<A> f) {
-        return a -> {
-            f.accept(a);
-            return Unit.Instance();
-        };
-    }
-
-    public static Supplier<Unit> Lift(final Procedure f) {
-        return () -> {
-            f.run();
-            return Unit.Instance();
-        };
-    }
 
     public static <E extends Exception> FragileSupplier<Unit, E> LiftFragile(final FragileProcedure<E> f) {
         return () -> {

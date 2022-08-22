@@ -40,27 +40,12 @@ public class FeatureModelUtils {
         return FromOptionalFeatures(Arrays.asList(featureNames));
     }
 
-    public static IFeatureModel IntersectionModel(final IFeatureModel modelA, final IFeatureModel modelB) {
-        // Collect all features in the intersection of modelA and modelB
-        // We have to rely on the equality of names, as the equality of objects does not seem to work as needed for this task
-        final Set<IFeature> featureIntersection = new HashSet<>(getFeaturesFiltered(modelA, f -> getFeatureNames(modelB).contains(f.getName())));
-
-        // Collect all constraints that only describe features in the intersection
-        final Collection<IConstraint> constraintIntersection = getConstraintsFiltered(modelA, c -> featureIntersection.containsAll(c.getContainedFeatures()));
-
-        constraintIntersection.addAll(getConstraintsFiltered(modelB, c -> featureIntersection.containsAll(c.getContainedFeatures())));
-
-        final IFeatureModelFactory factory = FMFactoryManager.getInstance().getFactory(modelA);
-        return createModel(factory, featureIntersection, constraintIntersection);
-    }
-
     public static IFeatureModel createModel(IFeatureModelFactory factory,
                                             Collection<IFeature> features,
                                             Collection<IConstraint> constraints) {
         final IFeatureModel model = factory.create();
         final IFeature root = factory.createFeature(model, "__Root__");
         FeatureUtils.setRoot(model, root);
-        // TODO: How can we keep structural information about feature models?
 
         // Add all features and constraints to the model
         features.stream().map(f -> factory.createFeature(model, f.getName())).forEach(f -> {
@@ -108,14 +93,6 @@ public class FeatureModelUtils {
     private static Collection<IFeature> getFeaturesFiltered(final IFeatureModel model, Function<IFeature, Boolean> filter) {
         return model
                 .getFeatures()
-                .stream()
-                .filter(filter::apply)
-                .collect(Collectors.toList());
-    }
-
-    private static Collection<IConstraint> getConstraintsFiltered(final IFeatureModel model, Function<IConstraint, Boolean> filter) {
-        return model
-                .getConstraints()
                 .stream()
                 .filter(filter::apply)
                 .collect(Collectors.toList());

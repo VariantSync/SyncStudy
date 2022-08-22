@@ -19,7 +19,7 @@ import java.util.Optional;
  * A VariantsRevision runs and captures this co-de.variantsync.studies.evolution for a single commit (i.e., modelled as a blueprint).
  */
 public class VariantsRevision {
-    public static record Branches(Map<Branch, VariantCommit> commitOf) {}
+    public record Branches(Map<Branch, VariantCommit> commitOf) {}
 
     private final AbstractSPLRepository splRepo;
     private final AbstractVariantsRepository variantsRepo;

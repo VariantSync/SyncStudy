@@ -30,8 +30,4 @@ public abstract class AbstractVariantsRepository extends Repository<VariantCommi
      */
     public abstract Branch getBranchByName(String name);
 
-    /**
-     * @return The first revision of variants of this repository. Empty, iff there is nothing to generate.
-     */
-    public abstract Optional<VariantsRevision> getStartRevision();
 }

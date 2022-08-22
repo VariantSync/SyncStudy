@@ -2,10 +2,7 @@ package de.variantsync.studies.evolution.util.list;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ListDecorator<T> implements List<T> {
     protected final List<T> wrappee;
@@ -15,16 +12,6 @@ public class ListDecorator<T> implements List<T> {
             throw new IllegalArgumentException("Given list cannot be null!");
         }
         this.wrappee = list;
-    }
-
-    /**
-     * @return The list wrapped in this decorator.
-     */
-    public List<T> unwrap() {
-        if (wrappee instanceof ListDecorator<T> l) {
-            return l.unwrap();
-        }
-        return wrappee;
     }
 
     @Override
@@ -69,7 +56,7 @@ public class ListDecorator<T> implements List<T> {
 
     @Override
     public boolean containsAll(final @NotNull Collection<?> c) {
-        return wrappee.containsAll(c);
+        return new HashSet<>(wrappee).containsAll(c);
     }
 
     @Override

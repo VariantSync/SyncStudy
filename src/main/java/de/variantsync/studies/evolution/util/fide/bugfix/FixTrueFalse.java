@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Class to fix bugs related to True and False classes of FeatureIDE.
- * See: https://github.com/FeatureIDE/FeatureIDE/issues/1111
+ * See: <a href="https://github.com/FeatureIDE/FeatureIDE/issues/1111">Issue 1111</a>
  *
  * This class contains constants for representing atomic values true and false in formulas
  * as well as a conversion method for parsing certain feature names to true and false, respectively.
@@ -73,12 +73,6 @@ public class FixTrueFalse {
                 return l.positive ? False : True;
             }
             return l;
-        }
-        if (formula instanceof org.prop4j.True) {
-            return True;
-        }
-        if (formula instanceof org.prop4j.False) {
-            return False;
         }
 
         // else we have an operator (Not, And, Or, ...)

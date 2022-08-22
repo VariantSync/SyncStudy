@@ -1,6 +1,6 @@
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
-import de.variantsync.studies.evolution.Main;
+import de.variantsync.studies.evolution.Initialize;
 import de.variantsync.studies.evolution.feature.Variant;
 import de.variantsync.studies.evolution.feature.config.FeatureIDEConfiguration;
 import de.variantsync.studies.evolution.io.ResourceLoader;
@@ -31,7 +31,7 @@ public class PCBasedFilterTest {
     Path splitsDir = resourceDir.resolve("splits");
 
     static {
-        Main.Initialize();
+        Initialize.Initialize();
     }
 
     private void runComparison(Path pathToExpectedResult, IFileDiffFilter fileFilter, ILineFilter lineFilter) throws IOException {

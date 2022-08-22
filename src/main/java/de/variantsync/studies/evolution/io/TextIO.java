@@ -16,32 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-// TODO: Implement readLinesAs(Path p, Function<> f) with which one can load a file into a desired format
-
 public class TextIO {
-    public static String[] readLinesAsArray(final File file) throws IOException {
-        final LinkedList<String> lines = new LinkedList<>();
-        try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            reader.lines().forEach(lines::add);
-        } catch (final IOException e) {
-            Logger.error("Failed to read lines from file: ", e);
-            throw e;
-        }
-        return lines.toArray(new String[0]);
-    }
-
-    public static String readLastLine(final File file) throws IOException {
-        try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = "";
-            while (reader.ready()) {
-                line = reader.readLine();
-            }
-            return line;
-        } catch (final IOException e) {
-            Logger.error("Failed to read lines from file: ", e);
-            throw e;
-        }
-    }
 
     /**
      * Read the lines in the file under the given path, trim whitespace at the start and end of each line, and remove empty lines
@@ -120,12 +95,4 @@ public class TextIO {
         Files.writeString(p, text, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
     }
 
-    public static String readAsString(final Path p) throws IOException {
-        try (final BufferedReader reader = new BufferedReader(new FileReader(p.toFile()))) {
-            return reader.lines().collect(Collectors.joining());
-        } catch (final IOException e) {
-            Logger.error("Failed to read lines from file: ", e);
-            throw e;
-        }
-    }
 }

@@ -11,10 +11,6 @@ import java.util.Objects;
 public class EditFilter extends PCBasedFilter {
     private final Map<EditLocation, Boolean> keepDecisions = new HashMap<>();
     
-    public EditFilter(final Artefact oldTraces, final Artefact newTraces, final Variant targetVariant, final Path oldVersionRoot, final Path newVersionRoot) {
-        super(oldTraces, newTraces, targetVariant, oldVersionRoot, newVersionRoot);
-    }
-
     public EditFilter(final Artefact oldTraces, final Artefact newTraces, final Variant targetVariant, final Path oldVersionRoot, final Path newVersionRoot, final int strip) {
         super(oldTraces, newTraces, targetVariant, oldVersionRoot, newVersionRoot, strip);
     }
