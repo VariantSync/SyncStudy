@@ -15,6 +15,10 @@ import de.ovgu.featureide.fm.core.io.manager.FileHandler;
 
 import java.nio.file.Path;
 
+/**
+ * ResourceLoader and ResourceWriter for FeatureIDEConfigurations. This class offers functionality for loading and writing
+ * FeatureIDEConfigurations from and to disk.
+ */
 public class FeatureIDEConfigurationIO implements ResourceLoader<IConfiguration>, ResourceWriter<IConfiguration> {
     private final IConfigurationFormat format;
 

@@ -16,6 +16,10 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * A VariabilityDatasetLoader is responsible for loading all data in our ground truth dataset, which was extracted
+ * using KernelHaven.
+ */
 public class VariabilityDatasetLoader implements ResourceLoader<VariabilityDataset> {
     private final static String SUCCESS_COMMIT_FILE = "SUCCESS_COMMITS.txt";
     private final static String ERROR_COMMIT_FILE = "ERROR_COMMITS.txt";
@@ -112,6 +116,12 @@ public class VariabilityDatasetLoader implements ResourceLoader<VariabilityDatas
         return Result.Success(new VariabilityDataset(successCommits, errorCommits, partialSuccessCommits));
     }
 
+    /**
+     * Initialize the SPLCommit instances for all commits of which data is available in the ground truth dataset.
+     * @param p The data directory containing the data of all commits
+     * @param commitIds The ids of the commits that are to be initialized
+     * @return The list of initialized SPLCommit instances
+     */
     private List<SPLCommit> initializeSPLCommits(final Path p, final List<String> commitIds) {
         final List<SPLCommit> splCommits = new ArrayList<>(commitIds.size());
         for (final String id : commitIds) {
@@ -129,39 +139,47 @@ public class VariabilityDatasetLoader implements ResourceLoader<VariabilityDatas
         return splCommits;
     }
 
+    // Base path to the commit's data
     private Path resolvePathToCommitOutputDir(final Path rootDir, final String commitId) {
         return rootDir.resolve(DATA_DIR_NAME).resolve(commitId);
     }
 
+    // Path to a commit's feature model
     private FeatureModelPath resolvePathToFeatureModel(final Path rootDir, final String commitId) {
         final Path p = resolvePathToCommitOutputDir(rootDir, commitId).resolve(FEATURE_MODEL_FILE);
         return new FeatureModelPath(p);
     }
 
+    // Path to a commit's presence conditions
     private PresenceConditionPath resolvePathToPresenceConditions(final Path rootDir, final String commitId) {
         final Path p = resolvePathToCommitOutputDir(rootDir, commitId).resolve(PRESENCE_CONDITIONS_FILE);
         return new PresenceConditionPath(p);
     }
 
+    // Path to a commit's parent info
     private Path resolvePathToParentsFile(final Path rootDir, final String commitId) {
         return resolvePathToCommitOutputDir(rootDir, commitId).resolve(PARENTS_FILE);
     }
 
+    // Path to a commit's message
     private CommitMessagePath resolvePathToMessageFile(final Path rootDir, final String commitId) {
         final Path p = resolvePathToCommitOutputDir(rootDir, commitId).resolve(MESSAGE_FILE);
         return new CommitMessagePath(p);
     }
 
+    // Path to a commit's KernelHaven log
     private KernelHavenLogPath resolvePathToLogFile(final Path rootDir, final String commitId) {
         final Path p = rootDir.resolve(LOG_DIR_NAME).resolve(commitId + ".log");
         return new KernelHavenLogPath(p);
     }
 
+    // Path to a commit's meta-data about filtered variables
     private FilterCountsPath resolvePathToFilterCountsFile(final Path rootDir, final String commitId) {
         final Path p = resolvePathToCommitOutputDir(rootDir, commitId).resolve(FILTER_COUNTS_FILE);
         return new FilterCountsPath(p);
     }
 
+    // Load a commit's parent ids from its parent info
     private String[] loadParentIds(final Path p, final String commitId) {
         final Path parentsFile = resolvePathToParentsFile(p, commitId);
         if (!Files.exists(parentsFile)) {

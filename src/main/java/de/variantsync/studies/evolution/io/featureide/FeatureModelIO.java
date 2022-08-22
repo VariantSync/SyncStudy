@@ -15,6 +15,10 @@ import de.ovgu.featureide.fm.core.io.manager.SimpleFileHandler;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * ResourceLoader and ResourceWriter for IFeatureModels. This class offers functionality for reading and writing IFeatureModel
+ * instances from and to disk.
+ */
 public class FeatureModelIO implements ResourceLoader<IFeatureModel>, ResourceWriter<IFeatureModel> {
     private final IFeatureModelFormat format;
 
