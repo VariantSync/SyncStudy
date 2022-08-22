@@ -17,7 +17,7 @@ This is brief overview on the most relevant directories and files:
 * [`docker`](docker) contains the script and property files used by the Docker containers.
     * `docker-resources/config-simulation.properties` configures the simulation as presented in our paper.
     * `docker-resources/config-validation.properties` configures a quick simulation for validating the correctness of the Docker setup.
-* [`variability-busybox`](variability-busybox) contains the domain knowledge that we extracted from BusyBox. The files comprise lists
+* [`variability-busybox`](simulation-files/variability-busybox) contains the domain knowledge that we extracted from BusyBox. The files comprise lists
   of commits that state whether a commit could be processed, and the domain knowledge for over 8,000 commits. For about 5,000 commits, the complete domain knowledge could be extracted.
 * [`src`](src/main/java/anonymous/simulation) contains the source files used to run the simulation.
 * `reported-results-part*.zip` are archives with the raw result data reported in our paper. To evaluate them they have to be

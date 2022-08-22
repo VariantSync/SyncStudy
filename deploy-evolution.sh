@@ -1,2 +1,0 @@
-mvn deploy:deploy-file -DgroupId=de.variantsync.evolution -DartifactId=SPLVariantEvolution -Dversion=0.0.1 -Durl=file:./local-maven-repo/ -DrepositoryId=local-maven-repo -DupdateReleaseInfo=true -Dfile=./lib/SPLVariantEvolution-0.0.1-jar-with-dependencies.jar
-rm -rf ~/.m2/repository/de/variantsync/evolution/

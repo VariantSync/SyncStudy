@@ -7,3 +7,4 @@ target
 /reported-results.txt
 /reported-results.txt.cache
 /plots/out/
+plots/__pycache__/
