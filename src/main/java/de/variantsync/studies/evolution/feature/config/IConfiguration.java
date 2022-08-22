@@ -10,6 +10,7 @@ import org.prop4j.Node;
 public interface IConfiguration {
     /**
      * Evaluate the given propositional formula.
+     *
      * @param formula Formula to evaluate.
      * @return True iff this IConfiguration is a satisfying assignment for the given formula.
      */

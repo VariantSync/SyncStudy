@@ -1,9 +1,5 @@
 package de.variantsync.studies.evolution.feature.sampling;
 
-import de.variantsync.studies.evolution.feature.Variant;
-import de.variantsync.studies.evolution.feature.config.FeatureIDEConfiguration;
-import de.variantsync.studies.evolution.util.names.NameGenerator;
-import de.variantsync.studies.evolution.util.names.NumericNameGenerator;
 import de.ovgu.featureide.fm.core.analysis.cnf.CNF;
 import de.ovgu.featureide.fm.core.analysis.cnf.LiteralSet;
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
@@ -12,32 +8,48 @@ import de.ovgu.featureide.fm.core.analysis.cnf.generator.configuration.RandomCon
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.job.LongRunningWrapper;
 import de.ovgu.featureide.fm.core.job.monitor.NullMonitor;
+import de.variantsync.studies.evolution.feature.Variant;
+import de.variantsync.studies.evolution.feature.config.FeatureIDEConfiguration;
+import de.variantsync.studies.evolution.util.names.NameGenerator;
+import de.variantsync.studies.evolution.util.names.NumericNameGenerator;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Class that provides functionality for sampling variants for a given IFeatureModel. The sampler internally uses
+ * FeatureIDE's sampling functionality.
+ */
 public class FeatureIDESampler implements Sampler {
     private final int size;
     private final Function<CNF, IConfigurationGenerator> generatorFactory;
-    private NameGenerator variantNameGenerator;
+    private final NameGenerator variantNameGenerator;
 
-    public static FeatureIDESampler CreateRandomSampler(final int size) {
-        return new FeatureIDESampler(
-                size,
-                cnf -> new RandomConfigurationGenerator(cnf, size)
-        );
-    }
-
+    /**
+     * Initialize a sampler that generates samples of a desired size based on a given generator factory.
+     *
+     * @param size             The size of each sample
+     * @param generatorFactory The generator factory
+     */
     public FeatureIDESampler(final int size, final Function<CNF, IConfigurationGenerator> generatorFactory) {
         this.size = size;
         this.generatorFactory = generatorFactory;
         variantNameGenerator = new NumericNameGenerator("Variant");
     }
 
-    public void setNameGenerator(final NameGenerator variantNameGenerator) {
-        this.variantNameGenerator = variantNameGenerator;
+    /**
+     * Initialize a sampler that generates non-uniform random samples of the desired size.
+     *
+     * @param size The size of each sample
+     * @return The created FeatureIDESampler
+     */
+    public static FeatureIDESampler CreateRandomSampler(final int size) {
+        return new FeatureIDESampler(
+                size,
+                cnf -> new RandomConfigurationGenerator(cnf, size)
+        );
     }
 
     @Override
