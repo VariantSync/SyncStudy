@@ -8,13 +8,13 @@ import de.variantsync.studies.evolution.variability.SPLCommit;
 import de.variantsync.studies.evolution.variability.SPLCommit.*;
 import de.variantsync.studies.evolution.variability.VariabilityDataset;
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class VariabilityDatasetLoader implements ResourceLoader<VariabilityDataset> {
     private final static String SUCCESS_COMMIT_FILE = "SUCCESS_COMMITS.txt";
@@ -30,8 +30,8 @@ public class VariabilityDatasetLoader implements ResourceLoader<VariabilityDatas
 
     @Override
     public boolean canLoad(final Path p) {
-        try {
-            return Files.list(p)
+        try (Stream<Path> files = Files.list(p)){
+            return files
                     .map(Path::toFile)
                     .anyMatch(f -> {
                         final String name = f.getName();
@@ -169,10 +169,10 @@ public class VariabilityDatasetLoader implements ResourceLoader<VariabilityDatas
             final File zipFile = new File(parentsFile.getParent() + ".zip");
             Logger.debug("Checking ZIP file " + zipFile);
             if (zipFile.exists()) {
-                try {
-                    Logger.debug("Unzipping PARENTS.txt");
-                    new ZipFile(zipFile).extractFile(commitId + "/PARENTS.txt", String.valueOf(resolvePathToCommitOutputDir(p, commitId).getParent()));
-                } catch (final ZipException e) {
+                Logger.debug("Unzipping PARENTS.txt");
+                try (ZipFile f = new ZipFile(zipFile)){
+                    f.extractFile(commitId + "/PARENTS.txt", String.valueOf(resolvePathToCommitOutputDir(p, commitId).getParent()));
+                } catch (final IOException e) {
                     // Not all commits have a ZIP file and not all commits with a ZIP file have a PARENTS.txt. So this is
                     // an expected exception
                     Logger.debug("Was not able to unzip commit data." + e.getMessage());
