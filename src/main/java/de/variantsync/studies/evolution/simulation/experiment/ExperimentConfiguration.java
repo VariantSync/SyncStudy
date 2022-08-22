@@ -1,12 +1,12 @@
 package de.variantsync.studies.evolution.simulation.experiment;
 
-import de.variantsync.studies.evolution.util.LogLevel;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.variantsync.vevos.simulation.util.LogLevel;
 
 import java.io.File;
 

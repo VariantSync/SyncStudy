@@ -1,24 +1,5 @@
 package de.variantsync.studies.evolution.simulation.experiment;
 
-import de.variantsync.studies.evolution.Initialize;
-import de.variantsync.studies.evolution.feature.Variant;
-import de.variantsync.studies.evolution.feature.config.FeatureIDEConfiguration;
-import de.variantsync.studies.evolution.feature.sampling.Sample;
-import de.variantsync.studies.evolution.io.Resources;
-import de.variantsync.studies.evolution.io.data.VariabilityDatasetLoader;
-import de.variantsync.studies.evolution.repository.SPLRepository;
-import de.variantsync.studies.evolution.util.LogLevel;
-import de.variantsync.studies.evolution.util.Logger;
-import de.variantsync.studies.evolution.util.functional.Result;
-import de.variantsync.studies.evolution.util.io.CaseSensitivePath;
-import de.variantsync.studies.evolution.util.list.NonEmptyList;
-import de.variantsync.studies.evolution.variability.SPLCommit;
-import de.variantsync.studies.evolution.variability.VariabilityDataset;
-import de.variantsync.studies.evolution.variability.VariabilityHistory;
-import de.variantsync.studies.evolution.variability.pc.Artefact;
-import de.variantsync.studies.evolution.variability.pc.groundtruth.GroundTruth;
-import de.variantsync.studies.evolution.variability.pc.options.VariantGenerationOptions;
-import de.variantsync.studies.evolution.variability.sequenceextraction.Domino;
 import de.variantsync.studies.evolution.simulation.diff.DiffParser;
 import de.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import de.variantsync.studies.evolution.simulation.diff.components.FineDiff;
@@ -35,6 +16,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import de.variantsync.studies.evolution.simulation.diff.filter.EditFilter;
 import de.variantsync.studies.evolution.simulation.diff.filter.IFileDiffFilter;
+import org.variantsync.functjonal.Result;
+import org.variantsync.functjonal.list.NonEmptyList;
+import org.variantsync.vevos.simulation.feature.Variant;
+import org.variantsync.vevos.simulation.feature.config.FeatureIDEConfiguration;
+import org.variantsync.vevos.simulation.feature.sampling.Sample;
+import org.variantsync.vevos.simulation.io.Resources;
+import org.variantsync.vevos.simulation.io.data.VariabilityDatasetLoader;
+import org.variantsync.vevos.simulation.repository.SPLRepository;
+import org.variantsync.vevos.simulation.util.LogLevel;
+import org.variantsync.vevos.simulation.util.Logger;
+import org.variantsync.vevos.simulation.util.io.CaseSensitivePath;
+import org.variantsync.vevos.simulation.variability.SPLCommit;
+import org.variantsync.vevos.simulation.variability.VariabilityDataset;
+import org.variantsync.vevos.simulation.variability.VariabilityHistory;
+import org.variantsync.vevos.simulation.variability.pc.Artefact;
+import org.variantsync.vevos.simulation.variability.pc.groundtruth.GroundTruth;
+import org.variantsync.vevos.simulation.variability.pc.options.VariantGenerationOptions;
+import org.variantsync.vevos.simulation.variability.sequenceextraction.Domino;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -42,6 +41,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.variantsync.vevos.simulation.VEVOS.Initialize;
 
 public abstract class Experiment {
     protected final Path workDir;
@@ -69,7 +70,7 @@ public abstract class Experiment {
 
     public Experiment(final ExperimentConfiguration config) {
         // Initialize the library
-        Initialize.Initialize();
+        Initialize();
         final Path mainDir = Path.of(config.EXPERIMENT_DIR_MAIN());
         try {
             if (mainDir.toFile().mkdirs()) {
@@ -152,17 +153,18 @@ public abstract class Experiment {
                 // While more random configurations to consider
                 for (int i = 0; i < randomRepeats; i++) {
                     Logger.status("Starting repetition " + (i + 1) + " of " + randomRepeats + " with " + numVariants + " variants.");
-                    // Sample set of random variants
-                    Logger.status("Sampling next set of variants...");
-                    final Sample sample = sample(parentCommit, childCommit);
-                    Logger.status("Done. Sampled " + sample.variants().size() + " variants.");
-
                     if (inDebug && Files.exists(debugDir)) {
                         shell.execute(new RmCommand(debugDir).recursive());
                     }
                     if (inDebug && debugDir.toFile().mkdirs()) {
                         Logger.debug("Created Debug directory.");
                     }
+
+                    // Sample set of random variants
+                    Logger.status("Sampling next set of variants...");
+                    final Sample sample = sample(parentCommit, childCommit);
+                    Logger.status("Done. Sampled " + sample.variants().size() + " variants.");
+
                     if (Files.exists(variantsDirV0.path())) {
                         Logger.status("Cleaning variants dir V0.");
                         shell.execute(new RmCommand(variantsDirV0.path()).recursive());
@@ -251,7 +253,7 @@ public abstract class Experiment {
                             /* Application of patches with knowledge about PC of edit only */
                             Logger.info("Applying patch with knowledge about edits' PCs...");
                             // Create target variant specific patch that respects PCs
-                            final FineDiff filteredPatch = getFilteredDiff(originalDiff, groundTruthV0.get(source).artefact(), groundTruthV1.get(source).artefact(), target, variantsDirV0.path(), variantsDirV1.path());
+                            final FineDiff filteredPatch = getFilteredDiff(originalDiff, groundTruthV0.get(source).variant(), groundTruthV1.get(source).variant(), target, variantsDirV0.path(), variantsDirV1.path());
                             final boolean emptyPatch = filteredPatch.content().isEmpty();
                             saveDiff(filteredPatch, filteredPatchFile);
                             // Apply the patch
@@ -355,11 +357,11 @@ public abstract class Experiment {
                         variant,
                         new CaseSensitivePath(splCopyA),
                         variantsDirV0.resolve(variant.getName()),
-                        VariantGenerationOptions.ExitOnErrorButAllowNonExistentFiles(filter))
+                        VariantGenerationOptions.ExitOnErrorButAllowNonExistentFiles(false, filter))
                 .expect("Was not able to generate V0 of " + variant);
         if (inDebug) {
             try {
-                Resources.Instance().write(Artefact.class, gtV0.artefact(), debugDir.resolve("V0-" + variant.getName() + ".variant.csv"));
+                Resources.Instance().write(Artefact.class, gtV0.variant(), debugDir.resolve("V0-" + variant.getName() + ".variant.csv"));
             } catch (final Resources.ResourceIOException e) {
                 Logger.error("Was not able to write ground truth.");
             }
@@ -374,11 +376,11 @@ public abstract class Experiment {
                         variant,
                         new CaseSensitivePath(splCopyB),
                         variantsDirV1.resolve(variant.getName()),
-                        VariantGenerationOptions.ExitOnErrorButAllowNonExistentFiles(filter))
+                        VariantGenerationOptions.ExitOnErrorButAllowNonExistentFiles(false, filter))
                 .expect("Was not able to generate V1 of " + variant);
         if (inDebug) {
             try {
-                Resources.Instance().write(Artefact.class, gtV1.artefact(), debugDir.resolve("V1-" + variant.getName() + ".variant.csv"));
+                Resources.Instance().write(Artefact.class, gtV1.variant(), debugDir.resolve("V1-" + variant.getName() + ".variant.csv"));
             } catch (final Resources.ResourceIOException e) {
                 Logger.error("Was not able to write ground truth.", e);
             }

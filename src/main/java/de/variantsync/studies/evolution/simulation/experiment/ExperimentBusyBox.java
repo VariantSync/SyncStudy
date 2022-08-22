@@ -2,14 +2,14 @@ package de.variantsync.studies.evolution.simulation.experiment;
 
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureModelElement;
-import de.variantsync.studies.evolution.feature.sampling.FeatureIDESampler;
-import de.variantsync.studies.evolution.feature.sampling.Sample;
-import de.variantsync.studies.evolution.feature.sampling.Sampler;
-import de.variantsync.studies.evolution.repository.SPLRepository;
-import de.variantsync.studies.evolution.util.Logger;
-import de.variantsync.studies.evolution.util.fide.FeatureModelUtils;
-import de.variantsync.studies.evolution.variability.SPLCommit;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.variantsync.vevos.simulation.feature.sampling.FeatureIDESampler;
+import org.variantsync.vevos.simulation.feature.sampling.Sample;
+import org.variantsync.vevos.simulation.feature.sampling.Sampler;
+import org.variantsync.vevos.simulation.repository.SPLRepository;
+import org.variantsync.vevos.simulation.util.Logger;
+import org.variantsync.vevos.simulation.util.fide.FeatureModelUtils;
+import org.variantsync.vevos.simulation.variability.SPLCommit;
 
 import java.io.IOException;
 import java.nio.file.Files;
