@@ -1,4 +1,3 @@
 *
 !.gitignore
 !variability-busybox/
-!variability-busybox/data/*.zip
