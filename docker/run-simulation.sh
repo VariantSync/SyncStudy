@@ -1,20 +1,14 @@
 #! /bin/bash
 if [ "$1" == '' ]
 then
-  echo "Either fully replicate the simulation as presented in the paper (replication), or a do quick setup validation (validation)."
+  echo "Either fully replicate the study as presented in the paper (replication), or a do quick installation validation (validation)."
   echo "-- Bash Examples --"
-  echo "Run simulation: './execute.sh replication'"
-  echo "Validate the setup: './execute.sh validation'"
+  echo "Replicate study: './execute.sh replication'"
+  echo "Validate the installation: './execute.sh validation'"
   exit
 fi
 
-echo "Starting $1"
-
-patch --help || exit
 cd /home/user || exit
-ls -l
-echo "Files in simulation-files"
-ls -l simulation-files
 
 BB=/home/user/simulation-files/busybox
 if test -d "$BB"; then
@@ -26,35 +20,30 @@ else
     cd ..
 fi
 
+cp target/*Runner*-jar-with* .
+cp target/ResultEval-jar-with-dependencies* .
 
-echo "Copying jars"
-  cp target/*Runner*-jar-with* .
-  cp target/ResultEval-jar-with-dependencies* .
-  echo ""
-
-  echo "Files in WORKDIR"
-  ls -l
-  echo ""
 
 if [ "$1" == 'replication' ]
 then
-    echo "Running full replication. This might take up to a month."
+    echo "Running full study replication. This might take up to a month depending on your system."
     echo ""
     echo ""
     echo ""
     java -jar ExperimentRunner-jar-with-dependencies.jar config-simulation.properties
 elif [ "$1" == 'validation' ]
 then
-    echo "Running a (hopefully) short validation."
+    echo "Running a (hopefully) short validation of the installation."
     echo ""
     echo ""
     echo ""
     java -jar ExperimentRunner-jar-with-dependencies.jar config-validation.properties
 else
-    echo "Either fully replicate the simulation as presented in the paper (replication), or a do quick setup validation (validation)."
-    echo "-- Bash Examples --"
-    echo "Run simulation: './execute.sh replication'"
-    echo "Validate the setup: './execute.sh validation'"
+  echo "Either fully replicate the study as presented in the paper (replication), or a do quick installation validation (validation)."
+  echo "-- Bash Examples --"
+  echo "Replicate study: './execute.sh replication'"
+  echo "Validate the installation: './execute.sh validation'"
+  exit
 fi
 
 echo "Running result evaluation"
