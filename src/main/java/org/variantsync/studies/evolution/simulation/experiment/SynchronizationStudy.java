@@ -52,39 +52,69 @@ import java.util.stream.Collectors;
 import static org.variantsync.vevos.simulation.VEVOS.Initialize;
 
 /**
- *
+ * This class contains the core workflow of our study as described in our paper.
  */
 public class SynchronizationStudy {
+    // Working directory
     protected final Path workDir;
+    // Directory for saving debug files
     protected final Path debugDir;
+    // Flag whether the study is executed in debug mode
     protected final boolean inDebug;
+    // Path to the result file
     protected final Path resultFile;
+    // Path to the first copy of the SPL. We require copy to consider different versions
     protected final Path splCopyA;
+    // Path to the second copy of the SPL
     protected final Path splCopyB;
+    // Path to the directory containing the variants generated for the parent commit
     protected final CaseSensitivePath variantsDirV0;
+    // Path to the directory containing the variants generated for the child commit
     protected final CaseSensitivePath variantsDirV1;
+    // The directory to which patches are applied. A copy of the target variant is created in this directory.
     protected final Path patchDir;
+    // Path to the patch file containing the patches without filtering
     protected final Path normalPatchFile;
+    // Path to the patch file containing the patches with filtering
     protected final Path filteredPatchFile;
+    // Path to the rejects file created by patching without filtering
     protected final Path rejectsNormalFile;
+    // Path to the rejects file created by patching with filtering
     protected final Path rejectsFilteredFile;
+    // ShellExecutor for executing shell commands
     protected final ShellExecutor shell;
+    // Configured log level
     protected final LogLevel logLevel;
+    // Number of random repetitions for each commit pair. New variants are sampled for each repetition
     protected final int randomRepeats;
+    // Number of sampled variants
     protected final int numVariants;
+    // The id of the first run that is to be executed. Required for the short installation validation.
     protected final int startID;
+    // Name of the experimental subject
     protected final String experimentalSubject;
+    // Path to the subject's sources
     protected final Path splRepositoryPath;
+    // Path to the ground truth dataset
     protected final Path datasetPath;
+    // Evolution history of the subject
     protected final VariabilityHistory history;
 
+    // The feature model for which variants are sampled
     private IFeatureModel currentModel;
+    // The considered parent commit
     private SPLCommit commitV0Current;
+    // The considered child commit
     private SPLCommit commitV1Current;
+    // The variant sampler
     private final Sampler sampler;
 
-    public SynchronizationStudy(final ExperimentConfiguration config) {
-        // Initialize the library
+    /**
+     * Initialize the study from the given configuration
+     * @param config The study's configuration
+     */
+    public SynchronizationStudy(final StudyConfiguration config) {
+        // Initialize the VEVOS Simulation library
         Initialize();
         final Path mainDir = Path.of(config.EXPERIMENT_DIR_MAIN());
         try {
@@ -121,6 +151,7 @@ public class SynchronizationStudy {
         history = init();
     }
 
+    // Read a rejects file
     @Nullable
     private static OriginalDiff readRejects(final Path rejectFile) {
         OriginalDiff rejectsDiff = null;
@@ -135,6 +166,9 @@ public class SynchronizationStudy {
         return rejectsDiff;
     }
 
+    /**
+     * Execute the study.
+     */
     public void run() {
         // Initialize the SPL repositories for different versions
         Logger.status("Initializing SPL repos.");
@@ -340,6 +374,12 @@ public class SynchronizationStudy {
         return fineResult;
     }
 
+    /**
+     * Randomly sample a set of variants valid in both commits.
+     * @param commitV0 The id of the parent commit
+     * @param commitV1 The id of the child commit
+     * @return The sampled variants
+     */
     protected Sample sample(final SPLCommit commitV0, final SPLCommit commitV1) {
         if (currentModel == null || commitV0Current != commitV0 || commitV1Current != commitV1) {
             Logger.status("Loading feature models.");
@@ -356,6 +396,11 @@ public class SynchronizationStudy {
         return sampler.sample(currentModel);
     }
 
+    /**
+     * Preprocess BusyBox' files by cleaning the repo before the next commit pair is checked out.
+     * @param splRepositoryV0 The path to BusyBox at the parent commit
+     * @param splRepositoryV1 The path to BusyBox at the child commit
+     */
     protected void preprocessSPLRepositories(final SPLRepository splRepositoryV0, final SPLRepository splRepositoryV1) {
         // Stash all changes and drop the stash. This is a workaround as the JGit API does not support restore.
         Logger.status("Cleaning state of V0 repo.");
@@ -371,6 +416,11 @@ public class SynchronizationStudy {
         }
     }
 
+    /**
+     * Postprocess BusyBox files after the next commit pair has been checked out. This is required by KernelHaven.
+     * @param splRepositoryV0 The path to BusyBox at the parent commit
+     * @param splRepositoryV1 The path to BusyBox at the child commit
+     */
     protected void postprocessSPLRepositories(final SPLRepository splRepositoryV0, final SPLRepository splRepositoryV1) {
         Logger.status("Normalizing BusyBox files...");
         try {
@@ -382,6 +432,7 @@ public class SynchronizationStudy {
         }
     }
 
+    // Save the features in the feature models
     private void featureModelDebug(final IFeatureModel modelV0, final IFeatureModel modelV1) {
         if (inDebug) {
             final Collection<String> featuresInDifference = FeatureModelUtils.getSymmetricFeatureDifference(modelV0, modelV1);
@@ -395,6 +446,7 @@ public class SynchronizationStudy {
         }
     }
 
+    // Generate the two versions of a variant
     private void generateVariant(final SPLCommit parentCommit,
                                  final SPLCommit childCommit,
                                  final Map<Variant, GroundTruth> groundTruthV0,
@@ -457,6 +509,9 @@ public class SynchronizationStudy {
         groundTruthV1.put(variant, gtV1);
     }
 
+    /**
+     * Prepare the two copies of the SPL repository by cleaning them and checking out the next commit pair
+     */
     protected SimpleFileFilter splRepoPreparation(final SPLRepository parentRepo, final SPLRepository childRepo, final SPLCommit parentCommit, final SPLCommit childCommit) {
         Logger.info("Next V0 commit: " + parentCommit);
         Logger.info("Next V1 commit: " + childCommit);
@@ -488,7 +543,7 @@ public class SynchronizationStudy {
     }
 
 
-
+    // Initialize the study by loading the required data
     private VariabilityHistory init() {
         Logger.status("Starting experiment initialization.");
         Logger.setLogLevel(logLevel);
@@ -524,6 +579,7 @@ public class SynchronizationStudy {
         return Objects.requireNonNull(dataset).getVariabilityHistory(new Domino());
     }
 
+    // Save the difference as a patch file
     private void saveDiff(final FineDiff fineDiff, final Path file) {
         // Save the fine diff to a file
         try {
@@ -533,10 +589,12 @@ public class SynchronizationStudy {
         }
     }
 
+    // Apply a patch file to a target variant
     private Set<String> applyPatch(final Path patchFile, final Path targetVariant, final Path rejectFile) {
         return applyPatch(patchFile, targetVariant, rejectFile, false);
     }
 
+    // Apply a patch file to a target variant
     private Set<String> applyPatch(final Path patchFile, final Path targetVariant, final Path rejectFile, final boolean emptyPatch) {
         // Clean patch directory
         if (Files.exists(patchDir.toAbsolutePath())) {
@@ -580,40 +638,47 @@ public class SynchronizationStudy {
         return skipped;
     }
 
+    // Get the line-level patches for a given difference
     @NotNull
     private FineDiff getFineDiff(final OriginalDiff originalDiff) {
         final DefaultContextProvider contextProvider = new DefaultContextProvider(workDir);
         return DiffSplitter.split(originalDiff, contextProvider);
     }
 
+    // Get the filtered line-level patches for a given difference
     private FineDiff getFilteredDiff(final OriginalDiff originalDiff, final Artefact tracesV0, final Artefact tracesV1, final Variant target, Path oldVersionRoot, Path newVersionRoot) {
         final CachedPCBasedFilter cachedPCBasedFilter = new CachedPCBasedFilter(tracesV0, tracesV1, target, oldVersionRoot, newVersionRoot, 2);
         return getFilteredDiff(originalDiff, cachedPCBasedFilter);
     }
 
+    // Get the filtered line-level patches for a given difference
     private <T extends IFileDiffFilter & ILineFilter> FineDiff getFilteredDiff(final OriginalDiff originalDiff, final T filter) {
         // Create target variant specific patch that respects PCs
         final IContextProvider contextProvider = new DefaultContextProvider(workDir);
         return DiffSplitter.split(originalDiff, filter, filter, contextProvider);
     }
 
+    // Get the difference between two directories using UNIX diff
     protected OriginalDiff getOriginalDiff(final Path v0Path, final Path v1Path) {
         final DiffCommand diffCommand = DiffCommand.Recommended(workDir.relativize(v0Path), workDir.relativize(v1Path));
         final List<String> output = shell.execute(diffCommand, workDir).expect("Was not able to diff variants.");
         return DiffParser.toOriginalDiff(output);
     }
 
+    // Abort the program
     protected void panic(final String message) {
         Logger.error(message);
         throw new Panic(message);
     }
 
+    // Abort the program
     protected void panic(final String message, final Exception e) {
         Logger.error(message, e);
         e.printStackTrace();
         throw new Panic(message);
     }
 
+    // Simple filter used during the generation of variants. Only changed files are generated.
     private record SimpleFileFilter(
             Set<Path> filesToKeep) implements ArtefactFilter<SourceCodeFile> {
 

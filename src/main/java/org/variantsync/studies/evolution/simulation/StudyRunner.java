@@ -1,6 +1,6 @@
 package org.variantsync.studies.evolution.simulation;
 
-import org.variantsync.studies.evolution.simulation.experiment.ExperimentConfiguration;
+import org.variantsync.studies.evolution.simulation.experiment.StudyConfiguration;
 import org.variantsync.studies.evolution.simulation.experiment.SynchronizationStudy;
 
 import java.io.File;
@@ -10,7 +10,7 @@ public class StudyRunner {
         if (args.length < 1) {
             System.err.println("The first argument should provide the path to the configuration file that is to be used");
         }
-        final ExperimentConfiguration config = new ExperimentConfiguration(new File(args[0]));
+        final StudyConfiguration config = new StudyConfiguration(new File(args[0]));
 
         final SynchronizationStudy synchronizationStudy = new SynchronizationStudy(config);
 

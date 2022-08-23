@@ -7,14 +7,43 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
+/**
+ * Represents the outcome of a single experimental run in the study.
+ * @param dataset The considered subject
+ * @param runID The id of this run
+ * @param commitV0 The id of the parent commit
+ * @param commitV1 The id of the child commit
+ * @param sourceVariant The name of the source variant
+ * @param targetVariant The name of the target variant
+ * @param normalActualVsExpected Number of differences between the patched target variant and the expected result (without filtering)
+ * @param filteredActualVsExpected Number of differences between the patched target variant and the expected result (with filtering)
+ * @param fileNormal Number of unfiltered file-level patches
+ * @param lineNormal Number of unfiltered line-level patches
+ * @param fileSuccessNormal Number of successful file-level patches
+ * @param lineSuccessNormal Number of successful line-level patches
+ * @param fileFiltered Number of filtered file-level patches
+ * @param lineFiltered Number of filtered line-level patches
+ * @param fileSuccessFiltered Number of successful file-level patches
+ * @param lineSuccessFiltered Number of successful line-level patches
+ * @param normalTP Number of true positives without filtering
+ * @param normalFP Number of false positives without filtering
+ * @param normalTN Number of true negatives without filtering
+ * @param normalFN Number of false negatives without filtering
+ * @param normalWrongLocation Number of patches without filtering applied to the wrong location
+ * @param filteredTP Number of true positives with filtering
+ * @param filteredFP Number of false positives with filtering
+ * @param filteredTN Number of true negatives with filtering
+ * @param filteredFN Number of false negatives with filtering
+ * @param filteredWrongLocation Number of patches with filtering applied to the wrong location
+ */
 public record PatchOutcome(String dataset,
                            long runID,
                            String commitV0,
                            String commitV1,
                            String sourceVariant,
                            String targetVariant,
-                           long countOfNormalAsExpected,
-                           long countOfFilteredAsExpected,
+                           long normalActualVsExpected,
+                           long filteredActualVsExpected,
                            long fileNormal,
                            long lineNormal,
                            long fileSuccessNormal,
@@ -82,8 +111,8 @@ public record PatchOutcome(String dataset,
         jsonBuilder.append(toJSON("commitV1", commitV1)).append(",\n");
         jsonBuilder.append(toJSON("sourceVariant", sourceVariant)).append(",\n");
         jsonBuilder.append(toJSON("targetVariant", targetVariant)).append(",\n");
-        jsonBuilder.append(toJSON("normalAsExpected", countOfNormalAsExpected)).append(",\n");
-        jsonBuilder.append(toJSON("filteredAsExpected", countOfFilteredAsExpected)).append(",\n");
+        jsonBuilder.append(toJSON("normalAsExpected", normalActualVsExpected)).append(",\n");
+        jsonBuilder.append(toJSON("filteredAsExpected", filteredActualVsExpected)).append(",\n");
         jsonBuilder.append(toJSON("fileNormal", fileNormal)).append(",\n");
         jsonBuilder.append(toJSON("lineNormal", lineNormal)).append(",\n");
         jsonBuilder.append(toJSON("fileSuccessNormal", fileSuccessNormal)).append(",\n");
