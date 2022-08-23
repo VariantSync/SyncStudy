@@ -12,8 +12,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * DiffParser provides the functionality for parsing and converting the difference determined by UNIX diff into our
+ * internal representation.
+ */
 public class DiffParser {
 
+    /**
+     * Parse the given lines of text into a OriginalDiff object that represents the difference between two versions of
+     * a software project.
+     * @param lines The lines from UNIX diff's output that are to be parsed.
+     * @return An OriginalDiff instance representing the parsed difference
+     */
     public static OriginalDiff toOriginalDiff(final List<String> lines) {
         // The diff is empty, but this is also a valid scenario
         if (lines.isEmpty()) {
@@ -72,6 +82,7 @@ public class DiffParser {
         return new OriginalDiff(fileDiffs);
     }
 
+    // Parse and convert the lines belonging to the difference of a specific file
     private static FileDiff parseFileDiff(final List<String> fileDiffContent) {
         int index = 0;
         final String HUNK_START = "@@ -";
@@ -118,6 +129,7 @@ public class DiffParser {
         return new FileDiff(header, hunks, Paths.get(Objects.requireNonNull(oldFile)), Paths.get(Objects.requireNonNull(newFile)));
     }
 
+    // Parse and convert the lines belonging to the difference of a specific hunk
     private static Hunk parseHunk(final List<String> lines) {
         // Parse the header
         final HunkLocation location = parseHunkHeader(lines.get(0));
@@ -137,6 +149,7 @@ public class DiffParser {
         return new Hunk(location, content);
     }
 
+    // Parse and convert the header of a hunk
     private static HunkLocation parseHunkHeader(final String line) {
         final String[] parts = line.split("\\s+");
         final String sourceLocationString = parts[1].substring(1);
