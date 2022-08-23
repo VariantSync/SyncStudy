@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 	<!-- Adjust group id for anonymous projects -->
-    <groupId>de.variantsync.studies.evolution</groupId>
+    <groupId>org.variantsync.studies.evolution</groupId>
 	<!-- Adjust the project name -->
     <artifactId>SynchronizationStudy</artifactId>
     <version>1.0.0</version>
@@ -38,10 +38,10 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>ExperimentRunner</finalName>
+                            <finalName>StudyRunner</finalName>
                             <archive>
                                 <manifest>
-                                    <mainClass>de.variantsync.studies.evolution.simulation.SynchronizationStudy</mainClass>
+                                    <mainClass>org.variantsync.studies.evolution.simulation.StudyRunner</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -59,7 +59,7 @@
                             <finalName>ResultEval</finalName>
                             <archive>
                                 <manifest>
-                                    <mainClass>de.variantsync.studies.evolution.simulation.experiment.ResultAnalysis</mainClass>
+                                    <mainClass>org.variantsync.studies.evolution.simulation.experiment.ResultAnalysis</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
