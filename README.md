@@ -102,8 +102,17 @@ The more experiments you run, the more space will be required by Docker. The eas
 containers afterwards is to run the following command in your terminal. **Note that this will remove all other containers and images
 not related to the simulation as well**:
 ```shell
+# Will delete all data stored by Docker. 
+# WARNING! This includes other images, containers, and volumes as well. 
 docker system prune -a
 ```
+
+**Alternatively**, you can clean only the study's image and containers by calling the provided script. However, we cannot guarantee that all data is deleted in this case (e.g., third-party images and data not covered by the script). 
+#### Windows:
+`.\clean-docker.bat`
+#### Linux/Mac (bash):
+`./clean-docker.sh`
+
 Please refer to the official documentation on how to remove specific [images](https://docs.docker.com/engine/reference/commandline/image_rm/) and [containers](https://docs.docker.com/engine/reference/commandline/container_rm/) from your system.
 
 [documentation]: https://variantsync.github.io/SynchronizationStudy/docs/
