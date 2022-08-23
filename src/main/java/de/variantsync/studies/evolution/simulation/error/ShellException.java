@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Custom Exception for representing errors caused by shell commands being executed.
+ */
 public class ShellException extends Exception {
     private final List<String> output; 
 
