@@ -2,24 +2,24 @@ package org.variantsync.studies.evolution.simulation.experiment;
 
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureModelElement;
-import org.variantsync.studies.evolution.simulation.diff.DiffParser;
-import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
-import org.variantsync.studies.evolution.simulation.diff.components.FineDiff;
-import org.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
-import org.variantsync.studies.evolution.simulation.diff.splitting.DefaultContextProvider;
-import org.variantsync.studies.evolution.simulation.error.ShellException;
-import org.variantsync.studies.evolution.simulation.shell.*;
-import org.variantsync.studies.evolution.simulation.diff.components.OriginalDiff;
-import org.variantsync.studies.evolution.simulation.diff.splitting.DiffSplitter;
-import org.variantsync.studies.evolution.simulation.diff.splitting.IContextProvider;
-import org.variantsync.studies.evolution.simulation.error.Panic;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.variantsync.studies.evolution.simulation.diff.filter.CachedPCBasedFilter;
-import org.variantsync.studies.evolution.simulation.diff.filter.IFileDiffFilter;
 import org.variantsync.functjonal.Result;
 import org.variantsync.functjonal.list.NonEmptyList;
+import org.variantsync.studies.evolution.simulation.diff.DiffParser;
+import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
+import org.variantsync.studies.evolution.simulation.diff.components.FineDiff;
+import org.variantsync.studies.evolution.simulation.diff.components.OriginalDiff;
+import org.variantsync.studies.evolution.simulation.diff.filter.CachedPCBasedFilter;
+import org.variantsync.studies.evolution.simulation.diff.filter.IFileDiffFilter;
+import org.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
+import org.variantsync.studies.evolution.simulation.diff.splitting.DefaultContextProvider;
+import org.variantsync.studies.evolution.simulation.diff.splitting.DiffSplitter;
+import org.variantsync.studies.evolution.simulation.diff.splitting.IContextProvider;
+import org.variantsync.studies.evolution.simulation.error.Panic;
+import org.variantsync.studies.evolution.simulation.error.ShellException;
+import org.variantsync.studies.evolution.simulation.shell.*;
 import org.variantsync.vevos.simulation.feature.Variant;
 import org.variantsync.vevos.simulation.feature.config.FeatureIDEConfiguration;
 import org.variantsync.vevos.simulation.feature.sampling.FeatureIDESampler;
@@ -99,18 +99,18 @@ public class SynchronizationStudy {
     protected final Path datasetPath;
     // Evolution history of the subject
     protected final VariabilityHistory history;
-
+    // The variant sampler
+    private final Sampler sampler;
     // The feature model for which variants are sampled
     private IFeatureModel currentModel;
     // The considered parent commit
     private SPLCommit commitV0Current;
     // The considered child commit
     private SPLCommit commitV1Current;
-    // The variant sampler
-    private final Sampler sampler;
 
     /**
      * Initialize the study from the given configuration
+     *
      * @param config The study's configuration
      */
     public SynchronizationStudy(final StudyConfiguration config) {
@@ -376,6 +376,7 @@ public class SynchronizationStudy {
 
     /**
      * Randomly sample a set of variants valid in both commits.
+     *
      * @param commitV0 The id of the parent commit
      * @param commitV1 The id of the child commit
      * @return The sampled variants
@@ -398,6 +399,7 @@ public class SynchronizationStudy {
 
     /**
      * Preprocess BusyBox' files by cleaning the repo before the next commit pair is checked out.
+     *
      * @param splRepositoryV0 The path to BusyBox at the parent commit
      * @param splRepositoryV1 The path to BusyBox at the child commit
      */
@@ -418,6 +420,7 @@ public class SynchronizationStudy {
 
     /**
      * Postprocess BusyBox files after the next commit pair has been checked out. This is required by KernelHaven.
+     *
      * @param splRepositoryV0 The path to BusyBox at the parent commit
      * @param splRepositoryV1 The path to BusyBox at the child commit
      */

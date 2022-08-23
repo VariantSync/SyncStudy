@@ -1,13 +1,13 @@
 package org.variantsync.studies.evolution.simulation.experiment;
 
-import org.variantsync.studies.evolution.simulation.diff.components.FineDiff;
-import org.variantsync.studies.evolution.simulation.diff.lines.AddedLine;
-import org.variantsync.studies.evolution.simulation.diff.lines.Change;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.variantsync.studies.evolution.simulation.diff.components.OriginalDiff;
-import org.variantsync.studies.evolution.simulation.diff.lines.RemovedLine;
 import org.jetbrains.annotations.NotNull;
+import org.variantsync.studies.evolution.simulation.diff.components.FineDiff;
+import org.variantsync.studies.evolution.simulation.diff.components.OriginalDiff;
+import org.variantsync.studies.evolution.simulation.diff.lines.AddedLine;
+import org.variantsync.studies.evolution.simulation.diff.lines.Change;
+import org.variantsync.studies.evolution.simulation.diff.lines.RemovedLine;
 import org.variantsync.vevos.simulation.util.Logger;
 import org.variantsync.vevos.simulation.variability.SPLCommit;
 
@@ -29,20 +29,21 @@ public class ResultAnalysis {
 
     /**
      * Analyze the outcome of applying patches to a target variant
-     * @param dataset The considered SPL
-     * @param runID The id of the analyzed run
-     * @param sourceVariant The source variant's name
-     * @param targetVariant The target variant's name
-     * @param commitV0 The id of the parent commit
-     * @param commitV1 The id of the child commit
-     * @param normalPatch The FineDiff with all prepared changes
-     * @param filteredPatch The FineDiff with all prepared changes after filtering
-     * @param resultDiffNormal The difference between the patched target variant and the expected result
-     * @param resultDiffFiltered The difference between the patched target variant and the expected result (with filtering)
-     * @param rejectsNormal The rejected patches (aka. failed patches) without filtering
-     * @param rejectsFiltered The rejected patches (aka. failed patches) with filtering
-     * @param sourceChanges The difference between the two versions of the source variant
-     * @param skippedFilesNormal List of files that were not found by patch and therefore not patched
+     *
+     * @param dataset              The considered SPL
+     * @param runID                The id of the analyzed run
+     * @param sourceVariant        The source variant's name
+     * @param targetVariant        The target variant's name
+     * @param commitV0             The id of the parent commit
+     * @param commitV1             The id of the child commit
+     * @param normalPatch          The FineDiff with all prepared changes
+     * @param filteredPatch        The FineDiff with all prepared changes after filtering
+     * @param resultDiffNormal     The difference between the patched target variant and the expected result
+     * @param resultDiffFiltered   The difference between the patched target variant and the expected result (with filtering)
+     * @param rejectsNormal        The rejected patches (aka. failed patches) without filtering
+     * @param rejectsFiltered      The rejected patches (aka. failed patches) with filtering
+     * @param sourceChanges        The difference between the two versions of the source variant
+     * @param skippedFilesNormal   List of files that were not found by patch and therefore not patched
      * @param skippedFilesFiltered List of files that were not found by patch and therefore not patched
      * @return The patch outcome
      */
@@ -241,7 +242,7 @@ public class ResultAnalysis {
                 tpChanges.add(patchLine);
                 // Remove the line from the expected changes to account for similar changes
                 requiredChanges.remove(patchLine);
-            } else if (undesiredChanges.contains(patchLine)){
+            } else if (undesiredChanges.contains(patchLine)) {
                 // In Patch & Unexpected: It is a true negative
                 tnChanges.add(patchLine);
             }
@@ -270,6 +271,7 @@ public class ResultAnalysis {
     /**
      * Run the result analysis on the collected results (i.e., results.txt). This method is called by the Docker container
      * after the study has been run.
+     *
      * @param args CL arguments
      * @throws IOException If the results cannot be loaded
      */

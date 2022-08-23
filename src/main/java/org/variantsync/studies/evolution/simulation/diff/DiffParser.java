@@ -1,8 +1,8 @@
 package org.variantsync.studies.evolution.simulation.diff;
 
 import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
-import org.variantsync.studies.evolution.simulation.diff.components.HunkLocation;
 import org.variantsync.studies.evolution.simulation.diff.components.Hunk;
+import org.variantsync.studies.evolution.simulation.diff.components.HunkLocation;
 import org.variantsync.studies.evolution.simulation.diff.components.OriginalDiff;
 import org.variantsync.studies.evolution.simulation.diff.lines.*;
 
@@ -21,6 +21,7 @@ public class DiffParser {
     /**
      * Parse the given lines of text into a OriginalDiff object that represents the difference between two versions of
      * a software project.
+     *
      * @param lines The lines from UNIX diff's output that are to be parsed.
      * @return An OriginalDiff instance representing the parsed difference
      */
@@ -55,7 +56,7 @@ public class DiffParser {
                 // Reset the lines that should go into the next FileDiff
                 fileDiffContent = new LinkedList<>();
             } else if (line.contains(fileDiffStart)) {
-                if (indexNext < lines.size() ) {
+                if (indexNext < lines.size()) {
                     final String nextLine = lines.get(indexNext);
                     if (nextLine.startsWith(fileDiffFollow)) {
                         final String additionalContent = line.substring(0, line.indexOf(fileDiffStart));

@@ -14,8 +14,6 @@ import java.io.File;
  * Determines the configuration of our study.
  */
 public class StudyConfiguration {
-    // Configuration object holding key-value properties.
-    private final Configuration config;
     // The name of the experimental subject
     private static final String EXPERIMENT_SUBJECT = "experiment.subject";
     // The number of repetitions for each commit and source target combination
@@ -35,9 +33,12 @@ public class StudyConfiguration {
     // Each commit pair that is considered has its own id. All ids < startid are skipped when running the study. This
     // property is required for the short installation validation.
     private static final String EXPERIMENT_STARTID = "experiment.startid";
+    // Configuration object holding key-value properties.
+    private final Configuration config;
 
     /**
      * Load a configuration from the given properties file.
+     *
      * @param propertiesFile The properties file
      */
     public StudyConfiguration(final File propertiesFile) {
@@ -56,7 +57,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The name of the experimental subject
      */
     public String EXPERIMENT_SUBJECT() {
@@ -64,7 +64,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The number of repetitions for each commit pair and source-target combination
      */
     public int EXPERIMENT_REPEATS() {
@@ -72,7 +71,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The number of variants that are to be generated
      */
     public int EXPERIMENT_VARIANT_COUNT() {
@@ -80,7 +78,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The working directory
      */
     public String EXPERIMENT_DIR_MAIN() {
@@ -88,7 +85,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The root directory of the ground truth dataset
      */
     public String EXPERIMENT_DIR_DATASET() {
@@ -96,7 +92,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The root directory of the considered SPL
      */
     public String EXPERIMENT_DIR_SPL() {
@@ -104,7 +99,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return Whether additional debugging is enabled
      */
     public Boolean EXPERIMENT_DEBUG() {
@@ -112,7 +106,6 @@ public class StudyConfiguration {
     }
 
     /**
-     *
      * @return The log level
      */
     public LogLevel EXPERIMENT_LOGGER_LEVEL() {
@@ -120,9 +113,10 @@ public class StudyConfiguration {
     }
 
     /**
-     *
-     * @return Each commit pair that is considered has its own id. All ids < startid are skipped when running the study.
+     * @return Each commit pair that is considered has its own id. All ids smaller than startid are skipped when running the study.
      * This property is required for the short installation validation.
      */
-    public int EXPERIMENT_START_ID() {return config.getInt(EXPERIMENT_STARTID, 0);}
+    public int EXPERIMENT_START_ID() {
+        return config.getInt(EXPERIMENT_STARTID, 0);
+    }
 }

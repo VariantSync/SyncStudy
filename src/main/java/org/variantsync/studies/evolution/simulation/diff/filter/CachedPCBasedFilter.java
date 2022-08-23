@@ -17,13 +17,12 @@ public class CachedPCBasedFilter extends PCBasedFilter {
     private final Map<ChangeLocation, Boolean> keepDecisions = new HashMap<>();
 
     /**
-     *
-     * @param oldTraces The presence conditions of the old version of the source variant
-     * @param newTraces The presence conditions of the new version of the source variant
-     * @param targetVariant The target variant
+     * @param oldTraces      The presence conditions of the old version of the source variant
+     * @param newTraces      The presence conditions of the new version of the source variant
+     * @param targetVariant  The target variant
      * @param oldVersionRoot The path to the source code of the old version of the source variant
      * @param newVersionRoot The path to the source code of the new version of the source variant
-     * @param strip The number of leading components in each path that are to be ignored when determining the location of a patch
+     * @param strip          The number of leading components in each path that are to be ignored when determining the location of a patch
      */
     public CachedPCBasedFilter(final Artefact oldTraces, final Artefact newTraces, final Variant targetVariant, final Path oldVersionRoot, final Path newVersionRoot, final int strip) {
         super(oldTraces, newTraces, targetVariant, oldVersionRoot, newVersionRoot, strip);
@@ -36,7 +35,7 @@ public class CachedPCBasedFilter extends PCBasedFilter {
         keepDecisions.put(editLocation, keep);
         return keep;
     }
-    
+
     @Override
     public boolean keepContextLine(final Path filePath, final int index) {
         final ChangeLocation changeLocation = new ChangeLocation(filePath, index);
@@ -45,8 +44,9 @@ public class CachedPCBasedFilter extends PCBasedFilter {
 
     /**
      * An ChangeLocation is determined by the file and line number
+     *
      * @param filePath The path to the changed file
-     * @param index The line number of the changed line
+     * @param index    The line number of the changed line
      */
     protected record ChangeLocation(Path filePath, int index) {
         @Override

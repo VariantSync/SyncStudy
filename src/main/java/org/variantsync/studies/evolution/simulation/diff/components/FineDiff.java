@@ -11,12 +11,14 @@ import java.util.List;
  * A FineDiff holds the difference between two versions of a software project. The difference is represented by the line-level
  * patches of all changed files. The patches are grouped by file and represented by FileDiff objects.
  * Each FileDiff contains the line-level patches made to a specific file.
+ *
  * @param content The line-level changes of the changed files.
  */
 public record FineDiff(List<FileDiff> content) implements IDiffComponent {
 
     /**
      * Parse all patches in the difference and extract the changes source code lines without the patches' context lines.
+     *
      * @param diff The difference from which changed lines are to be extracted
      * @return A list of all changed lines (i.e., added and removed source code)
      */

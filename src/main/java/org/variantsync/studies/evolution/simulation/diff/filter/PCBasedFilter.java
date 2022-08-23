@@ -1,9 +1,9 @@
 package org.variantsync.studies.evolution.simulation.diff.filter;
 
-import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
-import org.variantsync.studies.evolution.simulation.error.Panic;
 import org.prop4j.Node;
 import org.variantsync.functjonal.Result;
+import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
+import org.variantsync.studies.evolution.simulation.error.Panic;
 import org.variantsync.vevos.simulation.feature.Variant;
 import org.variantsync.vevos.simulation.util.Logger;
 import org.variantsync.vevos.simulation.util.io.CaseSensitivePath;
@@ -31,10 +31,9 @@ public class PCBasedFilter implements IFileDiffFilter, ILineFilter {
     protected final int strip;
 
     /**
-     *
-     * @param oldTraces The presence conditions of the old version of the source variant
-     * @param newTraces The presence conditions of the new version of the source variant
-     * @param targetVariant The target variant
+     * @param oldTraces      The presence conditions of the old version of the source variant
+     * @param newTraces      The presence conditions of the new version of the source variant
+     * @param targetVariant  The target variant
      * @param oldVersionRoot The path to the source code of the old version of the source variant
      * @param newVersionRoot The path to the source code of the new version of the source variant
      */
@@ -48,14 +47,12 @@ public class PCBasedFilter implements IFileDiffFilter, ILineFilter {
     }
 
     /**
-     *
-     * @param oldTraces The presence conditions of the old version of the source variant
-     * @param newTraces The presence conditions of the new version of the source variant
-     * @param targetVariant The target variant
+     * @param oldTraces      The presence conditions of the old version of the source variant
+     * @param newTraces      The presence conditions of the new version of the source variant
+     * @param targetVariant  The target variant
      * @param oldVersionRoot The path to the source code of the old version of the source variant
      * @param newVersionRoot The path to the source code of the new version of the source variant
-     * @param strip The number of leading components in each path that are to be ignored when determining the location of a patch
-     *
+     * @param strip          The number of leading components in each path that are to be ignored when determining the location of a patch
      */
     public PCBasedFilter(final Artefact oldTraces, final Artefact newTraces, final Variant targetVariant, final Path oldVersionRoot, final Path newVersionRoot, final int strip) {
         this.oldTraces = oldTraces;
@@ -68,10 +65,11 @@ public class PCBasedFilter implements IFileDiffFilter, ILineFilter {
 
     /**
      * Determine whether a change to a line is to be kept in a patch depending on the given presence conditions.
+     *
      * @param targetVariant The variant that is to be patched
-     * @param traces The presence conditions that are to be checked
-     * @param filePath The path to the file in which the change occurs
-     * @param index The line number of the changed line
+     * @param traces        The presence conditions that are to be checked
+     * @param filePath      The path to the file in which the change occurs
+     * @param index         The line number of the changed line
      * @return true, if the change is to be kept in the patch
      */
     protected boolean keepLineChange(final Variant targetVariant, final Artefact traces, Path filePath, final int index) {
@@ -88,9 +86,10 @@ public class PCBasedFilter implements IFileDiffFilter, ILineFilter {
 
     /**
      * Determine whether all changes to a file are to be kept in a patch depending on the given presence conditions
+     *
      * @param targetVariant The variant that is to be patched
-     * @param traces The presence conditions that are to be considered
-     * @param filePath The path to the file whose difference is to be considered
+     * @param traces        The presence conditions that are to be considered
+     * @param filePath      The path to the file whose difference is to be considered
      * @return true, if the file's difference is to be kept in the patch
      */
     protected boolean keepFileDiff(final Variant targetVariant, final Artefact traces, Path filePath) {

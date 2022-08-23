@@ -1,7 +1,7 @@
 package org.variantsync.studies.evolution.simulation.shell;
 
-import org.variantsync.studies.evolution.simulation.error.ShellException;
 import org.variantsync.functjonal.Result;
+import org.variantsync.studies.evolution.simulation.error.ShellException;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -22,6 +22,7 @@ public class DiffCommand extends ShellCommand {
 
     /**
      * DiffCommand configured as recommended by the documentation in 'patch' (i.e. 'man patch')
+     *
      * @param pathA The path to the source file
      * @param pathB The path to the target file
      * @return A configured DiffCommand

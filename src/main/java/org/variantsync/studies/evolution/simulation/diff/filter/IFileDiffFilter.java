@@ -10,6 +10,7 @@ public interface IFileDiffFilter {
 
     /**
      * Decide whether the given file difference should be kept in a patch.
+     *
      * @param fileDiff The file difference to consider
      * @return true, if the difference should be kept in the patch
      */

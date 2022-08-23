@@ -30,8 +30,9 @@ public class ShellExecutor {
 
     /**
      * Initialize a new ShellExecutor
+     *
      * @param outputReader Consumer for shell's normal output
-     * @param errorReader Consumer for shell's error output
+     * @param errorReader  Consumer for shell's error output
      */
     public ShellExecutor(final Consumer<String> outputReader, final Consumer<String> errorReader) {
         this(outputReader, errorReader, null);
@@ -39,9 +40,10 @@ public class ShellExecutor {
 
     /**
      * Initialize a new ShellExecutor that executes all commands in the given working directory
+     *
      * @param outputReader Consumer for shell's normal output
-     * @param errorReader Consumer for shell's error output
-     * @param workDir The working directory
+     * @param errorReader  Consumer for shell's error output
+     * @param workDir      The working directory
      */
     public ShellExecutor(final Consumer<String> outputReader, final Consumer<String> errorReader, final Path workDir) {
         this.workDir = workDir;
@@ -53,6 +55,7 @@ public class ShellExecutor {
 
     /**
      * Execute the given command
+     *
      * @return A result that depends on the commands exit code
      */
     public Result<List<String>, ShellException> execute(final ShellCommand command) {
@@ -60,9 +63,9 @@ public class ShellExecutor {
     }
 
     /**
-     *
      * Execute the given command.
-     * @param command The command to execute
+     *
+     * @param command      The command to execute
      * @param executionDir The directory in which to execute the command
      * @return A result that depends on the commands exit code
      */

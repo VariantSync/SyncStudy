@@ -1,6 +1,7 @@
 package org.variantsync.studies.evolution.simulation.diff.splitting;
 
 import org.variantsync.studies.evolution.simulation.diff.components.*;
+import org.variantsync.studies.evolution.simulation.diff.filter.DefaultFileDiffFilter;
 import org.variantsync.studies.evolution.simulation.diff.filter.DefaultLineFilter;
 import org.variantsync.studies.evolution.simulation.diff.filter.IFileDiffFilter;
 import org.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
@@ -8,7 +9,6 @@ import org.variantsync.studies.evolution.simulation.diff.lines.AddedLine;
 import org.variantsync.studies.evolution.simulation.diff.lines.ContextLine;
 import org.variantsync.studies.evolution.simulation.diff.lines.Line;
 import org.variantsync.studies.evolution.simulation.diff.lines.RemovedLine;
-import org.variantsync.studies.evolution.simulation.diff.filter.DefaultFileDiffFilter;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -21,7 +21,8 @@ public class DiffSplitter {
 
     /**
      * Split the hunks in the given difference into line-level patches.
-     * @param diff The difference that is to be split
+     *
+     * @param diff            The difference that is to be split
      * @param contextProvider A context provider used to provide the correct context for the line-level patches.
      * @return A FineDiff containing the line-level patches.
      */
@@ -33,9 +34,9 @@ public class DiffSplitter {
      * Split the hunks in the given difference into line-level patches while filtering certain patches depending on the
      * decision of the provided filters.
      *
-     * @param originalDiff The difference that is to be split
-     * @param fileFilter A file filter that determines whether the difference of specific files is to be kept
-     * @param lineFilter A line filter that determines whether changes to certain lines are to be kept
+     * @param originalDiff    The difference that is to be split
+     * @param fileFilter      A file filter that determines whether the difference of specific files is to be kept
+     * @param lineFilter      A line filter that determines whether changes to certain lines are to be kept
      * @param contextProvider A context provider used to provide the correct context for the line-level patches.
      * @return The split and filtered patches
      */

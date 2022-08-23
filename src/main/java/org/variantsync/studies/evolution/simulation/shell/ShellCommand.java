@@ -1,7 +1,7 @@
 package org.variantsync.studies.evolution.simulation.shell;
 
-import org.variantsync.studies.evolution.simulation.error.ShellException;
 import org.variantsync.functjonal.Result;
+import org.variantsync.studies.evolution.simulation.error.ShellException;
 
 import java.util.Arrays;
 import java.util.List;

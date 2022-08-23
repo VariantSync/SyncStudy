@@ -13,6 +13,7 @@ public class PatchCommand extends ShellCommand {
 
     /**
      * A PatchCommand configured as recommended in the documentation of 'patch'
+     *
      * @param patchFile The file containing the patch
      * @return A configured PatchCommand
      */

@@ -11,15 +11,16 @@ public interface ILineFilter {
      * line or a line that is to be removed.
      *
      * @param filePath The path to the file which is changed
-     * @param index The line number of the change
+     * @param index    The line number of the change
      * @return true, if the change is to be kept, otherwise false
      */
     boolean keepLineChange(Path filePath, int index);
 
     /**
      * Decide whether a line in the context of a patch's hunk should be kept in the patch.
+     *
      * @param filePath The path to the file which is changed
-     * @param index The line number of the context line
+     * @param index    The line number of the context line
      * @return true, if the context line is to be kept, otherwise false
      */
     default boolean keepContextLine(final Path filePath, final int index) {

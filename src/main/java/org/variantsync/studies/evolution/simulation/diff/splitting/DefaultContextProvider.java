@@ -2,9 +2,9 @@ package org.variantsync.studies.evolution.simulation.diff.splitting;
 
 import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import org.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
+import org.variantsync.studies.evolution.simulation.diff.lines.ContextLine;
 import org.variantsync.studies.evolution.simulation.diff.lines.Line;
 import org.variantsync.studies.evolution.simulation.diff.lines.MetaLine;
-import org.variantsync.studies.evolution.simulation.diff.lines.ContextLine;
 import org.variantsync.vevos.simulation.util.Logger;
 
 import java.io.IOException;
@@ -27,7 +27,6 @@ public class DefaultContextProvider implements IContextProvider {
     private final Path rootDir;
 
     /**
-     *
      * @param rootDir The working directory containing the files for which a context is to be determined
      */
     public DefaultContextProvider(final Path rootDir) {
@@ -36,8 +35,7 @@ public class DefaultContextProvider implements IContextProvider {
     }
 
     /**
-     *
-     * @param rootDir The working directory containing the files for which a context is to be determined
+     * @param rootDir     The working directory containing the files for which a context is to be determined
      * @param contextSize The size of the provided context (i.e., number of leading/trailing lines)
      */
     public DefaultContextProvider(final Path rootDir, final int contextSize) {
