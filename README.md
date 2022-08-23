@@ -66,7 +66,7 @@ The validation's results are printed to the terminal and the generated plots are
 **ATTENTION**
 
 > Before running or re-running the replication:
-> Make sure to delete all previously collected results by deleting the files in the "./simulation-files" directory, as they will otherwise be 
+> Make sure to clean all previously collected results by calling `./execute cleanup`. Otherwise, they will be 
 > counted as results of parallel experiment executions. We only append results data, not overwrite it, to make it 
 > possible to run multiple instances of the study in parallel.
 
