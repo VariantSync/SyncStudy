@@ -1,9 +1,9 @@
-import de.variantsync.studies.evolution.simulation.diff.DiffParser;
-import de.variantsync.studies.evolution.simulation.diff.components.*;
-import de.variantsync.studies.evolution.simulation.diff.lines.AddedLine;
-import de.variantsync.studies.evolution.simulation.diff.lines.ContextLine;
-import de.variantsync.studies.evolution.simulation.diff.lines.Line;
-import de.variantsync.studies.evolution.simulation.diff.lines.RemovedLine;
+import org.variantsync.studies.evolution.simulation.diff.DiffParser;
+import org.variantsync.studies.evolution.simulation.diff.components.*;
+import org.variantsync.studies.evolution.simulation.diff.lines.AddedLine;
+import org.variantsync.studies.evolution.simulation.diff.lines.ContextLine;
+import org.variantsync.studies.evolution.simulation.diff.lines.Line;
+import org.variantsync.studies.evolution.simulation.diff.lines.RemovedLine;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

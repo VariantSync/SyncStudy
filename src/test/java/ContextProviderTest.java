@@ -1,11 +1,11 @@
-import de.variantsync.studies.evolution.simulation.diff.DiffParser;
-import de.variantsync.studies.evolution.simulation.diff.components.FineDiff;
-import de.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
+import org.variantsync.studies.evolution.simulation.diff.DiffParser;
+import org.variantsync.studies.evolution.simulation.diff.components.FineDiff;
+import org.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import de.variantsync.studies.evolution.simulation.diff.splitting.DefaultContextProvider;
-import de.variantsync.studies.evolution.simulation.diff.splitting.DiffSplitter;
-import de.variantsync.studies.evolution.simulation.diff.splitting.IContextProvider;
+import org.variantsync.studies.evolution.simulation.diff.splitting.DefaultContextProvider;
+import org.variantsync.studies.evolution.simulation.diff.splitting.DiffSplitter;
+import org.variantsync.studies.evolution.simulation.diff.splitting.IContextProvider;
 
 import java.io.IOException;
 import java.nio.file.Files;

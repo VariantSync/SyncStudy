@@ -32,7 +32,7 @@ git clone https://github.com/VariantSync/SynchronizationStudy.git
 ```
 Then, navigate to the root of your local clone of this repository:
 ```shell
-cd SynchronizationStudy
+cd StudyRunner
 ```
 
 ### 3. Build the Docker Container

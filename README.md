@@ -49,12 +49,12 @@ This is brief overview on the most relevant directories and files:
 ```text
 ! Before running or re-running the simulation:
 ! Make sure to delete all previously collected results by deleting the files in the "./simulation-files" directory, as they will otherwise be 
-! counted as results of parallel experiment executions. We only append results data, not overwrite it, to make it 
-! possible to run multiple instances of the same experiment in parallel.
+! counted as results of parallel synchronizationStudy executions. We only append results data, not overwrite it, to make it 
+! possible to run multiple instances of the same synchronizationStudy in parallel.
 ```
 
 All of the commands in this section are assumed to be executed in a terminal with working directory at project root.
-You can **stop the execution** of any experiment by running the following command in another terminal (depending on your OS):
+You can **stop the execution** of any synchronizationStudy by running the following command in another terminal (depending on your OS):
 ```shell
 # Windows:
 .\stop-simulation.bat

@@ -30,14 +30,14 @@ then
     echo ""
     echo ""
     echo ""
-    java -jar ExperimentRunner-jar-with-dependencies.jar config-simulation.properties
+    java -jar StudyRunner-jar-with-dependencies.jar config-simulation.properties
 elif [ "$1" == 'validation' ]
 then
     echo "Running a (hopefully) short validation of the installation."
     echo ""
     echo ""
     echo ""
-    java -jar ExperimentRunner-jar-with-dependencies.jar config-validation.properties
+    java -jar StudyRunner-jar-with-dependencies.jar config-validation.properties
 else
   echo "Either fully replicate the study as presented in the paper (replication), or a do quick installation validation (validation)."
   echo "-- Bash Examples --"
