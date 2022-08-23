@@ -25,9 +25,7 @@ This is brief overview on the most relevant directories and files:
 * `reported-results-part*.zip` are archives with the raw result data reported in our paper. To evaluate them they have to be
   unpacked and copied into a single file.
 
-DiffDetective is a java library and command-line tool to parse and classify edits to variability in git histories of preprocessor-based software product lines by creating [variation tree diffs][difftree_class] and operating on them.
-
-We offer a [Docker](https://www.docker.com/) setup to easily __replicate__ the validation performed in our paper.
+We offer a [Docker](https://www.docker.com/) setup to easily __replicate__ the study performed in our paper.
 In the following, we provide a quickstart guide for running the replication.
 You can find detailed information on how to install Docker and build the container in the [INSTALL](INSTALL.md) file, including detailed descriptions of each step and troubleshooting advice.
 
