@@ -40,7 +40,7 @@ public class DefaultContextProvider implements IContextProvider {
             }
             for (int i = index - 1; i >= 0; i--) {
                 final String currentLine = " " + lines.get(i);
-                if (lineFilter.keepContext(fileDiff.newFile(), i + 1)) {
+                if (lineFilter.keepContextLine(fileDiff.newFile(), i + 1)) {
                     if (context.size() >= contextSize) {
                         break;
                     }
@@ -66,7 +66,7 @@ public class DefaultContextProvider implements IContextProvider {
             }
             for (int i = index - 1; i < lines.size(); i++) {
                 final String currentLine = " " + lines.get(i);
-                if (lineFilter.keepContext(fileDiff.oldFile(), i + 1)) {
+                if (lineFilter.keepContextLine(fileDiff.oldFile(), i + 1)) {
                     if (context.size() >= contextSize) {
                         break;
                     }

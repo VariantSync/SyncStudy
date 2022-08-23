@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class EditFilterTest {
+public class CachedPCBasedFilterTest {
     Path resourceDir = Paths.get("src", "test", "resources", "edit-filter");
 
     private void runComparison(Path pathToExpectedResult, ILineFilter lineFilter) throws IOException {

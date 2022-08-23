@@ -14,7 +14,7 @@ import de.variantsync.studies.evolution.simulation.error.Panic;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import de.variantsync.studies.evolution.simulation.diff.filter.EditFilter;
+import de.variantsync.studies.evolution.simulation.diff.filter.CachedPCBasedFilter;
 import de.variantsync.studies.evolution.simulation.diff.filter.IFileDiffFilter;
 import org.variantsync.functjonal.Result;
 import org.variantsync.functjonal.list.NonEmptyList;
@@ -521,8 +521,8 @@ public abstract class Experiment {
     }
 
     private FineDiff getFilteredDiff(final OriginalDiff originalDiff, final Artefact tracesV0, final Artefact tracesV1, final Variant target, Path oldVersionRoot, Path newVersionRoot) {
-        final EditFilter editFilter = new EditFilter(tracesV0, tracesV1, target, oldVersionRoot, newVersionRoot, 2);
-        return getFilteredDiff(originalDiff, editFilter);
+        final CachedPCBasedFilter cachedPCBasedFilter = new CachedPCBasedFilter(tracesV0, tracesV1, target, oldVersionRoot, newVersionRoot, 2);
+        return getFilteredDiff(originalDiff, cachedPCBasedFilter);
     }
 
     private <T extends IFileDiffFilter & ILineFilter> FineDiff getFilteredDiff(final OriginalDiff originalDiff, final T filter) {

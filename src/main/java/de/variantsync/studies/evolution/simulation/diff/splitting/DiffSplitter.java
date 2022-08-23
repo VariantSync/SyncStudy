@@ -30,7 +30,7 @@ public class DiffSplitter {
         // Go over all FileDiff in diff
         for (final FileDiff fileDiff : originalDiff.fileDiffs()) {
             // Only process file diffs that should be taken into account according to the filter
-            if (fileFilter.shouldKeep(fileDiff)) {
+            if (fileFilter.keepFileDiff(fileDiff)) {
                 // Split FileDiff into edit-sized FileDiffs
                 splitFileDiffs.addAll(split(fileDiff, contextProvider, lineFilter));
             }
@@ -49,14 +49,14 @@ public class DiffSplitter {
             int newIndex = 0;
             for (final Line line : hunk.content()) {
                 if (line instanceof RemovedLine) {
-                    if (lineFilter.keepEdit(fileDiff.oldFile(), hunk.location().startLineSource() + oldIndex)) {
+                    if (lineFilter.keepLineChange(fileDiff.oldFile(), hunk.location().startLineSource() + oldIndex)) {
                         final int leadContextStart = hunk.location().startLineTarget() + newIndex - 1;
                         final int trailContextStart = hunk.location().startLineSource() + oldIndex + 1;
                         fileDiffs.add(calculateMiniDiff(contextProvider, lineFilter, fileDiff, hunk, line, trailContextStart, leadContextStart, hunkLocationOffset));
                     }
                     oldIndex++;
                 } else if (line instanceof AddedLine) {
-                    if (lineFilter.keepEdit(fileDiff.newFile(), hunk.location().startLineTarget() + newIndex)) {
+                    if (lineFilter.keepLineChange(fileDiff.newFile(), hunk.location().startLineTarget() + newIndex)) {
                         final int leadContextStart = hunk.location().startLineTarget() + newIndex - 1;
                         final int trailContextStart = hunk.location().startLineSource() + oldIndex;
                         fileDiffs.add(calculateMiniDiff(contextProvider, lineFilter, fileDiff, hunk, line, trailContextStart, leadContextStart, hunkLocationOffset));
