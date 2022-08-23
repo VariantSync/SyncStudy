@@ -6,6 +6,9 @@ import org.variantsync.functjonal.Result;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Base class for various shell commands.
+ */
 public abstract class ShellCommand {
     /***
      * Return the String parts that define and configure the command execution (e.g., ["echo", "Hello World"])

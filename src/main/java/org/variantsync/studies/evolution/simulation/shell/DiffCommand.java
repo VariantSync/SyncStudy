@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Represents a shell 'diff' command that can be executed using a ShellExecutor
+ */
 public class DiffCommand extends ShellCommand {
     private static final String COMMAND = "diff";
     private final String[] files;
@@ -17,6 +20,12 @@ public class DiffCommand extends ShellCommand {
         this.files = files;
     }
 
+    /**
+     * DiffCommand configured as recommended by the documentation in 'patch' (i.e. 'man patch')
+     * @param pathA The path to the source file
+     * @param pathB The path to the target file
+     * @return A configured DiffCommand
+     */
     public static DiffCommand Recommended(final Path pathA, final Path pathB) {
         return new DiffCommand(pathA.toString(), pathB.toString())
                 .newFile()

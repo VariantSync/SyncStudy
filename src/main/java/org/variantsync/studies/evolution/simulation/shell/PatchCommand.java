@@ -4,10 +4,18 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/**
+ * Represents a shell 'patch' command that can be executed using a ShellExecutor
+ */
 public class PatchCommand extends ShellCommand {
     private static final String COMMAND = "patch";
     private final LinkedList<String> args = new LinkedList<>();
 
+    /**
+     * A PatchCommand configured as recommended in the documentation of 'patch'
+     * @param patchFile The file containing the patch
+     * @return A configured PatchCommand
+     */
     public static PatchCommand Recommended(final Path patchFile) {
         return new PatchCommand().input(patchFile).forward().strip(1).noBackup();
     }

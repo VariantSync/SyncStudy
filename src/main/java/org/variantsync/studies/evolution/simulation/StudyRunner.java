@@ -5,6 +5,9 @@ import org.variantsync.studies.evolution.simulation.experiment.SynchronizationSt
 
 import java.io.File;
 
+/**
+ * Entry point for running our study. Loads the configuration and starts the study.
+ */
 public class StudyRunner {
     public static void main(final String... args) {
         if (args.length < 1) {

@@ -3,6 +3,9 @@ package org.variantsync.studies.evolution.simulation.shell;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
+/**
+ * Represent a shell 'cp' command that can be executed using the ShellExecutor
+ */
 public class CpCommand extends ShellCommand {
     private static final String COMMAND = "cp";
     private final String from;

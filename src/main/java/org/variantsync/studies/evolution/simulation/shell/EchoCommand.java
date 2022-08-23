@@ -2,6 +2,9 @@ package org.variantsync.studies.evolution.simulation.shell;
 
 import java.util.Arrays;
 
+/**
+ * Represents a shell 'echo' command that can be executed using a ShellExecutor
+ */
 public class EchoCommand extends ShellCommand {
     private final String COMMAND = "echo";
     private final String message;

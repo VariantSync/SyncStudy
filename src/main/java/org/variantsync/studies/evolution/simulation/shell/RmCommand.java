@@ -3,6 +3,9 @@ package org.variantsync.studies.evolution.simulation.shell;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
+/**
+ * Represents a shell 'rm' command that can be executed using a ShellExecutor
+ */
 public class RmCommand extends ShellCommand {
     private static final String COMMAND = "rm";
     private final String file;
