@@ -27,6 +27,9 @@ import java.util.List;
 
 import static net.ssehub.kernel_haven.util.null_checks.NullHelpers.notNull;
 
+/**
+ * Utility functionality for preprocessing BusyBox source code for KernelHaven.
+ */
 public class BusyboxPreparation {
     /**
      * Starting point for modifying the c preprocessor source files based on Manuel Zerpies Busyfix.

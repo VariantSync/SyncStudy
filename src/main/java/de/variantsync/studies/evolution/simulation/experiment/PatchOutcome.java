@@ -43,19 +43,6 @@ public record PatchOutcome(String dataset,
         return "\"" + key + "\": " + value;
     }
 
-    public static String toJSON(final String key, final boolean value) {
-        return "\"" + key + "\": " + value;
-    }
-
-    public static String collectionToJSON(final Collection<String> collection) {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        collection.forEach(l -> sb.append("\"").append(l).append("\"").append(","));
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append("]");
-        return sb.toString();
-    }
-
     public static PatchOutcome FromJSON(final JsonObject object) {
         return new PatchOutcome(
                 object.get("dataset").getAsString(),

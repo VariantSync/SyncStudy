@@ -246,8 +246,7 @@ public class ResultAnalysis {
         printPrecisionRecall(normalTP,
                 normalFP,
                 normalTN,
-                normalFN,
-                allOutcomes.normalWrongLocation);
+                normalFN);
 
 
         System.out.println();
@@ -263,8 +262,7 @@ public class ResultAnalysis {
         printPrecisionRecall(filteredTP,
                 filteredFP,
                 filteredTN,
-                filteredFN,
-                allOutcomes.filteredWrongLocation);
+                filteredFN);
 
         System.out.println("++++++++++++++++++++++++++++++++++++++");
         System.out.println("Accuracy");
@@ -310,7 +308,7 @@ public class ResultAnalysis {
 
     }
 
-    private static void printPrecisionRecall(final long tp, final long fp, final long tn, final long fn, final long wrongLocation) {
+    private static void printPrecisionRecall(final long tp, final long fp, final long tn, final long fn) {
         final double precision = (double) tp / ((double) tp + fp);
         final double recall = (double) tp / ((double) tp + fn);
         final double f_measure = (2 * precision * recall) / (precision + recall);
@@ -425,7 +423,7 @@ public class ResultAnalysis {
         return String.format("%3.1f%s", percentage, "%");
     }
 
-    private static record ConditionTable(List<Change> tp, List<Change> fp, List<Change> tn, List<Change> fn) {
+    private record ConditionTable(List<Change> tp, List<Change> fp, List<Change> tn, List<Change> fn) {
         public long tpCount() {
             return tp.size();
         }
@@ -443,7 +441,7 @@ public class ResultAnalysis {
         }
     }
 
-    private static record AccumulatedOutcome(
+    private record AccumulatedOutcome(
             long normalTP,
             long normalFP,
             long normalTN,

@@ -1,5 +1,7 @@
 package de.variantsync.studies.evolution.simulation.experiment;
 
+import de.ovgu.featureide.fm.core.base.IFeatureModel;
+import de.ovgu.featureide.fm.core.base.IFeatureModelElement;
 import de.variantsync.studies.evolution.simulation.diff.DiffParser;
 import de.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import de.variantsync.studies.evolution.simulation.diff.components.FineDiff;
@@ -20,18 +22,23 @@ import org.variantsync.functjonal.Result;
 import org.variantsync.functjonal.list.NonEmptyList;
 import org.variantsync.vevos.simulation.feature.Variant;
 import org.variantsync.vevos.simulation.feature.config.FeatureIDEConfiguration;
+import org.variantsync.vevos.simulation.feature.sampling.FeatureIDESampler;
 import org.variantsync.vevos.simulation.feature.sampling.Sample;
+import org.variantsync.vevos.simulation.feature.sampling.Sampler;
 import org.variantsync.vevos.simulation.io.Resources;
 import org.variantsync.vevos.simulation.io.data.VariabilityDatasetLoader;
 import org.variantsync.vevos.simulation.repository.SPLRepository;
 import org.variantsync.vevos.simulation.util.LogLevel;
 import org.variantsync.vevos.simulation.util.Logger;
+import org.variantsync.vevos.simulation.util.fide.FeatureModelUtils;
 import org.variantsync.vevos.simulation.util.io.CaseSensitivePath;
 import org.variantsync.vevos.simulation.variability.SPLCommit;
 import org.variantsync.vevos.simulation.variability.VariabilityDataset;
 import org.variantsync.vevos.simulation.variability.VariabilityHistory;
 import org.variantsync.vevos.simulation.variability.pc.Artefact;
+import org.variantsync.vevos.simulation.variability.pc.SourceCodeFile;
 import org.variantsync.vevos.simulation.variability.pc.groundtruth.GroundTruth;
+import org.variantsync.vevos.simulation.variability.pc.options.ArtefactFilter;
 import org.variantsync.vevos.simulation.variability.pc.options.VariantGenerationOptions;
 import org.variantsync.vevos.simulation.variability.sequenceextraction.Domino;
 
@@ -44,7 +51,7 @@ import java.util.stream.Collectors;
 
 import static org.variantsync.vevos.simulation.VEVOS.Initialize;
 
-public abstract class Experiment {
+public class Experiment {
     protected final Path workDir;
     protected final Path debugDir;
     protected final boolean inDebug;
@@ -63,10 +70,15 @@ public abstract class Experiment {
     protected final int randomRepeats;
     protected final int numVariants;
     protected final int startID;
-    protected final EExperimentalSubject experimentalSubject;
+    protected final String experimentalSubject;
     protected final Path splRepositoryPath;
     protected final Path datasetPath;
     protected final VariabilityHistory history;
+
+    private IFeatureModel currentModel;
+    private SPLCommit commitV0Current;
+    private SPLCommit commitV1Current;
+    private final Sampler sampler;
 
     public Experiment(final ExperimentConfiguration config) {
         // Initialize the library
@@ -101,6 +113,7 @@ public abstract class Experiment {
         numVariants = config.EXPERIMENT_VARIANT_COUNT();
         startID = config.EXPERIMENT_START_ID();
         experimentalSubject = config.EXPERIMENT_SUBJECT();
+        sampler = FeatureIDESampler.CreateRandomSampler(numVariants);
 
         history = init();
     }
@@ -264,7 +277,7 @@ public abstract class Experiment {
 
                             /* Result Evaluation */
                             final PatchOutcome patchOutcome = ResultAnalysis.processOutcome(
-                                    experimentalSubject.name(),
+                                    experimentalSubject,
                                     runID,
                                     source.getName(),
                                     target.getName(),
@@ -324,7 +337,60 @@ public abstract class Experiment {
         return fineResult;
     }
 
-    protected abstract Sample sample(SPLCommit parentCommit, SPLCommit childCommit);
+    protected Sample sample(final SPLCommit commitV0, final SPLCommit commitV1) {
+        if (currentModel == null || commitV0Current != commitV0 || commitV1Current != commitV1) {
+            Logger.status("Loading feature models.");
+            commitV0Current = commitV0;
+            commitV1Current = commitV1;
+            final IFeatureModel modelV0 = commitV0.featureModel().run().orElseThrow();
+            final IFeatureModel modelV1 = commitV1.featureModel().run().orElseThrow();
+            // We use the union of both models to sample configurations, so that all features are included
+            Logger.status("Creating model union.");
+            currentModel = FeatureModelUtils.UnionModel(modelV0, modelV1);
+
+            featureModelDebug(modelV0, modelV1);
+        }
+        return sampler.sample(currentModel);
+    }
+
+    protected void preprocessSPLRepositories(final SPLRepository splRepositoryV0, final SPLRepository splRepositoryV1) {
+        // Stash all changes and drop the stash. This is a workaround as the JGit API does not support restore.
+        Logger.status("Cleaning state of V0 repo.");
+        try {
+            splRepositoryV0.stashCreate(true);
+
+            splRepositoryV0.dropStash();
+            Logger.status("Cleaning state of V1 repo.");
+            splRepositoryV1.stashCreate(true);
+            splRepositoryV1.dropStash();
+        } catch (final IOException | GitAPIException e) {
+            panic("Was not able to preprocess SPL repository.", e);
+        }
+    }
+
+    protected void postprocessSPLRepositories(final SPLRepository splRepositoryV0, final SPLRepository splRepositoryV1) {
+        Logger.status("Normalizing BusyBox files...");
+        try {
+            BusyboxPreparation.normalizeDir(splRepositoryV0.getPath().toFile());
+            BusyboxPreparation.normalizeDir(splRepositoryV1.getPath().toFile());
+        } catch (final IOException e) {
+            Logger.error("", e);
+            panic("Was not able to normalize BusyBox.", e);
+        }
+    }
+
+    private void featureModelDebug(final IFeatureModel modelV0, final IFeatureModel modelV1) {
+        if (inDebug) {
+            final Collection<String> featuresInDifference = FeatureModelUtils.getSymmetricFeatureDifference(modelV0, modelV1);
+            try {
+                Files.write(debugDir.resolve("features-V0.txt"), modelV0.getFeatures().stream().map(IFeatureModelElement::getName).collect(Collectors.toSet()));
+                Files.write(debugDir.resolve("features-V1.txt"), modelV1.getFeatures().stream().map(IFeatureModelElement::getName).collect(Collectors.toSet()));
+                Files.write(debugDir.resolve("variables-in-difference.txt"), featuresInDifference);
+            } catch (final IOException e) {
+                Logger.error("Was not able to write commit data.", e);
+            }
+        }
+    }
 
     private void generateVariant(final SPLCommit parentCommit,
                                  final SPLCommit childCommit,
@@ -418,9 +484,6 @@ public abstract class Experiment {
         return new SimpleFileFilter(filesToKeep);
     }
 
-    protected abstract void postprocessSPLRepositories(SPLRepository parentRepo, SPLRepository childRepo);
-
-    protected abstract void preprocessSPLRepositories(SPLRepository parentRepo, SPLRepository childRepo);
 
 
     private VariabilityHistory init() {
@@ -546,6 +609,15 @@ public abstract class Experiment {
         Logger.error(message, e);
         e.printStackTrace();
         throw new Panic(message);
+    }
+
+    private record SimpleFileFilter(
+            Set<Path> filesToKeep) implements ArtefactFilter<SourceCodeFile> {
+
+        @Override
+        public boolean shouldKeep(final SourceCodeFile sourceCodeFile) {
+            return filesToKeep.contains(sourceCodeFile.getFile().path());
+        }
     }
 
 

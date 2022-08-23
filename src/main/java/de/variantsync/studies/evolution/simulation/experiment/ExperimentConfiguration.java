@@ -37,8 +37,8 @@ public class ExperimentConfiguration {
         }
     }
 
-    public EExperimentalSubject EXPERIMENT_SUBJECT() {
-        return EExperimentalSubject.valueOf(config.getString(EXPERIMENT_SUBJECT));
+    public String EXPERIMENT_SUBJECT() {
+        return config.getString(EXPERIMENT_SUBJECT);
     }
 
     public int EXPERIMENT_REPEATS() {

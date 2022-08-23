@@ -1,8 +1,6 @@
 package de.variantsync.studies.evolution.simulation;
 
-import de.variantsync.studies.evolution.simulation.experiment.ExperimentBusyBox;
 import de.variantsync.studies.evolution.simulation.experiment.ExperimentConfiguration;
-import de.variantsync.studies.evolution.simulation.experiment.EExperimentalSubject;
 import de.variantsync.studies.evolution.simulation.experiment.Experiment;
 
 import java.io.File;
@@ -14,12 +12,7 @@ public class SynchronizationStudy {
         }
         final ExperimentConfiguration config = new ExperimentConfiguration(new File(args[0]));
 
-        final Experiment experiment;
-        if (config.EXPERIMENT_SUBJECT() == EExperimentalSubject.BUSYBOX) {
-            experiment = new ExperimentBusyBox(config);
-        } else {
-            throw new IllegalArgumentException("Only BUSYBOX is possible.");
-        }
+        final Experiment experiment = new Experiment(config);
 
         try {
             experiment.run();
