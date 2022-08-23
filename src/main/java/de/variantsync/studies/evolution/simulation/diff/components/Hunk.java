@@ -9,6 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A Hunk represents a changed text block in the difference between two versions of a file.
+ * @param location The location of the hunk in the file
+ * @param content The content of the hunk (i.e., context and changed lines)
+ */
 public record Hunk(HunkLocation location, List<Line> content) implements IDiffComponent {
 
     @Override

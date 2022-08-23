@@ -2,6 +2,11 @@ package de.variantsync.studies.evolution.simulation.diff.components;
 
 import java.util.Objects;
 
+/**
+ * The location of a hunk which is the combination of its location in the source and target file of UNIX diff.
+ * @param startLineSource The line number of the hunk's start in the source file
+ * @param startLineTarget The line number of the hunk's start in the target file
+ */
 public record HunkLocation(int startLineSource, int startLineTarget) {
 
     @Override
