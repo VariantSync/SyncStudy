@@ -25,7 +25,10 @@ import java.util.stream.Collectors;
  * Performs the result analysis presented in our paper.
  */
 public class ResultAnalysis {
+    private static final String DIV = "++++++++++++++++++++++++++++++++++++++";
+    private static final String LINE_SEP = System.lineSeparator();
     static Path resultPath = Path.of("simulation-files").toAbsolutePath().resolve("results.txt");
+    static Path resultSummaryPath = Path.of("simulation-files").toAbsolutePath().resolve("results-summary.txt");
 
     /**
      * Analyze the outcome of applying patches to a target variant
@@ -276,56 +279,61 @@ public class ResultAnalysis {
      * @throws IOException If the results cannot be loaded
      */
     public static void main(final String... args) throws IOException {
+        StringBuilder sb = new StringBuilder();
         final AccumulatedOutcome allOutcomes = loadResultObjects(resultPath);
-        System.out.println();
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
-        System.out.println("Patch Success");
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
-        printTechnicalSuccess(allOutcomes);
+        sb.append(LINE_SEP);
+        sb.append(DIV).append(LINE_SEP);
+        sb.append("Patch Success").append(LINE_SEP);
+        sb.append(DIV).append(LINE_SEP);
+        printTechnicalSuccess(sb, allOutcomes);
 
-        System.out.println();
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
-        System.out.println("Precision / Recall");
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
+        sb.append(LINE_SEP);
+        sb.append(DIV).append(LINE_SEP);
+        sb.append("Precision / Recall").append(LINE_SEP);
+        sb.append(DIV).append(LINE_SEP);
 
         long normalTP = allOutcomes.normalTP;
         long normalFP = allOutcomes.normalFP;
         long normalTN = allOutcomes.normalTN;
         long normalFN = allOutcomes.normalFN;
 
-        System.out.println("Without Domain Knowledge");
-        printPrecisionRecall(normalTP,
+        sb.append("Without Domain Knowledge").append(LINE_SEP);
+        printPrecisionRecall(sb,
+                normalTP,
                 normalFP,
                 normalTN,
                 normalFN);
 
 
-        System.out.println();
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
-        System.out.println("With Domain Knowledge");
-        System.out.println();
+        sb.append(LINE_SEP);
+        sb.append(DIV).append(LINE_SEP);
+        sb.append("With Domain Knowledge").append(LINE_SEP);
+        sb.append(LINE_SEP);
 
         long filteredTP = allOutcomes.filteredTP;
         long filteredFP = allOutcomes.filteredFP;
         long filteredTN = allOutcomes.filteredTN;
         long filteredFN = allOutcomes.filteredFN;
 
-        printPrecisionRecall(filteredTP,
+        printPrecisionRecall(sb,
+                filteredTP,
                 filteredFP,
                 filteredTN,
                 filteredFN);
 
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
-        System.out.println("Accuracy");
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
+        sb.append(DIV).append(LINE_SEP);
+        sb.append("Accuracy").append(LINE_SEP);
+        sb.append(DIV).append(LINE_SEP);
 
-        printAccuracy(normalTP, normalFP, normalTN, normalFN, "Normal");
-        printAccuracy(filteredTP, filteredFP, filteredTN, filteredFN, "Filtered");
+        printAccuracy(sb, normalTP, normalFP, normalTN, normalFN, "Normal");
+        printAccuracy(sb, filteredTP, filteredFP, filteredTN, filteredFN, "Filtered");
 
-        System.out.println("++++++++++++++++++++++++++++++++++++++");
+        sb.append(DIV).append(LINE_SEP);
+        System.out.print(sb);
+        Files.writeString(resultSummaryPath, sb);
     }
 
-    private static void printAccuracy(long tp, long fp, long tn, long fn, String name) {
+    private static void printAccuracy(StringBuilder sb, long tp, long fp, long tn, long fn, String name) {
         long expectedCount = tp + tn;
         long allPositives = tp + fn;
         long allNegative = fp + tn;
@@ -333,44 +341,44 @@ public class ResultAnalysis {
         double trueNegativeRate = (double) tn / (double) allNegative;
         long all = tp + fp + tn + fn;
 
-        System.out.printf("%s patching achieved the expected result %d out of %d times%n", name, expectedCount, all);
-        System.out.printf("Accuracy: %s%n", percentage(expectedCount, all));
-        System.out.printf("Balanced Accuracy: %1.2f%n%n", ((truePositiveRate + trueNegativeRate) / 2.0));
+        sb.append(String.format("%s patching achieved the expected result %d out of %d times", name, expectedCount, all)).append(LINE_SEP);
+        sb.append(String.format("Accuracy: %s", percentage(expectedCount, all))).append(LINE_SEP);
+        sb.append(String.format("Balanced Accuracy: %1.2f", ((truePositiveRate + trueNegativeRate) / 2.0))).append(LINE_SEP).append(LINE_SEP);
     }
 
-    private static void printTechnicalSuccess(final AccumulatedOutcome allOutcomes) {
+    private static void printTechnicalSuccess(final StringBuilder sb, final AccumulatedOutcome allOutcomes) {
         final long commitPatches = allOutcomes.commitPatches();
         final long commitSuccessNormal = allOutcomes.commitSuccessNormal();
-        System.out.printf("%d of %d commit-sized patch applications succeeded (%s)%n", commitSuccessNormal, commitPatches, percentage(commitSuccessNormal, commitPatches));
+        sb.append(String.format("%d of %d commit-sized patch applications succeeded (%s)", commitSuccessNormal, commitPatches, percentage(commitSuccessNormal, commitPatches))).append(LINE_SEP);
 
         final long fileNormal = allOutcomes.fileNormal;
         final long fileSuccessNormal = allOutcomes.fileSuccessNormal;
 
-        System.out.printf("%d of %d file-sized patch applications succeeded (%s)%n", fileSuccessNormal, fileNormal, percentage(fileSuccessNormal, fileNormal));
+        sb.append(String.format("%d of %d file-sized patch applications succeeded (%s)", fileSuccessNormal, fileNormal, percentage(fileSuccessNormal, fileNormal))).append(LINE_SEP);
 
         final long lineNormal = allOutcomes.lineNormal;
         final long lineSuccessNormal = allOutcomes.lineSuccessNormal;
-        System.out.printf("%d of %d line-sized patch applications succeeded (%s)%n", lineSuccessNormal, lineNormal, percentage(lineSuccessNormal, lineNormal));
+        sb.append(String.format("%d of %d line-sized patch applications succeeded (%s)", lineSuccessNormal, lineNormal, percentage(lineSuccessNormal, lineNormal))).append(LINE_SEP);
 
         // -------------------
         final long lineFiltered = allOutcomes.lineFiltered;
         final long lineSuccessFiltered = allOutcomes.lineSuccessFiltered;
-        System.out.printf("%d of %d line-sized patch applications succeeded after filtering (%s)%n", lineSuccessFiltered, lineFiltered, percentage(lineSuccessFiltered, lineFiltered));
+        sb.append(String.format("%d of %d line-sized patch applications succeeded after filtering (%s)%n", lineSuccessFiltered, lineFiltered, percentage(lineSuccessFiltered, lineFiltered))).append(LINE_SEP);
 
     }
 
-    private static void printPrecisionRecall(final long tp, final long fp, final long tn, final long fn) {
+    private static void printPrecisionRecall(StringBuilder sb, final long tp, final long fp, final long tn, final long fn) {
         final double precision = (double) tp / ((double) tp + fp);
         final double recall = (double) tp / ((double) tp + fn);
         final double f_measure = (2 * precision * recall) / (precision + recall);
 
-        System.out.println("TP: " + tp);
-        System.out.println("FP: " + fp);
-        System.out.println("TN: " + tn);
-        System.out.println("FN: " + fn);
-        System.out.printf("Precision: %1.2f%n", precision);
-        System.out.printf("Recall: %1.2f%n", recall);
-        System.out.printf("F-Measure: %1.2f%n", f_measure);
+        sb.append("TP: ").append(tp).append(LINE_SEP);
+        sb.append("FP: ").append(fp).append(LINE_SEP);
+        sb.append("TN: ").append(tn).append(LINE_SEP);
+        sb.append("FN: ").append(fn).append(LINE_SEP);
+        sb.append(String.format("Precision: %1.2f", precision)).append(LINE_SEP);
+        sb.append(String.format("Recall: %1.2f", recall)).append(LINE_SEP);
+        sb.append(String.format("F-Measure: %1.2f", f_measure)).append(LINE_SEP);
     }
 
     public static AccumulatedOutcome loadResultObjects(final Path path) throws IOException {
