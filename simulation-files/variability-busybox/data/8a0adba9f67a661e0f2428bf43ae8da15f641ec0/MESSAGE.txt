@@ -1,0 +1,6 @@
+awk: code shrink: avoid duplicate NUL checks and strlen()
+
+function                                             old     new   delta
+awk_printf                                           665     652     -13
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

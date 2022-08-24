@@ -1,0 +1,10 @@
+basename: implement -a and -s SUFFIX
+
+function                                             old     new   delta
+basename_main                                        145     207     +62
+packed_usage                                       33914   33950     +36
+.rodata                                           104241  104250      +9
+------------------------------------------------------------------------------
+(add/remove: 0/0 grow/shrink: 3/0 up/down: 107/0)             Total: 107 bytes
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

@@ -1,0 +1,11 @@
+ash: stopped jobs should only prevent exit from interactive shell
+
+When the user tries to exit an interactive shell with stopped jobs
+present the shell issues a warning and only exits if the user
+insists by trying to exit again.
+
+This shouldn't apply to non-interactive shells.
+
+Reported-by: Roberto A. Foglietta <roberto.foglietta@gmail.com>
+Signed-off-by: Ron Yorston <rmy@pobox.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

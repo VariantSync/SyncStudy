@@ -1,0 +1,29 @@
+ash: parser: Save and restore heredoclist in expandstr
+
+Upstream commit:
+
+    Date: Sun, 17 May 2020 23:36:25 +1000
+    parser: Save and restore heredoclist in expandstr
+
+    On Sun, May 17, 2020 at 01:19:28PM +0100, Harald van Dijk wrote:
+    > This still does not restore the state completely. It does not clean up any
+    > pending heredocs. I see:
+    >
+    >   $ PS1='$(<<EOF "'
+    >   src/dash: 1: Syntax error: Unterminated quoted string
+    >   $(<<EOF ":
+    >   >
+    >
+    > That is, after entering the ':' command, the shell is still trying to read
+    > the heredoc from the prompt.
+
+    This patch saves and restores the heredoclist in expandstr.
+
+    It also removes a bunch of unnecessary volatiles as those variables
+    are only referenced in case of a longjmp other than one started by
+    a signal like SIGINT.
+
+function                                             old     new   delta
+expandstr                                            268     255     -13
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

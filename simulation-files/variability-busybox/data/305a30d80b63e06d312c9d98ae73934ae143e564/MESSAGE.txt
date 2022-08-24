@@ -1,0 +1,18 @@
+awk: fix read beyond end of buffer
+
+Commit 7d06d6e18 (awk: fix printf %%) can cause awk printf to read
+beyond the end of a strduped buffer:
+
+  2349      while (*f && *f != '%')
+  2350          f++;
+  2351      c = *++f;
+
+If the loop terminates because a NUL character is detected the
+character after the NUL is read.  This can result in failures
+depending on the value of that character.
+
+function                                             old     new   delta
+awk_printf                                           672     665      -7
+
+Signed-off-by: Ron Yorston <rmy@pobox.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

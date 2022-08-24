@@ -1,3 +1,5 @@
-*
-!.gitignore
-!variability-busybox/
+results.txt
+results-summary.txt
+results.txt.cache
+plots/
+busybox/

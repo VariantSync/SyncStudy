@@ -1,0 +1,6 @@
+blkdiscard: accept -f (force) as no-op
+
+function                                             old     new   delta
+.rodata                                           104250  104251      +1
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

@@ -1,0 +1,12 @@
+ash: eval: Check nflag in evaltree instead of cmdloop
+
+Upstream commit:
+
+    Date: Thu, 4 Jun 2020 21:53:55 +1000
+    eval: Check nflag in evaltree instead of cmdloop
+
+    This patch moves the nflag check from cmdloop into evaltree.  This
+    is so that nflag will be in force even if we enter the shell via a
+    path other than cmdloop, e.g., through sh -c.
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

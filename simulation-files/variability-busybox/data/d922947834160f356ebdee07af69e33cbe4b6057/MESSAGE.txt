@@ -1,0 +1,3 @@
+Bump version to 1.34.0
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

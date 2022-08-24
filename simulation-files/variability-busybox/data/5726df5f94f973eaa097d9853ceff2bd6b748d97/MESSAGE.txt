@@ -1,0 +1,21 @@
+ash: let ignoreeof only affect interactive shells
+
+Commit fb7d6c89 from Harald van Dijk's gwsh variant of ash
+(https://github.com/hvdijk/gwsh):
+
+    ignoreeof is documented as only having an effect for interactive shells,
+    but is implemented as having mostly the same effect for interactive
+    shells as for non-interactive shells. Change the implementation to match
+    the documentation.
+
+    Test case:
+
+      $SHELL -o ignoreeof /dev/null
+
+function                                             old     new   delta
+cmdloop                                              359     361      +2
+------------------------------------------------------------------------------
+(add/remove: 0/0 grow/shrink: 1/0 up/down: 2/0)                 Total: 2 bytes
+
+Signed-off-by: Ron Yorston <rmy@pobox.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

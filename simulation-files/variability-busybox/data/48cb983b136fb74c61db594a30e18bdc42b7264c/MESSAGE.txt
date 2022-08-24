@@ -1,0 +1,39 @@
+ash: parser: Get rid of PEOA
+
+Upstream commit:
+
+    Date: Wed, 27 May 2020 12:19:13 +1000
+    parser: Get rid of PEOA
+
+    PEOA is a special character used to mark an alias as being finished
+    so that we don't enter an infinite loop with nested aliases.  It
+    complicates the parser because we have to ensure that it is skipped
+    where necessary and not copied to the resulting token text.
+
+    This patch removes it and instead delays the marking of aliases
+    until the second pgetc.  This has the same effect as the current
+    PEOA code while keeping the complexities within the input code.
+
+This adds ~32 bytes of global data:
+
+function                                             old     new   delta
+__pgetc                                                -     512    +512
+freestrings                                            -      95     +95
+popfile                                               86     110     +24
+pushstring                                           141     160     +19
+basepf                                                76      84      +8
+syntax_index_table                                   258     257      -1
+S_I_T                                                 30      28      -2
+.rodata                                           104255  104247      -8
+pgetc_without_PEOA                                    13       -     -13
+xxreadtoken                                          230     215     -15
+popstring                                            158     120     -38
+readtoken1                                          3110    3045     -65
+pgetc                                                547      22    -525
+------------------------------------------------------------------------------
+(add/remove: 2/1 grow/shrink: 3/7 up/down: 658/-667)           Total: -9 bytes
+   text	   data	    bss	    dec	    hex	filename
+1043102	    559	   5020	1048681	 100069	busybox_old
+1043085	    559	   5052	1048696	 100078	busybox_unstripped
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
