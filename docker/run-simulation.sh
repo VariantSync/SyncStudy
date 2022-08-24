@@ -1,10 +1,34 @@
 #! /bin/bash
+
+# Function for evaluating results and plotting figures
+evaluation () {
+    echo "Running result evaluation"
+    java -jar ResultEval-jar-with-dependencies.jar
+
+    echo "Plotting figures"
+    PD=/home/user/simulation-files/plots
+    if test -d "$PD"; then
+      echo ""
+    else
+      mkdir $PD
+    fi
+    cd plots || exit
+    python3 main.py /home/user/simulation-files/results.txt
+    cd ..
+
+    echo "Cleaning temporary directories"
+    rm -rf /home/user/simulation-files/workdir*
+}
+
+
 if [ "$1" == '' ]; then
-  echo "Either fully replicate the study as presented in the paper (replication), or a do quick installation validation (validation)."
-  echo "-- Bash Examples --"
+  echo "Either fully replicate the study as presented in the paper (replication), do quick installation validation (validation),
+  clean old result data (cleanup), or evaluate existing result data (evaluation)."
+  echo "-- Bash examples --"
   echo "Replicate study: './execute.sh replication'"
   echo "Validate the installation: './execute.sh validation'"
   echo "Clean old result files: './execute.sh cleanup'"
+  echo "Evaluate results in 'simulation-files/results.txt': './execute.sh evaluation'"
   exit
 fi
 
@@ -37,31 +61,22 @@ if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
     java -jar StudyRunner-jar-with-dependencies.jar config-validation.properties
   fi
 
-  echo "Running result evaluation"
-  java -jar ResultEval-jar-with-dependencies.jar
-
-  echo "Plotting figures"
-  PD=/home/user/simulation-files/plots
-  if test -d "$PD"; then
-    echo ""
-  else
-    mkdir $PD
-  fi
-  cd plots || exit
-  python3 main.py /home/user/simulation-files/results.txt
-  cd ..
-
-  echo "Cleaning temporary directories"
-  rm -rf /home/user/simulation-files/workdir*
-
+  # Run evaluation after replication or validation
+  evaluation
+elif [ "$1" == 'evaluation' ]; then
+  echo "Running evaluation of results.txt"
+  evaluation
 elif [ "$1" == 'cleanup' ]; then
   echo "Running cleanup of old result files."
   rm -r /home/user/simulation-files/plots
   rm /home/user/simulation-files/results*
 else
-  echo "Either fully replicate the study as presented in the paper (replication), or a do quick installation validation (validation)."
-  echo "-- Bash Examples --"
+  echo "Either fully replicate the study as presented in the paper (replication), do quick installation validation (validation),
+  clean old result data (cleanup), or evaluate existing result data (evaluation)."
+  echo "-- Bash examples --"
   echo "Replicate study: './execute.sh replication'"
   echo "Validate the installation: './execute.sh validation'"
+  echo "Clean old result files: './execute.sh cleanup'"
+  echo "Evaluate results in 'simulation-files/results.txt': './execute.sh evaluation'"
   exit
 fi
