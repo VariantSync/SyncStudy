@@ -32,7 +32,7 @@ git clone https://github.com/VariantSync/SynchronizationStudy.git
 ```
 Then, navigate to the root of your local clone of this repository:
 ```shell
-cd StudyRunner
+cd SynchronizationStudy
 ```
 
 ### 3. Build the Docker Container
@@ -47,8 +47,8 @@ To build the Docker container you can run the `build` script corresponding to yo
 ## 4. Validate the Correct Installation
 
 ### Running the Validation
-The validation runs less than one percent of the original study, in order to produce fast results through which the correct installation is confirmed. 
-To execute the validation you can run the `execute` script corresponding to your operating system with `validation` as first argument.
+The validation runs less than one percent of the original study to produce results fastly, to confirm a correct installation. 
+To execute the validation, you can run the `execute` script corresponding to your operating system with `validation` as first argument.
 
 #### Windows:
 `.\execute.bat validation`
@@ -61,7 +61,7 @@ To execute the validation you can run the `execute` script corresponding to your
 > #### Linux/Mac (bash):
 > `./stop-execution.sh`
 
-While the validation is running, the progress is constantly printed to the terminal, in which the container is running. The output should look similar the following:
+While the validation is running, it's progress is constantly printed to the terminal in which the container is running. The output should look similar to the following:
 
 ```
 
@@ -92,9 +92,9 @@ While the validation is running, the progress is constantly printed to the termi
 The results of the validation are stored in the [simulation-files](simulation-files) directory.
 
 ### Expected Output of the Validation
-The results are saved in a simple [results](simulation-files/results.txt) file in the [simulation-files](simulation-files) directory. For each run, a JSON object, containing the required evaluation data, is written to the results file. 
+The results are saved in a simple [results](simulation-files/results.txt) file in the [simulation-files](simulation-files) directory. For each run, a JSON object containing the required evaluation data is written to the results file. 
 
-A summary of the results is printed to the console at the end of the validation. This summary should look similar to: 
+A summary of the results is printed to the console at the end of the validation. This summary should look similar to this: 
 ```
 [12:22:10.315467038] [STATUS] [main] [Experiment] All done.
 Running result evaluation
