@@ -69,10 +69,6 @@
                     </execution>
                    </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>2.22.2</version>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -99,11 +95,6 @@
             <groupId>org.variantsync.vevos</groupId>
             <artifactId>simulation</artifactId>
             <version>1.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.variantsync</groupId>
-            <artifactId>functjonal</artifactId>
-            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
