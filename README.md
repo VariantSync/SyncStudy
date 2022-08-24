@@ -78,7 +78,7 @@ To execute the replication you can run the `execute` script corresponding to you
 
 ### 4. View the results in the [simulation-files](simulation-files) directory
 All raw results are stored in a [results](simulation-files/results.txt) file.
-The aggregated results are printed to the terminal at the end of the execution.
+The aggregated results are printed to the terminal at the end of the execution and saved to the [results-summary](simulation-files/results-summary.txt) file.
 
 Moreover, the results comprise the [plots](simulation-files/plots) that are part of our paper.
 
