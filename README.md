@@ -88,7 +88,7 @@ This replication package is documented with javadoc. The documentation can be ac
 
 ### Docker Experiment Configuration
 By default, the properties used by Docker are configured to run the experiments as presented in our paper. We offer the
-possibility to change the default configuration.
+possibility to change the default configuration, for example to change the number of repetitions or generated variants.
 * Open the properties file [`config-replication.properties`](docker/config-replication.properties).
 * Change the properties to your liking.
 * Rebuild the docker image as described above.
