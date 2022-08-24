@@ -46,7 +46,6 @@ To build the Docker container you should run the `build` script corresponding to
 > Therefore, we offer a short validation (5-10 minutes) which runs a small subset of the study.
 > You can run it by providing "validation" as argument instead of "replication" (i.e., `.\execute.bat validation`,  `./execute.sh validation`).
 > If you want to stop the execution, you can call the provided script for stopping the container in a separate terminal.
-> When restarted, the execution will continue processing by restarting at the last unfinished commit.
 > #### Windows:
 > `.\stop-execution.bat`
 > #### Linux/Mac (bash):
