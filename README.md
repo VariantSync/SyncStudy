@@ -17,13 +17,12 @@ This is brief overview on the most relevant directories and files:
     * `docker-resources/config-simulation.properties` configures the simulation as presented in our paper.
     * `docker-resources/config-validation.properties` configures a quick simulation for validating the correctness of the Docker setup.
 * [`docs`](docs) contains the Javadocs of our source code. You can open the Javadocs in your [browser][documentation].
-* [`local-maven-repo`](local-maven-repo) contains additional libraries that are considered by Maven.
+* [`local-maven-repo`](local-maven-repo) contains additional libraries.
 * [`plots`](plots) contains pythons scripts for plotting the figures shown in our paper. 
 * [`simulation-files`](simulation-files) is the working directory of the study. This directory initially contains the dataset with the domain knowledge that we extracted from BusyBox. The files comprise lists
-  of commits that state whether a commit could be processed, and the domain knowledge for over 8,000 commits. For about 5,000 commits, the complete domain knowledge could be extracted. All results can be found here
+  of commits that state whether a commit could be processed, and the domain knowledge for over 8,000 commits. For about 5,000 commits, the complete domain knowledge could be extracted. After running our study, all results can also be found here.
 * [`src`](src/main/java/org/variantsync/studies/evolution/simulation) contains the source files used to run the simulation.
-* `reported-results-part*.zip` are archives with the raw result data reported in our paper. To evaluate them they have to be
-  unpacked and copied into a single file.
+* `reported-results-part*.zip` are archives with the raw result data reported in our paper. These files are not used by the replication of our study, but instead can be used to inspect the results of our study without running it. To evaluate the results, they have to be unpacked and copied into a single file.
 
 We offer a [Docker](https://www.docker.com/) setup to easily __replicate__ the study performed in our paper.
 In the following, we provide a quickstart guide for running the replication.
@@ -47,7 +46,7 @@ To build the Docker container you should run the `build` script corresponding to
 > Therefore, we offer a short validation (5-10 minutes) which runs a small subset of the study.
 > You can run it by providing "validation" as argument instead of "replication" (i.e., `.\execute.bat validation`,  `./execute.sh validation`).
 > If you want to stop the execution, you can call the provided script for stopping the container in a separate terminal.
-> When restarted, the execution will continue processing by restarting at the last unfinished repository.
+> When restarted, the execution will continue processing by restarting at the last unfinished commit.
 > #### Windows:
 > `.\stop-execution.bat`
 > #### Linux/Mac (bash):
