@@ -20,6 +20,9 @@ Our study can be replicated on any system supporting [Docker](https://docs.docke
 Docker will take care of all requirements and dependencies to replicate our validation.
 
 ### Without Docker
-To replicate the study on a system without Docker, JDK17 and [Maven](https://maven.apache.org/what-is-maven.html) are required. Please note that Intellij and Eclipse support Maven out-of-the-box - there should be no need to install Maven manually when using an IDE to replicate our study.
+To replicate the study on a system without Docker, JDK17 and [Maven](https://maven.apache.org/what-is-maven.html) are required.
+Please note that Intellij and Eclipse support Maven out-of-the-box - there should be no need to install Maven manually when using an IDE to replicate our study.
+
+We also recommend to run the study under Linux, as Window's file system might not support all file paths. 
 
 Dependencies to other packages are documented in the maven build file ([pom.xml](pom.xml)) and are handled automatically by Maven.
