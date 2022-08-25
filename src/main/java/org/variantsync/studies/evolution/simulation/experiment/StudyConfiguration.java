@@ -9,6 +9,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.variantsync.vevos.simulation.util.LogLevel;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Determines the configuration of our study.
@@ -33,6 +34,8 @@ public class StudyConfiguration {
     // Each commit pair that is considered has its own id. All ids < startid are skipped when running the study. This
     // property is required for the short installation validation.
     private static final String EXPERIMENT_STARTID = "experiment.startid";
+    // The directory for saving the results
+    private static final String EXPERIMENT_DIR_RESULTS = "experiment.dir.results";
     // Configuration object holding key-value properties.
     private final Configuration config;
 
@@ -118,5 +121,12 @@ public class StudyConfiguration {
      */
     public int EXPERIMENT_START_ID() {
         return config.getInt(EXPERIMENT_STARTID, 0);
+    }
+
+    /**
+     * @return The path to the results directory
+     */
+    public String EXPERIMENT_DIR_RESULTS() {
+       return config.getString(EXPERIMENT_DIR_RESULTS);
     }
 }

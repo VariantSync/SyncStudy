@@ -12,6 +12,7 @@ import org.variantsync.vevos.simulation.util.Logger;
 import org.variantsync.vevos.simulation.variability.SPLCommit;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,8 +28,6 @@ import java.util.stream.Collectors;
 public class ResultAnalysis {
     private static final String DIV = "++++++++++++++++++++++++++++++++++++++";
     private static final String LINE_SEP = System.lineSeparator();
-    static Path resultPath = Path.of("simulation-files").toAbsolutePath().resolve("results.txt");
-    static Path resultSummaryPath = Path.of("simulation-files").toAbsolutePath().resolve("results-summary.txt");
 
     /**
      * Analyze the outcome of applying patches to a target variant
@@ -279,8 +278,16 @@ public class ResultAnalysis {
      * @throws IOException If the results cannot be loaded
      */
     public static void main(final String... args) throws IOException {
+        if (args.length < 1) {
+            System.err.println("The first argument should provide the path to the configuration file that is to be used");
+        }
+        final StudyConfiguration config = new StudyConfiguration(new File(args[0]));
+        final Path resultsDir = Path.of(config.EXPERIMENT_DIR_RESULTS());
+        final Path resultFile = resultsDir.toAbsolutePath().resolve("results.txt");
+        final Path resultSummaryFile = resultsDir.toAbsolutePath().resolve("results-summary.txt");
+
         StringBuilder sb = new StringBuilder();
-        final AccumulatedOutcome allOutcomes = loadResultObjects(resultPath);
+        final AccumulatedOutcome allOutcomes = loadResultObjects(resultFile);
         sb.append(LINE_SEP);
         sb.append(DIV).append(LINE_SEP);
         sb.append("Patch Success").append(LINE_SEP);
@@ -330,7 +337,7 @@ public class ResultAnalysis {
 
         sb.append(DIV).append(LINE_SEP);
         System.out.print(sb);
-        Files.writeString(resultSummaryPath, sb);
+        Files.writeString(resultSummaryFile, sb);
     }
 
     private static void printAccuracy(StringBuilder sb, long tp, long fp, long tn, long fn, String name) {

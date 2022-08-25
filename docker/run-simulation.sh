@@ -3,7 +3,7 @@
 # Function for evaluating results and plotting figures
 evaluation () {
     echo "Running result evaluation"
-    java -jar ResultEval-jar-with-dependencies.jar
+    java -jar ResultEval-jar-with-dependencies.jar $1
 
     echo "Plotting figures"
     PD=/home/user/simulation-files/plots
@@ -12,8 +12,16 @@ evaluation () {
     else
       mkdir $PD
     fi
+
+    PD=/home/user/results/plots
+    if test -d "$PD"; then
+        echo ""
+    else
+      mkdir $PD
+    fi
+
     cd plots || exit
-    python3 main.py /home/user/simulation-files/results.txt
+    python3 main.py /home/user/results/results.txt
     cd ..
 
     echo "Cleaning temporary directories"
@@ -52,20 +60,19 @@ if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
     echo ""
     echo ""
     echo ""
-    java -jar StudyRunner-jar-with-dependencies.jar config-simulation.properties
+    java -jar StudyRunner-jar-with-dependencies.jar config-replication.properties
+    evaluation config-simulation.properties
   elif [ "$1" == 'validation' ]; then
     echo "Running a (hopefully) short validation of the installation."
     echo ""
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-validation.properties
+    evaluation config-validation.properties
   fi
-
-  # Run evaluation after replication or validation
-  evaluation
 elif [ "$1" == 'evaluation' ]; then
   echo "Running evaluation of results.txt"
-  evaluation
+  evaluation config-replication.properties
 elif [ "$1" == 'cleanup' ]; then
   echo "Running cleanup of old result files."
   rm -r /home/user/simulation-files/plots
