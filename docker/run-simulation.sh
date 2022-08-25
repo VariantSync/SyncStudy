@@ -75,8 +75,8 @@ elif [ "$1" == 'evaluation' ]; then
   evaluation config-replication.properties
 elif [ "$1" == 'cleanup' ]; then
   echo "Running cleanup of old result files."
-  rm -r /home/user/simulation-files/plots
-  rm /home/user/simulation-files/results*
+  rm -r /home/user/results/plots
+  rm /home/user/results/results*
 else
   echo "Either fully replicate the study as presented in the paper (replication), do quick installation validation (validation),
   clean old result data (cleanup), or evaluate existing result data (evaluation)."

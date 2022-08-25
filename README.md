@@ -19,6 +19,7 @@ This is brief overview on the most relevant directories and files:
 * [`docs`](docs) contains the Javadocs of our source code. You can open the Javadocs in your [browser][documentation].
 * [`local-maven-repo`](local-maven-repo) contains additional libraries.
 * [`plots`](plots) contains pythons scripts for plotting the figures shown in our paper. 
+* [`results`](results) all results and generated plots will be stored in this directory. Initially it is empty. 
 * [`simulation-files`](simulation-files) is the working directory of the study. This directory initially contains the dataset with the domain knowledge that we extracted from BusyBox. The files comprise lists
   of commits that state whether a commit could be processed, and the domain knowledge for over 8,000 commits. For about 5,000 commits, the complete domain knowledge could be extracted. After running our study, all results can also be found here.
 * [`src`](src/main/java/org/variantsync/studies/evolution/simulation) contains the source files used to run the simulation.
@@ -58,7 +59,7 @@ To execute the validation you can run the `execute` script corresponding to your
 #### Linux/Mac (bash):
 `./execute.sh validation`
 
-The validation's results are printed to the terminal and the generated plots are stored in the [simulation-files/plots](simulation-files/plots) directory.
+The validation's results are printed to the terminal and saved to the [results](results) directory. The generated plots are stored in the [results/plots](results/plots) directory.
 
 ### 3. Start the replication
 **ATTENTION**
@@ -77,10 +78,10 @@ To execute the replication you can run the `execute` script corresponding to you
 
 
 ### 4. View the results in the [simulation-files](simulation-files) directory
-All raw results are stored in a [results](simulation-files/results.txt) file.
-The aggregated results are printed to the terminal at the end of the execution and saved to the [results-summary](simulation-files/results-summary.txt) file.
+All raw results are stored in a [results](results/results.txt) file.
+The aggregated results are printed to the terminal at the end of the execution and saved to the [results-summary](results/results-summary.txt) file.
 
-Moreover, the results comprise the [plots](simulation-files/plots) that are part of our paper.
+Moreover, the results comprise the [plots](results/plots) that are part of our paper.
 
 ### Documentation
 
