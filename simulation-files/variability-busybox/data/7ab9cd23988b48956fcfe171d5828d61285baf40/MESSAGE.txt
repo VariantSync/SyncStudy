@@ -1,0 +1,12 @@
+libbb: make bb_lookup_port() abort on bad port names
+
+Also, no need to preserve errno
+
+function                                             old     new   delta
+.rodata                                           104247  104241      -6
+bb_lookup_port                                        97      83     -14
+nc_main                                             1039    1018     -21
+------------------------------------------------------------------------------
+(add/remove: 0/0 grow/shrink: 0/3 up/down: 0/-41)             Total: -41 bytes
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

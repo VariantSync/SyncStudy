@@ -1,0 +1,11 @@
+getopt: code shrink
+
+function                                             old     new   delta
+.rodata                                            99277   99290     +13
+normalize                                            177     142     -35
+getopt_main                                          675     622     -53
+------------------------------------------------------------------------------
+(add/remove: 0/0 grow/shrink: 1/2 up/down: 13/-88)            Total: -75 bytes
+
+Signed-off-by: Ron Yorston <rmy@pobox.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

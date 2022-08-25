@@ -21,6 +21,7 @@ WORKDIR /home/user
 # Copy the docker resources
 COPY docker/* ./
 COPY plots ./plots
+COPY simulation-files ./simulation-files
 
 # Copy all relevant files from the previous stage
 COPY --from=0 /home/user/target ./target

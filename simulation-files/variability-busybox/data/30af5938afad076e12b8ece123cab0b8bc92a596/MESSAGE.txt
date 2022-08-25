@@ -1,0 +1,33 @@
+ash: parser: Fix handling of empty aliases
+
+Upstream commit:
+
+    Date: Tue, 28 Apr 2020 01:15:26 +1000
+    parser: Fix handling of empty aliases
+
+    Dash was incorrectly handling empty aliases. When attempting to use an
+    empty alias with nothing else, I'm (incorrectly) prompted for more
+    input:
+
+    ```
+    $ alias empty=''
+    $ empty
+    >
+    ```
+
+    Other shells (e.g., bash, yash) correctly handle the lone, empty alias as an
+    empty command:
+
+    ```
+    $ alias empty=''
+    $ empty
+    $
+    ```
+
+    The problem here is that we incorrectly enter the loop eating TNLs
+    in readtoken().  This patch fixes it by setting checkkwd correctly.
+
+function                                             old     new   delta
+list                                                 351     355      +4
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

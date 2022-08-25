@@ -1,0 +1,6 @@
+libbb: reuse "bad port" error message string
+
+function                                             old     new   delta
+.rodata                                           104251  104232     -19
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

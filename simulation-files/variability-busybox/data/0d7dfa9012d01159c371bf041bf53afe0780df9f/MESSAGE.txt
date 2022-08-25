@@ -1,0 +1,3 @@
+ash: support testsuite for !FEATURE_SUID_CONFIG_QUIET configs
+
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

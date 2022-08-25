@@ -57,6 +57,8 @@ import static org.variantsync.vevos.simulation.VEVOS.Initialize;
 public class SynchronizationStudy {
     // Working directory
     protected final Path workDir;
+    // Directory for storing results
+    protected final Path resultsDir;
     // Directory for saving debug files
     protected final Path debugDir;
     // Flag whether the study is executed in debug mode
@@ -126,9 +128,10 @@ public class SynchronizationStudy {
             Logger.error("Was not able to initialize workdir", e);
             throw new UncheckedIOException(e);
         }
+        resultsDir = Path.of(config.EXPERIMENT_DIR_RESULTS());
         debugDir = workDir.resolve("DEBUG");
         inDebug = config.EXPERIMENT_DEBUG();
-        resultFile = mainDir.resolve("results.txt");
+        resultFile = resultsDir.resolve("results.txt");
         splRepositoryPath = Path.of(config.EXPERIMENT_DIR_SPL());
         datasetPath = Path.of(config.EXPERIMENT_DIR_DATASET());
         splCopyA = workDir.resolve("SPL-A");

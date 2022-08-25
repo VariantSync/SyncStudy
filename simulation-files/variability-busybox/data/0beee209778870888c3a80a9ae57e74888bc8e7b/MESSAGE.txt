@@ -1,0 +1,19 @@
+ash: fix ignoreeof option
+
+The ignoreeof option should prevent an interactive shell from
+exiting on EOF.  This hasn't worked in BusyBox ash since commit
+727752d2d (ash: better fix for ash -c 'echo 5&' and ash -c 'sleep 5&'
+with testcase).
+
+Commit 3b4d04b77e (ash: input: Allow two consecutive calls to pungetc)
+pulled in improved support for multiple calls to pungetc from dash,
+thus rendering much of commit 727752d2d obsolete.  Removing this old
+code fixes the problem with ignoreeof.
+
+function                                             old     new   delta
+__pgetc                                              605     587     -18
+------------------------------------------------------------------------------
+(add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-18)             Total: -18 bytes
+
+Signed-off-by: Ron Yorston <rmy@pobox.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
