@@ -116,5 +116,4 @@ docker system prune -a
 
 Please refer to the official documentation on how to remove specific [images](https://docs.docker.com/engine/reference/commandline/image_rm/) and [containers](https://docs.docker.com/engine/reference/commandline/container_rm/) from your system.
 
-[documentation]: https://variantsync.github.io/SynchronizationStudy/docs/
-[website]: https://variantsync.github.io/SynchronizationStudy/
+[documentation]: https://variantsync.github.io/SynchronizationStudy/
