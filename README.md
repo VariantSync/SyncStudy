@@ -1,5 +1,4 @@
 ![Maven](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/maven.yml/badge.svg)
-![Docker](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/docker-image.yml/badge.svg)
 [![Documentation](https://img.shields.io/badge/Documentation-read%20here-blue)][documentation]
 [![Requirements](https://img.shields.io/badge/System%20Requirements-read%20here-blue)](INSTALL.md)
 [![Install](https://img.shields.io/badge/Installation%20Instructions-read%20here-blue)](INSTALL.md)
