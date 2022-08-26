@@ -1,3 +1,11 @@
+![Maven](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/maven.yml/badge.svg)
+![Docker](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/docker-image.yml/badge.svg)
+[![Documentation](https://img.shields.io/badge/Documentation-available-grass)][documentation]
+[![Requirements](https://img.shields.io/badge/System%20Requirements-read%20here-blue)](INSTALL.md)
+[![Install](https://img.shields.io/badge/Installation%20Instructions-read%20here-blue)](INSTALL.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](LICENSE)
+
+
 # Quantifying the Potential to Automate the Synchronization of Variants in Clone-and-Own
 This is the replication package of the paper _"Quantifying the Potential to Automate the Synchronization of Variants in Clone-and-Own"_ accepted at
 the 38th IEEE International Conference on Software Maintenance and Evolution (ICSME 2022).
