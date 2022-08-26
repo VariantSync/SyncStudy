@@ -47,7 +47,9 @@ cp target/ResultEval-jar-with-dependencies* .
 
 if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
   if [ "$1" == 'replication' ]; then
-    echo "Running full study replication. This will take several weeks depending on your system."
+    echo "Running full study replication. This will take several weeks depending on your system. You can stop the execution
+    in a separate terminal by calling the stop-execution script. You can resume the replication by specifying the
+    corresponding 'runid' in the properties. Please refer to the README for more information. "
     echo ""
     echo ""
     echo ""
