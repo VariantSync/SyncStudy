@@ -89,11 +89,11 @@ To execute the replication you can run the `execute` script corresponding to you
 
 If you stop the replication at a certain point, you can resume it by setting the desired `runID` in the [properties](docker/config-replication.properties). You can find the `runID` of the last available result at the end of the [results.txt](results/results.txt) (cf. next section).
 
-### 4. View the results in the [simulation-files](simulation-files) directory
+### 4. View the results in the [results](results) directory
 All raw results are stored in a [results](results/results.txt) file.
-The aggregated results are printed to the terminal at the end of the execution and saved to the [results-summary](results/results-summary.txt) file.
+The aggregated results are printed to the terminal at the end of the execution and saved to the [results-summary](results/results-summary.txt) file. The aggregated results are shown in Table 1 in our paper. 
 
-Moreover, the results comprise the [plots](results/plots) that are part of our paper.
+Moreover, the results comprise the [plots](results/plots) that are part of our paper. There are three plots: [rq1_applicability](results/plots/rq1_applicability.pdf) corresponds to Fig. 5 in our paper, [rq2_correctness](results/plots/rq2_correctness.pdf) to Fig. 6, and [rq3_domain_knowledge](results/plots/rq3_domain_knowledge.pdf) to Fig. 7.
 
 ### Documentation
 
