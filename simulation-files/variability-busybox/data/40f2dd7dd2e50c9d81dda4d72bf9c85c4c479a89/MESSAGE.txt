@@ -1,3 +1,0 @@
-httpd: fix config deps
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

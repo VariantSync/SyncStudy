@@ -51,6 +51,9 @@ public class DefaultContextProvider implements IContextProvider {
             // Read the file's content
             if (Files.exists(rootDir.resolve(fileDiff.newFile()))) {
                 lines = Files.readAllLines(rootDir.resolve(fileDiff.newFile()));
+                if (lines.isEmpty()) {
+                    return new LinkedList<>();
+                }
             } else {
                 return new LinkedList<>();
             }
@@ -82,6 +85,9 @@ public class DefaultContextProvider implements IContextProvider {
             // Read the file's content
             if (Files.exists(rootDir.resolve(fileDiff.oldFile()))) {
                 lines = Files.readAllLines(rootDir.resolve(fileDiff.oldFile()));
+                if (lines.isEmpty()) {
+                    return new LinkedList<>();
+                }
             } else {
                 return new LinkedList<>();
             }

@@ -1,3 +1,0 @@
-hush: fix set -n to act immediately, not just after run_list()
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

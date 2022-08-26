@@ -3,7 +3,7 @@
 # Function for evaluating results and plotting figures
 evaluation () {
     echo "Running result evaluation"
-    java -jar ResultEval-jar-with-dependencies.jar $1
+    java -jar ResultEval-jar-with-dependencies.jar "$1"
 
     echo "Plotting figures"
     PD=/home/user/simulation-files/plots
@@ -46,28 +46,30 @@ cp target/*Runner*-jar-with* .
 cp target/ResultEval-jar-with-dependencies* .
 
 if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
-  BB=/home/user/simulation-files/busybox
-  if test -d "$BB"; then
-    echo "Found BusyBox sources."
-  else
-    echo "BusyBox sources not cloned yet. Cloning repository"
-    cd simulation-files || exit
-    git clone git://busybox.net/busybox.git
-    cd ..
-  fi
   if [ "$1" == 'replication' ]; then
-    echo "Running full study replication. This might take up to a month depending on your system."
+    echo "Running full study replication. This will take several weeks depending on your system. You can stop the execution
+    in a separate terminal by calling the stop-execution script. You can resume the replication by specifying the
+    corresponding 'runid' in the properties. Please refer to the README for more information. "
     echo ""
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-replication.properties
-    evaluation config-simulation.properties
+    if [ $? ]; then
+      mkdir /home/user/results/ERROR
+      cp -r /home/user/simulation-files /home/user/results/ERROR/
+      cp -r /home/user/TARGET /home/user/results/ERROR/
+    fi
+    evaluation config-replication.properties
   elif [ "$1" == 'validation' ]; then
     echo "Running a (hopefully) short validation of the installation."
     echo ""
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-validation.properties
+    if [ $? ]; then
+      mkdir /home/results/ERROR
+      cp -r /home/user/workdir* /home/user/results/ERROR/
+    fi
     evaluation config-validation.properties
   fi
 elif [ "$1" == 'evaluation' ]; then

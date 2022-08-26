@@ -1,5 +1,0 @@
-ash: LINENO starts from 0 in -c SCRIPT mode
-
-The var_LINENO3.tests fails for hush: it does start from 0, but does not increment.
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

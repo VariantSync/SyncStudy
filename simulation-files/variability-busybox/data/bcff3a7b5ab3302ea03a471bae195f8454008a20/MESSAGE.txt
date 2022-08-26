@@ -1,3 +1,0 @@
-shell/ash_test/run-all: unset locale/language variables
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

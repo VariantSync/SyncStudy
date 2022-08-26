@@ -129,7 +129,7 @@ public class SynchronizationStudy {
             throw new UncheckedIOException(e);
         }
         resultsDir = Path.of(config.EXPERIMENT_DIR_RESULTS());
-        debugDir = workDir.resolve("DEBUG");
+        debugDir = resultsDir.resolve("DEBUG");
         inDebug = config.EXPERIMENT_DEBUG();
         resultFile = resultsDir.resolve("results.txt");
         splRepositoryPath = Path.of(config.EXPERIMENT_DIR_SPL());
