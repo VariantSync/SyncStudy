@@ -8,3 +8,4 @@ target
 /reported-results.txt.cache
 /plots/out/
 plots/__pycache__/
+simulation-files/busybox/

@@ -47,18 +47,27 @@ cp target/ResultEval-jar-with-dependencies* .
 
 if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
   if [ "$1" == 'replication' ]; then
-    echo "Running full study replication. This might take up to a month depending on your system."
+    echo "Running full study replication. This will take several weeks depending on your system."
     echo ""
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-replication.properties
-    evaluation config-simulation.properties
+    if [ $? ]; then
+      mkdir /home/user/results/ERROR
+      cp -r /home/user/simulation-files /home/user/results/ERROR/
+      cp -r /home/user/TARGET /home/user/results/ERROR/
+    fi
+    evaluation config-replication.properties
   elif [ "$1" == 'validation' ]; then
     echo "Running a (hopefully) short validation of the installation."
     echo ""
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-validation.properties
+    if [ $? ]; then
+      mkdir /home/results/ERROR
+      cp -r /home/user/workdir* /home/user/results/ERROR/
+    fi
     evaluation config-validation.properties
   fi
 elif [ "$1" == 'evaluation' ]; then

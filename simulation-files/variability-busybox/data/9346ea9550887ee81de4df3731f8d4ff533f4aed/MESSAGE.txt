@@ -1,9 +1,0 @@
-df: "support" -H as an alias of -h
-
-function                                             old     new   delta
-df_main                                             1065    1068      +3
-.rodata                                           104232  104233      +1
-------------------------------------------------------------------------------
-(add/remove: 0/0 grow/shrink: 2/0 up/down: 4/0)                 Total: 4 bytes
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

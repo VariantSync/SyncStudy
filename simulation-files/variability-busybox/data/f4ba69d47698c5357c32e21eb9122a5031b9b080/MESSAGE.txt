@@ -1,9 +1,0 @@
-shuf: make -i 99999999990-100000000000 work even on 32 bits
-
-function                                             old     new   delta
-shuf_main                                            443     501     +58
-.rodata                                           104238  104245      +7
-------------------------------------------------------------------------------
-(add/remove: 0/0 grow/shrink: 2/0 up/down: 65/0)               Total: 65 bytes
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

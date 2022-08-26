@@ -1,6 +1,0 @@
-chat: hopefully fix infinite spinning on input EOF
-
-function                                             old     new   delta
-chat_main                                           1295    1303      +8
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

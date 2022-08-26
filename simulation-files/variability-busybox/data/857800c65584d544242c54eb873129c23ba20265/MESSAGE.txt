@@ -1,6 +1,0 @@
-awk: never return NULL from awk_printf()
-
-function                                             old     new   delta
-awk_printf                                           651     628     -23
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

@@ -76,12 +76,12 @@ public class ResultAnalysis {
         // Determine the number of failed file-level patches (without filtering)
         fileNormalFailed = new HashSet<>(rejectsNormal.fileDiffs().stream().map(fd -> fd.oldFile().toString()).collect(Collectors.toSet())).size();
         fileNormalFailed += skippedFilesNormal.size();
-        Logger.status("" + fileNormalFailed + " of " + fileNormal + " normal file-sized patches failed.");
+        Logger.info("" + fileNormalFailed + " of " + fileNormal + " normal file-sized patches failed.");
 
         // Determine the number of failed line-level patches (without filtering)
         lineNormalFailed = rejectsNormal.fileDiffs().stream().mapToInt(fd -> fd.hunks().size()).sum();
         lineNormalFailed += normalPatch.content().stream().filter(fd -> skippedFilesNormal.contains(fd.oldFile().toString())).mapToInt(fd -> fd.hunks().size()).sum();
-        Logger.status("" + lineNormalFailed + " of " + lineNormal + " normal line-sized patches failed");
+        Logger.info("" + lineNormalFailed + " of " + lineNormal + " normal line-sized patches failed");
 
         // Number of tried file-level patches (with filtering)
         final int fileFiltered = new HashSet<>(filteredPatch.content().stream().map(fd -> fd.oldFile().toString()).collect(Collectors.toList())).size();
@@ -98,12 +98,12 @@ public class ResultAnalysis {
         // Determine the number of failed file-level patches (with filtering)
         fileFilteredFailed = new HashSet<>(rejectsFiltered.fileDiffs().stream().map(fd -> fd.oldFile().toString()).collect(Collectors.toList())).size();
         fileFilteredFailed += skippedFilesFiltered.size();
-        Logger.status("" + fileFilteredFailed + " of " + fileFiltered + " filtered file-sized patches failed.");
+        Logger.info("" + fileFilteredFailed + " of " + fileFiltered + " filtered file-sized patches failed.");
 
         // Determine the number of failed line-level patches (with filtering)
         lineFilteredFailed = rejectsFiltered.fileDiffs().stream().mapToInt(fd -> fd.hunks().size()).sum();
         lineFilteredFailed += filteredPatch.content().stream().filter(fd -> skippedFilesFiltered.contains(fd.oldFile().toString())).mapToInt(fd -> fd.hunks().size()).sum();
-        Logger.status("" + lineFilteredFailed + " of " + lineFiltered + " filtered line-sized patches failed");
+        Logger.info("" + lineFilteredFailed + " of " + lineFiltered + " filtered line-sized patches failed");
 
         // Calculate the condition table (without filtering): true positives, false positive, true negatives, and false negatives
         final ConditionTable normalConditionTable = calculateConditionTable(normalPatch, normalPatch, resultDiffNormal, sourceChanges);

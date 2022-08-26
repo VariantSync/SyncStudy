@@ -1,9 +1,0 @@
-hush: fix var_LINENO3.tests failure
-
-function                                             old     new   delta
-parse_and_run_string                                  40      62     +22
-i_getch                                              105     102      -3
-------------------------------------------------------------------------------
-(add/remove: 0/0 grow/shrink: 1/1 up/down: 22/-3)              Total: 19 bytes
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

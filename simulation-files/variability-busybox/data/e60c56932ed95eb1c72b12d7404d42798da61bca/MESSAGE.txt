@@ -1,6 +1,0 @@
-awk: code shrink
-
-function                                             old     new   delta
-awk_printf                                           652     651      -1
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>

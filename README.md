@@ -87,6 +87,7 @@ To execute the replication you can run the `execute` script corresponding to you
 #### Linux/Mac (bash):
 `./execute.sh replication`
 
+If you stop the replication at a certain point, you can resume it by setting the desired `runID` in the [properties](docker/config-replication.properties). You can find the `runID` of the last available result at the end of the [results.txt](results/results.txt) (cf. next section).
 
 ### 4. View the results in the [simulation-files](simulation-files) directory
 All raw results are stored in a [results](results/results.txt) file.
