@@ -38,7 +38,7 @@ In the following, we provide a quickstart guide for running the replication.
 You can find detailed information on how to install Docker and build the container in the [INSTALL](INSTALL.md) file, including detailed descriptions of each step and troubleshooting advice. Information about the software and hardware requirements can be found in the [REQUIREMENTS](REQUIREMENTS.md) file.
 
 ## Study Replication
-[Docker might be very slow on Windows](https://www.createit.com/blog/make-docker-on-windows-fast-again-2022/). Therefore, we recommend replicating the study on any Linux distro or on WSL2. 
+[Docker might be slow on Windows](https://www.createit.com/blog/make-docker-on-windows-fast-again-2022/). Therefore, we recommend replicating the study on any Linux distro or on WSL2. 
 
 ### 0. Preparation
 - Start the docker deamon.
