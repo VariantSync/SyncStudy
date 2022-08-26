@@ -1,4 +1,5 @@
-![Maven](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/maven.yml/badge.svg)
+![Maven](https://github.com/VariantSync/SyncStudy/actions/workflows/maven.yml/badge.svg)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7025599.svg)](https://doi.org/10.5281/zenodo.7025599)
 [![Documentation](https://img.shields.io/badge/Documentation-read%20here-blue)][documentation]
 [![Requirements](https://img.shields.io/badge/System%20Requirements-read%20here-blue)](INSTALL.md)
 [![Install](https://img.shields.io/badge/Installation%20Instructions-read%20here-blue)](INSTALL.md)
@@ -15,7 +16,7 @@ the results that we report in the paper.
 ## Obtaining the Artifacts
 Clone the repository to a location of your choice using [git](https://git-scm.com/):
   ```
-  git clone https://github.com/VariantSync/SynchronizationStudy.git
+  git clone https://github.com/VariantSync/SyncStudy.git
   ```
 
 ## Project Structure
@@ -125,4 +126,4 @@ docker system prune -a
 
 Please refer to the official documentation on how to remove specific [images](https://docs.docker.com/engine/reference/commandline/image_rm/) and [containers](https://docs.docker.com/engine/reference/commandline/container_rm/) from your system.
 
-[documentation]: https://variantsync.github.io/SynchronizationStudy/
+[documentation]: https://variantsync.github.io/SyncStudy/
