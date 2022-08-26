@@ -21,8 +21,8 @@ Clone the repository to a location of your choice using [git](https://git-scm.co
 ## Project Structure
 This is brief overview on the most relevant directories and files:
 * [`docker`](docker) contains the script and property files used by the Docker containers.
-    * `docker-resources/config-simulation.properties` configures the simulation as presented in our paper.
-    * `docker-resources/config-validation.properties` configures a quick simulation for validating the correctness of the Docker setup.
+    * [`docker/config-replication.properties`](docker/config-replication.properties) configures the simulation as presented in our paper.
+    * [`docker/config-validation.properties`](docker/config-validation.properties) configures a quick simulation for validating the correctness of the Docker setup.
 * [`docs`](docs) contains the Javadocs of our source code. You can open the Javadocs in your [browser][documentation].
 * [`local-maven-repo`](local-maven-repo) contains additional libraries.
 * [`plots`](plots) contains pythons scripts for plotting the figures shown in our paper. 
