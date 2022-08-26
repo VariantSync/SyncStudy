@@ -7,7 +7,7 @@ We recommend to run the simulation on a system with at least __16GB__ of primary
 ### Secondary Memory  
 I/O operations have a considerable impact on the total runtime of the simulation. Therefore, we recommend storing the repository on an SSD, and to configure Docker to store its data (e.g., images and containers) on an SSD as well. 
 
-The repository requires about __4GB__ of space. The Docker image and container require about __2GB__ of space. __In total__, we recommend to have at least __10GB__ of free space on the used storage device.
+The repository requires about __4GB__ of space. The Docker image and container require about __20GB__ of space as they contain the extracted ground truth. __In total__, we recommend to have at least __30GB__ of free space on the used storage device.
 
 
 
