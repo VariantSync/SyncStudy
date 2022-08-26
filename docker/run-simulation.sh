@@ -54,7 +54,7 @@ if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-replication.properties
-    if [ $? ]; then
+    if [ $? -eq 1 ]; then
       mkdir /home/user/results/ERROR
       cp -r /home/user/simulation-files /home/user/results/ERROR/
       cp -r /home/user/TARGET /home/user/results/ERROR/
@@ -66,7 +66,7 @@ if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
     echo ""
     echo ""
     java -jar StudyRunner-jar-with-dependencies.jar config-validation.properties
-    if [ $? ]; then
+    if [ $? -eq 1 ]; then
       mkdir /home/results/ERROR
       cp -r /home/user/workdir* /home/user/results/ERROR/
     fi
