@@ -3,7 +3,7 @@
 # Function for evaluating results and plotting figures
 evaluation () {
     echo "Running result evaluation"
-    java -jar ResultEval-jar-with-dependencies.jar $1
+    java -jar ResultEval-jar-with-dependencies.jar "$1"
 
     echo "Plotting figures"
     PD=/home/user/simulation-files/plots
@@ -46,15 +46,6 @@ cp target/*Runner*-jar-with* .
 cp target/ResultEval-jar-with-dependencies* .
 
 if [ "$1" == 'replication' ] || [ "$1" == 'validation' ]; then
-  BB=/home/user/simulation-files/busybox
-  if test -d "$BB"; then
-    echo "Found BusyBox sources."
-  else
-    echo "BusyBox sources not cloned yet. Cloning repository"
-    cd simulation-files || exit
-    git clone git://busybox.net/busybox.git
-    cd ..
-  fi
   if [ "$1" == 'replication' ]; then
     echo "Running full study replication. This might take up to a month depending on your system."
     echo ""

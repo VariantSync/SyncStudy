@@ -13,7 +13,7 @@ RUN mvn package || exit
 FROM alpine:3.16.2
 
 RUN apk update
-RUN apk add --no-cache --upgrade openjdk17 bash patch git python3 py3-matplotlib
+RUN apk add --no-cache --upgrade openjdk17 bash patch git python3 py3-matplotlib unzip
 # Create a user
 RUN adduser --disabled-password  --home /home/user --gecos '' user
 WORKDIR /home/user
@@ -25,6 +25,11 @@ COPY simulation-files ./simulation-files
 
 # Copy all relevant files from the previous stage
 COPY --from=0 /home/user/target ./target
+
+# Extract BusyBox
+WORKDIR /home/user/simulation-files
+RUN unzip busybox.zip
+WORKDIR /home/user
 
 # Adjust permissions
 RUN chown user:user /home/user -R
