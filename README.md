@@ -1,3 +1,11 @@
+![Maven](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/maven.yml/badge.svg)
+![Docker](https://github.com/VariantSync/SynchronizationStudy/actions/workflows/docker-image.yml/badge.svg)
+[![Documentation](https://img.shields.io/badge/Documentation-available-grass)][documentation]
+[![Requirements](https://img.shields.io/badge/System%20Requirements-read%20here-blue)](INSTALL.md)
+[![Install](https://img.shields.io/badge/Installation%20Instructions-read%20here-blue)](INSTALL.md)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](LICENSE)
+
+
 # Quantifying the Potential to Automate the Synchronization of Variants in Clone-and-Own
 This is the replication package of the paper _"Quantifying the Potential to Automate the Synchronization of Variants in Clone-and-Own"_ accepted at
 the 38th IEEE International Conference on Software Maintenance and Evolution (ICSME 2022).
@@ -24,6 +32,7 @@ This is brief overview on the most relevant directories and files:
   of commits that state whether a commit could be processed, and the domain knowledge for over 8,000 commits. For about 5,000 commits, the complete domain knowledge could be extracted. After running our study, all results can also be found here.
 * [`src`](src/main/java/org/variantsync/studies/evolution/simulation) contains the source files used to run the simulation.
 * `reported-results-part*.zip` are archives with the raw result data reported in our paper. These files are not used by the replication of our study, but instead can be used to inspect the results of our study without running it. To evaluate the results, they have to be unpacked and copied into a single file.
+* [`synchronization-study.pdf`](synchronization-study.pdf) is the pdf file of our ICSME paper (Submission 109).
 
 We offer a [Docker](https://www.docker.com/) setup to easily __replicate__ the study performed in our paper.
 In the following, we provide a quickstart guide for running the replication.
