@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM --platform=linux/amd64 openjdk:17-alpine
 
 # Prepare the environment
 RUN apk add maven
@@ -10,7 +10,7 @@ COPY local-maven-repo local-maven-repo
 COPY pom.xml .
 RUN mvn package || exit
 
-FROM alpine:3.16.2
+FROM --platform=linux/amd64 alpine:3.16.2
 
 RUN apk update
 RUN apk add --no-cache --upgrade openjdk17 bash diffutils patch git python3 py3-matplotlib unzip

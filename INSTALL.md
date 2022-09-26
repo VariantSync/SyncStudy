@@ -196,3 +196,14 @@ The created plots should look similar to the plots shown below.
 
 `Fix:` If there is a _simulation-files_ directory, delete it with elevated permission (e.g., `sudo rm -r results`). 
 Then, execute `git restore simulation-files` to restore the deleted directory.
+
+### Failed to create LLB definition: No match for platform in manifest
+Please contact us if you encounter the following issue while building the Docker image:
+```
+=> CANCELED [internal] load metadata for docker.io/library/alpine:3.16.2                                                                                                                                                                       1.1s
+=> ERROR [internal] load metadata for docker.io/library/openjdk:17-alpine
+failed to solve with frontend dockerfile.v0: failed to create LLB definition: no match for platform in manifest … : not found 
+```
+One of the artifact's reviewers made us aware of the issue. 
+We tried to address it to the hints found in [this](https://stackoverflow.com/questions/68984133/error-failed-to-solve-with-frontend-dockerfile-v0-failed-to-create-llb-definit) Stackoverflow thread. 
+However, we do not have a system on which we could reproduce the issue and could therefore not verify whether it is fixed. 
