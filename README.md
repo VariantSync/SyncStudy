@@ -48,6 +48,10 @@ You can find detailed information on how to install Docker and build the contain
 
 ### 1. Build the Docker container
 To build the Docker container you should run the `build` script corresponding to your operating system.
+
+> Note: As an alternative to building the Docker image yourself, we also provide a prebuilt image via [Zenodo](https://doi.org/10.5281/zenodo.7025599).
+> You can load it in Docker with `docker load < sync-study-image.tar`
+
 #### Windows:
 `.\build.bat`
 #### Linux/Mac (bash):
