@@ -30,9 +30,6 @@ COPY --from=0 /home/user/target ./target
 WORKDIR /home/user/simulation-files
 RUN unzip -oq busybox.zip
 
-# Extract ground truth
-WORKDIR /home/user/simulation-files/variability-busybox/data
-RUN unzip -oq \*.zip
 WORKDIR /home/user
 
 # Adjust permissions

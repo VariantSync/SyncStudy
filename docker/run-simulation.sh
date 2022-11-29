@@ -40,6 +40,13 @@ if [ "$1" == '' ]; then
   exit
 fi
 
+
+# Extract ground truth
+cd /home/user/simulation-files/variability-busybox/data || exit
+echo "Unpacking ground truth. This may take a minute..."
+unzip -nq \*.zip
+echo "done."
+
 cd /home/user || exit
 
 cp target/*Runner*-jar-with* .
