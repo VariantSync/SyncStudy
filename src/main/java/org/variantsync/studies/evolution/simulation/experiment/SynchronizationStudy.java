@@ -5,13 +5,11 @@ import de.ovgu.featureide.fm.core.base.IFeature;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureModelElement;
 import de.ovgu.featureide.fm.core.base.IFeatureModelFactory;
-import de.ovgu.featureide.fm.core.base.impl.FMFactoryManager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jetbrains.annotations.NotNull;
 import org.tinylog.Logger;
 import org.jetbrains.annotations.Nullable;
 import org.variantsync.functjonal.Result;
-import org.variantsync.functjonal.list.NonEmptyList;
 import org.variantsync.studies.evolution.simulation.diff.DiffParser;
 import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import org.variantsync.studies.evolution.simulation.diff.components.FineDiff;
@@ -33,17 +31,14 @@ import org.variantsync.vevos.simulation.feature.sampling.Sampler;
 import org.variantsync.vevos.simulation.io.Resources;
 import org.variantsync.vevos.simulation.io.data.VariabilityDatasetLoader;
 import org.variantsync.vevos.simulation.repository.SPLRepository;
-import org.variantsync.vevos.simulation.util.fide.FeatureModelUtils;
 import org.variantsync.vevos.simulation.util.io.CaseSensitivePath;
 import org.variantsync.vevos.simulation.variability.SPLCommit;
 import org.variantsync.vevos.simulation.variability.VariabilityDataset;
-import org.variantsync.vevos.simulation.variability.VariabilityHistory;
 import org.variantsync.vevos.simulation.variability.pc.Artefact;
 import org.variantsync.vevos.simulation.variability.pc.SourceCodeFile;
 import org.variantsync.vevos.simulation.variability.pc.groundtruth.GroundTruth;
 import org.variantsync.vevos.simulation.variability.pc.options.ArtefactFilter;
 import org.variantsync.vevos.simulation.variability.pc.options.VariantGenerationOptions;
-import org.variantsync.vevos.simulation.variability.sequenceextraction.Domino;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -104,15 +99,14 @@ public class SynchronizationStudy {
     // Path to the ground truth dataset
     protected final Path datasetPath;
     // Evolution history of the subject
-    protected final VariabilityHistory history;
+    final List<SPLCommit> commits;
+    final Set<String> commitSet;
     // The variant sampler
     private final Sampler sampler;
     // The feature model for which variants are sampled
     private IFeatureModel currentModel;
-    // The considered parent commit
-    private SPLCommit commitV0Current;
-    // The considered child commit
-    private SPLCommit commitV1Current;
+    // The considered commit
+    private SPLCommit currentCommit;
 
     /**
      * Initialize the study from the given configuration
@@ -154,7 +148,9 @@ public class SynchronizationStudy {
         experimentalSubject = config.EXPERIMENT_SUBJECT();
         sampler = FeatureIDESampler.CreateRandomSampler(numVariants);
 
-        history = init();
+        commits = init();
+        commitSet = new HashSet<>(commits.size());
+        commits.forEach(c -> commitSet.add(c.id()));
     }
 
     // Read a rejects file
@@ -185,25 +181,24 @@ public class SynchronizationStudy {
         Logger.info("Starting diffing and patching...");
         long runID = 0;
         int commitCount = 0;
-        final long historySize =
-                        history.commitSequences().stream().mapToLong(Collection::size).sum();
+        final long historySize = this.commits.size();
         Logger.info("There are " + historySize + " commit pairs to work on.");
-        for (final NonEmptyList<SPLCommit> relatedCommits : history.commitSequences()) {
+        for (final SPLCommit childCommit : this.commits) {
             // Increase one extra time for the first parent in the sequence
             commitCount++;
-            SPLCommit parentCommit;
-            SPLCommit childCommit = relatedCommits.get(0);
-            for (int childID = 1; childID < relatedCommits.size(); childID++) {
-                // Skip pairs until the start ID has been reached.
-                if (commitCount < startID) {
-                    Logger.debug("Skipped pair " + commitCount);
-                    commitCount++;
-                    continue;
-                }
-                // The old child becomes the next parent
-                parentCommit = childCommit;
-                // The next descendant is selected as new child
-                childCommit = relatedCommits.get(childID);
+            // Skip pairs until the start ID has been reached.
+            if (commitCount < startID) {
+                Logger.info("Skipped commit " + commitCount);
+                continue;
+            }
+            // We can only process the commit if it has at least one parent
+            if (childCommit.parents().isEmpty()) {
+                continue;
+            }
+            SPLCommit parentCommit = childCommit.parents().get()[0];
+            if (!commitSet.contains(parentCommit.id())) {
+                continue;
+            }
 
                 final SimpleFileFilter fileFilter = splRepoPreparation(parentRepo, childRepo,
                                 parentCommit, childCommit);
@@ -221,7 +216,7 @@ public class SynchronizationStudy {
 
                     // Sample set of random variants
                     Logger.info("Sampling next set of variants...");
-                    final Sample sample = sample(parentCommit, childCommit);
+                    final Sample sample = sample(childCommit);
                     Logger.info("Done. Sampled " + sample.variants().size() + " variants.");
 
                     if (Files.exists(variantsDirV0.path())) {
@@ -366,7 +361,6 @@ public class SynchronizationStudy {
 
                 // Free memory of parentCommit
                 parentCommit.forget();
-            }
             // Free memory of commit V1
             childCommit.forget();
         }
@@ -402,38 +396,14 @@ public class SynchronizationStudy {
     /**
      * Randomly sample a set of variants valid in both commits.
      *
-     * @param commitV0 The id of the parent commit
-     * @param commitV1 The id of the child commit
      * @return The sampled variants
      */
-    protected Sample sample(final SPLCommit commitV0, final SPLCommit commitV1) {
-        if (currentModel == null || commitV0Current != commitV0 || commitV1Current != commitV1) {
-            Logger.info("Loading feature models.");
-            commitV0Current = commitV0;
-            commitV1Current = commitV1;
-            final IFeatureModel modelV0 = commitV0.featureModel().run().orElseThrow();
-            final IFeatureModel modelV1 = commitV1.featureModel().run().orElseThrow();
-            // We use the union of both models to sample configurations, so that all features are
-            // included
-            Logger.info("Creating model union.");
-            final Set<String> featureNames = new HashSet<>();
-
-            final ArrayList<IFeature> featureUnion = new ArrayList<>(
-                            modelV0.getFeatures().size() + modelV1.getFeatures().size());
-            // Add all features of modelV0
-            modelV0.getFeatures().forEach(f -> {
-                featureUnion.add(f);
-                featureNames.add(f.getName());
-            });
-            // Add all features of modelV1 that are not in V0
-            modelV1.getFeatures().stream().filter(f -> !featureNames.contains(f.getName()))
-                            .forEach(featureUnion::add);
-            featureUnion.trimToSize();
-
-            final IFeatureModelFactory factory = FMFactoryManager.getInstance().getFactory(modelV0);
-            currentModel = createModel(factory, featureUnion);
-
-            featureModelDebug(modelV0, modelV1);
+    protected Sample sample(final SPLCommit commit) {
+        if (currentModel == null || currentCommit != commit) {
+            Logger.debug("Loading feature models.");
+            currentCommit = commit;
+            currentModel = commit.featureModel().run().orElseThrow();
+            featureModelDebug(currentModel);
         }
         return sampler.sample(currentModel);
     }
@@ -448,7 +418,7 @@ public class SynchronizationStudy {
         // Add all features and constraints to the model
         features.stream().map(f -> factory.createFeature(model, f.getName())).forEach(f -> {
             FeatureUtils.addFeature(model, f);
-            if (!f.getName().equals("__Root__")) {
+            if (!f.getName().equals("__Root__") && !f.getName().equals("Root")) {
                 FeatureUtils.addChild(root, f);
             }
         });
@@ -499,16 +469,13 @@ public class SynchronizationStudy {
     }
 
     // Save the features in the feature models
-    private void featureModelDebug(final IFeatureModel modelV0, final IFeatureModel modelV1) {
+    private void featureModelDebug(final IFeatureModel model) {
         if (inDebug) {
-            final Collection<String> featuresInDifference =
-                            FeatureModelUtils.getSymmetricFeatureDifference(modelV0, modelV1);
             try {
-                Files.write(debugDir.resolve("features-V0.txt"), modelV0.getFeatures().stream()
+                Files.write(debugDir.resolve("features-V0.txt"), model.getFeatures().stream()
                                 .map(IFeatureModelElement::getName).collect(Collectors.toSet()));
-                Files.write(debugDir.resolve("features-V1.txt"), modelV1.getFeatures().stream()
+                Files.write(debugDir.resolve("features-V1.txt"), model.getFeatures().stream()
                                 .map(IFeatureModelElement::getName).collect(Collectors.toSet()));
-                Files.write(debugDir.resolve("variables-in-difference.txt"), featuresInDifference);
             } catch (final IOException e) {
                 Logger.error("Was not able to write commit data.", e);
             }
@@ -540,8 +507,9 @@ public class SynchronizationStudy {
             panic("Was not able to create directory for variant: " + variant.getName());
         }
 
-        final GroundTruth gtV0 = parentCommit.presenceConditionsBefore().run().orElseThrow()
-                        .generateVariant(variant, new CaseSensitivePath(splCopyA),
+        Optional<Artefact> artifact = parentCommit.presenceConditionsBefore().run();
+
+        final GroundTruth gtV0 = artifact.orElseThrow().generateVariant(variant, new CaseSensitivePath(splCopyA),
                                         variantsDirV0.resolve(variant.getName()),
                                         VariantGenerationOptions
                                                         .ExitOnErrorButAllowNonExistentFiles(false,
@@ -613,7 +581,7 @@ public class SynchronizationStudy {
 
 
     // Initialize the study by loading the required data
-    private VariabilityHistory init() {
+    private List<SPLCommit> init() {
         Logger.info("Starting experiment initialization.");
         // Clean old SPL repo files
         Logger.info("Cleaning old repo files.");
@@ -648,7 +616,7 @@ public class SynchronizationStudy {
 
         // Retrieve pairs/sequences of usable commits
         Logger.info("Retrieving commit pairs");
-        return Objects.requireNonNull(dataset).getVariabilityHistory(new Domino());
+        return Objects.requireNonNull(dataset).getSuccessCommits();
     }
 
     // Save the difference as a patch file
