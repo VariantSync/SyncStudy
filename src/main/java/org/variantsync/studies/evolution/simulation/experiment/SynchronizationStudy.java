@@ -231,13 +231,13 @@ public class SynchronizationStudy {
                     // Write information about the commits
                     if (inDebug) {
                         try {
-                            final var v0PCs = parentCommit.presenceConditionsBefore().run();
+                            final var v0PCs = childCommit.presenceConditionsBefore().run();
                             if (v0PCs.isPresent()) {
                                 Resources.Instance().write(Artefact.class, v0PCs.get(),
                                                 debugDir.resolve("V0.spl.csv"));
                             }
 
-                            final var v1PCs = childCommit.presenceConditionsBefore().run();
+                            final var v1PCs = childCommit.presenceConditionsAfter().run();
                             if (v1PCs.isPresent()) {
                                 Resources.Instance().write(Artefact.class, v1PCs.get(),
                                                 debugDir.resolve("V1.spl.csv"));
@@ -355,7 +355,6 @@ public class SynchronizationStudy {
                         }
                     }
                 }
-                commitCount++;
                 Logger.info(String.format("Finished commit pair %d of %d.%n", commitCount,
                                 historySize));
 
@@ -507,7 +506,7 @@ public class SynchronizationStudy {
             panic("Was not able to create directory for variant: " + variant.getName());
         }
 
-        Optional<Artefact> artifact = parentCommit.presenceConditionsBefore().run();
+        Optional<Artefact> artifact = childCommit.presenceConditionsBefore().run();
 
         final GroundTruth gtV0 = artifact.orElseThrow().generateVariant(variant, new CaseSensitivePath(splCopyA),
                                         variantsDirV0.resolve(variant.getName()),
@@ -525,7 +524,7 @@ public class SynchronizationStudy {
         }
         groundTruthV0.put(variant, gtV0);
 
-        final GroundTruth gtV1 = childCommit.presenceConditionsBefore().run().orElseThrow()
+        final GroundTruth gtV1 = childCommit.presenceConditionsAfter().run().orElseThrow()
                         .generateVariant(variant, new CaseSensitivePath(splCopyB),
                                         variantsDirV1.resolve(variant.getName()),
                                         VariantGenerationOptions
