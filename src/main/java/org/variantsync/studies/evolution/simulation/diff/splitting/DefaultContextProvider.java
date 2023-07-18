@@ -1,11 +1,11 @@
 package org.variantsync.studies.evolution.simulation.diff.splitting;
 
+import org.tinylog.Logger;
 import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import org.variantsync.studies.evolution.simulation.diff.filter.ILineFilter;
 import org.variantsync.studies.evolution.simulation.diff.lines.ContextLine;
 import org.variantsync.studies.evolution.simulation.diff.lines.Line;
 import org.variantsync.studies.evolution.simulation.diff.lines.MetaLine;
-import org.variantsync.vevos.simulation.util.Logger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

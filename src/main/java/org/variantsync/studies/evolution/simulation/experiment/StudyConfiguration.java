@@ -6,10 +6,8 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.variantsync.vevos.simulation.util.LogLevel;
 
 import java.io.File;
-import java.nio.file.Path;
 
 /**
  * Determines the configuration of our study.
@@ -29,8 +27,6 @@ public class StudyConfiguration {
     private static final String EXPERIMENT_DIR_SPL = "experiment.dir.spl";
     // Enable saving of certain files (e.g., feature list, presence conditions, configurations) for additional debugging
     private static final String EXPERIMENT_DEBUG = "experiment.debug";
-    // Log level
-    private static final String EXPERIMENT_LOGGER_LEVEL = "experiment.logger.level";
     // Each commit pair that is considered has its own id. All ids < startid are skipped when running the study. This
     // property is required for the short installation validation.
     private static final String EXPERIMENT_STARTID = "experiment.startid";
@@ -106,13 +102,6 @@ public class StudyConfiguration {
      */
     public Boolean EXPERIMENT_DEBUG() {
         return config.getBoolean(EXPERIMENT_DEBUG);
-    }
-
-    /**
-     * @return The log level
-     */
-    public LogLevel EXPERIMENT_LOGGER_LEVEL() {
-        return LogLevel.valueOf(config.getString(EXPERIMENT_LOGGER_LEVEL));
     }
 
     /**

@@ -1,9 +1,9 @@
 package org.variantsync.studies.evolution.simulation.shell;
 
+import org.tinylog.Logger;
 import org.variantsync.functjonal.Result;
 import org.variantsync.studies.evolution.simulation.error.SetupError;
 import org.variantsync.studies.evolution.simulation.error.ShellException;
-import org.variantsync.vevos.simulation.util.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

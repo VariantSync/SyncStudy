@@ -1,11 +1,11 @@
 package org.variantsync.studies.evolution.simulation.diff.filter;
 
 import org.prop4j.Node;
+import org.tinylog.Logger;
 import org.variantsync.functjonal.Result;
 import org.variantsync.studies.evolution.simulation.diff.components.FileDiff;
 import org.variantsync.studies.evolution.simulation.error.Panic;
 import org.variantsync.vevos.simulation.feature.Variant;
-import org.variantsync.vevos.simulation.util.Logger;
 import org.variantsync.vevos.simulation.util.io.CaseSensitivePath;
 import org.variantsync.vevos.simulation.variability.pc.Artefact;
 
@@ -96,7 +96,7 @@ public class PCBasedFilter implements IFileDiffFilter, ILineFilter {
         filePath = filePath.subpath(strip, filePath.getNameCount());
         final Result<Node, Exception> result = traces.getPresenceConditionOf(new CaseSensitivePath(filePath));
         if (result.isFailure()) {
-            Logger.warning("No PC found for " + filePath);
+            Logger.warn("No PC found for " + filePath);
             return false;
         } else {
             final Node pc = result.getSuccess();

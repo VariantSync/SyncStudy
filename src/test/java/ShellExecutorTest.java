@@ -1,10 +1,9 @@
+import org.tinylog.Logger;
 import org.variantsync.studies.evolution.simulation.error.ShellException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.variantsync.functjonal.Result;
 import org.variantsync.studies.evolution.simulation.shell.*;
-import org.variantsync.vevos.simulation.util.LogLevel;
-import org.variantsync.vevos.simulation.util.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,12 +15,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ShellExecutorTest {
-    static Consumer<String> errorReader = Logger::error;
-
-    static {
-        Logger.initConsoleLogger();
-        Logger.setLogLevel(LogLevel.DEBUG);
-    }
 
     @Test
     public void echo() {
@@ -32,7 +25,7 @@ public class ShellExecutorTest {
         };
         Logger.info("I am here");
 
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println);
         shellExecutor.execute(new EchoCommand(testString));
     }
 
@@ -42,7 +35,7 @@ public class ShellExecutorTest {
         List<String> output = new ArrayList<>();
 
         Consumer<String> outputReader = output::add;
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader, resourcesDir);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println, resourcesDir);
 
         Path pathA = Paths.get("text-A.txt");
         Path pathB = Paths.get("text-B.txt");
@@ -67,7 +60,7 @@ public class ShellExecutorTest {
         List<String> output = new ArrayList<>();
         Consumer<String> outputReader = output::add;
 
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader, resourcesDir);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println, resourcesDir);
 
         Path pathA = Paths.get("text-A.txt");
         Path pathB = Paths.get("text-B.txt");
@@ -94,7 +87,7 @@ public class ShellExecutorTest {
         Path outputPath = Files.createTempFile("patch-result", ".txt");
 
         Consumer<String> outputReader = Logger::info;
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader, resourcesDir);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println, resourcesDir);
 
         Result<List<String>, ShellException> result = shellExecutor.execute(
                         PatchCommand.Recommended(Paths.get("diff-A-B.txt")).outfile(outputPath));
@@ -112,7 +105,7 @@ public class ShellExecutorTest {
 
         List<String> actualDiff = new ArrayList<>();
         Consumer<String> outputReader = actualDiff::add;
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader, resourcesDir);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println, resourcesDir);
 
         Path pathA = Paths.get("version-A");
         Path pathB = Paths.get("version-B");
@@ -140,12 +133,12 @@ public class ShellExecutorTest {
         Path outputDir = outputRootDir.resolve("version-A");
 
         Consumer<String> outputReader = Logger::info;
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader, resourcesDir);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println, resourcesDir);
         Result<List<String>, ShellException> copyResult = shellExecutor
                         .execute(new CpCommand(Paths.get("version-A"), outputDir).recursive());
         assert copyResult.isSuccess();
 
-        shellExecutor = new ShellExecutor(outputReader, errorReader, outputDir);
+        shellExecutor = new ShellExecutor(outputReader, System.err::println, outputDir);
         Result<List<String>, ShellException> result = shellExecutor.execute(PatchCommand
                         .Recommended(resourcesDir.resolve("diff-A-B.txt").toAbsolutePath()));
         assert result.isSuccess();
@@ -175,12 +168,12 @@ public class ShellExecutorTest {
         Path outputDir = outputRootDir.resolve("version-A");
 
         Consumer<String> outputReader = Logger::info;
-        ShellExecutor shellExecutor = new ShellExecutor(outputReader, errorReader, resourcesDir);
+        ShellExecutor shellExecutor = new ShellExecutor(outputReader, System.err::println, resourcesDir);
         Result<List<String>, ShellException> copyResult = shellExecutor
                         .execute(new CpCommand(Paths.get("version-A"), outputDir).recursive());
         assert copyResult.isSuccess();
 
-        shellExecutor = new ShellExecutor(outputReader, errorReader, outputDir);
+        shellExecutor = new ShellExecutor(outputReader, System.err::println, outputDir);
         Result<List<String>, ShellException> result = shellExecutor.execute(PatchCommand
                         .Recommended(resourcesDir.resolve("fine-diff-A-B.txt").toAbsolutePath()));
         assert result.isSuccess();
@@ -209,7 +202,7 @@ public class ShellExecutorTest {
         assert tempFile.toFile().exists();
 
         RmCommand rmCommand = new RmCommand(tempFile);
-        ShellExecutor shellExecutor = new ShellExecutor(Logger::info, errorReader);
+        ShellExecutor shellExecutor = new ShellExecutor(Logger::info, System.err::println);
         assert shellExecutor.execute(rmCommand).isSuccess();
 
         assert !tempFile.toFile().exists();
@@ -223,7 +216,7 @@ public class ShellExecutorTest {
         assert tempFile.toFile().exists();
 
         RmCommand rmCommand = new RmCommand(tempDir).recursive();
-        ShellExecutor shellExecutor = new ShellExecutor(Logger::info, errorReader);
+        ShellExecutor shellExecutor = new ShellExecutor(Logger::info, System.err::println);
         assert shellExecutor.execute(rmCommand).isSuccess();
 
         assert !tempDir.toFile().exists();
