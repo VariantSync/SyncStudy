@@ -14,3 +14,4 @@ simulation-files/busybox/
 .project
 .settings/
 
+/simulation-files/variability-busybox/
